@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="css/home.css">
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md sticky-top">
+
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="./asset/image/Logo.png" alt="In D'Kos" height="24">
+      </a>
+      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link fw-bolder active" aria-current="page" href="">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Payment</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Service
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Request Service</a></li>
+              <li><a class="dropdown-item" href="#">History</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="#" data-bs-toggle="dropdown">
+              <i class="fa-solid fa-circle-user fs-4"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+              <span class="dropdown-item">
+                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                Profile
+              </span>
+              <span>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-cogs fa-sm fa-fw mr-2"></i>
+                  Settings
+                </a>
+              </span>
+              <hr class="dropdown-divider">
+              <button type="logout" class="dropdown-item">
+                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
+                Logout
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </nav>
+  <!-- data-bs-ride="true" -->
+  <div id="carousel" class="carousel slide">
+    <div class="carousel-indicators align-items-end">
+      <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true"
+        aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="asset/announcement.png" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="asset/home_image.jpeg" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="asset/image/Logo.png" alt="...">
+      </div>
+    </div>
+
+    <!-- <button class="carousel-control-prev ml-5" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon bg-primary rounded-circle" aria-hidden="true"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon bg-primary rounded-circle" aria-hidden="true"></span>
+    </button> -->
+
+  </div>
+  <div class="frame m-auto">
+
+    <div class="summary flex-column mt-3">
+      <div class="d-flex justify-content-between lh-1">
+        <div class="fw-bold fs-3">Tengku Kos</div>
+        <div class="d-flex">
+          <a href="" class="d-flex m-auto">
+            <div class="me-3 fs-3 fw-bold">Rp 2.050.000</div>
+            <i class="fs-3 fa-solid fa-angle-right fw-bold"></i>
+          </a>
+        </div>
+      </div>
+      <div class="mt-1">Room 101</div>
+      <div class="d-flex justify-content-between">
+        <div>
+          Tanggal Jatuh Tempo <span class="fw-bold">31 Januari 2023</span>
+        </div>
+        <button class="border border-0 rounded-3 px-4 fw-bold text-center">Bayar</button>
+      </div>
+    </div>
+
+    <div class="service mt-4 d-flex justify-content-between gap-4">
+      <a href="" class="g-col-3">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </a>
+      <a href="" class="g-col-3">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </a>
+      <a href="" class="g-col-3">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </a>
+      <a href="" class="g-col-3">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </a>
+      <a href="" class="g-col-3">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </a>
+      <a href="" class="g-col-3">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- <footer class="fixed-bottom start-50 translate-middle-x">
+        <ul class="p-0 m-0">
+            <li class="active">
+                <a href="#" class="flex-column">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-message"></i>
+                </a>
+            </li>
+            <li><a href="#"><i class="fa-solid fa-dashboard"></i></a></li>
+            <li><a href="#"><i class="fa-solid fa-earth"></i></a></li>
+            <li><a href="#"><i class="fa-solid fa-user"></i></a></li>
+            <li class="last"></li>
+        </ul>
+    </footer> -->
+</body>
+
+<script>
+  function isMobileDevice() {
+    let mobileList = /android|iphone|kindle|ipad/i;
+
+    return mobileList.test(navigator.userAgent);
+  }
+
+  if (isMobileDevice()) {
+    console.log("Its a Mobile Device !");
+    //     document.write(`    <footer class="fixed-bottom start-50 translate-middle-x">
+    //     <ul class="p-0 m-0">
+    //         <li class="active"><a href="#"><i class="fa-solid fa-house"></i></a></li>
+    //         <li><a href="#"><i class="fa-solid fa-message"></i></a></li>
+    //         <li><a href="#"><i class="fa-solid fa-dashboard"></i></a></li>
+    //         <li><a href="#"><i class="fa-solid fa-earth"></i></a></li>
+    //         <li><a href="#"><i class="fa-solid fa-user"></i></a></li>
+    //         <li class="last"></li>
+    //     </ul>
+    // </footer>`)
+  } else {
+    console.log("Its a Desktop !");
+    //     document.write(`    <nav class="navbar navbar-expand-md bg-primary sticky-top">
+    //     <div class="container-fluid">
+    //         <a class="navbar-brand" href="#">
+    //             <img src="./asset/image/Logo.png" alt="In D'Kos" height="24">
+    //         </a>
+
+    //         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+    //             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    //             <span class="navbar-toggler-icon"></span>
+    //         </button>
+
+    //         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    //             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+    //                 <li class="nav-item">
+    //                     <a class="nav-link fw-bolder active" aria-current="page" href="#">Home</a>
+    //                 </li>
+    //                 <li class="nav-item dropdown">
+    //                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+    //                         aria-expanded="false">
+    //                         Service
+    //                     </a>
+    //                     <ul class="dropdown-menu dropdown-menu-end">
+    //                         <li><a class="dropdown-item" href="#">Bersihin Kamar</a></li>
+    //                         <li><a class="dropdown-item" href="#">Benerin AC</a></li>
+    //                         <li>
+    //                             <hr class="dropdown-divider">
+    //                         </li>
+    //                         <li><a class="dropdown-item" href="#">History</a></li>
+    //                     </ul>
+    //                 </li>
+    //                 <li class="nav-item dropdown">
+    //                     <a class="nav-link" href="#" data-bs-toggle="dropdown">
+    //                         <i class="fa-solid fa-circle-user fs-4"></i>
+    //                     </a>
+    //                     <div class="dropdown-menu dropdown-menu-end">
+    //                         <span class="dropdown-item">
+    //                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+    //                             Profile
+    //                         </span>
+    //                         <span>
+    //                             <a class="dropdown-item" href="#">
+    //                                 <i class="fas fa-cogs fa-sm fa-fw mr-2"></i>
+    //                                 Settings
+    //                             </a>
+    //                         </span>
+    //                         <hr class="dropdown-divider">
+    //                         <button type="logout" class="dropdown-item">
+    //                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
+    //                             Logout
+    //                         </button>
+    //                     </div>
+    //                 </li>
+    //             </ul>
+    //         </div>
+    //     </div>
+    // </nav>`)
+  }
+</script>
+
+</html>
