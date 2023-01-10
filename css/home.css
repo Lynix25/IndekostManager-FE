@@ -1,47 +1,3 @@
-:root {
-    --primary-color: #C5E1E2;
-    --black-color: #0e111c;
-    --white-color: #fff;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-}
-
-*,
-::before,
-::after {
-    box-sizing: border-box;
-}
-
-body {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.8;
-    /* color: var(--primary-color); */
-    /* background-color: var(--black-color); */
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-    -webkit-tap-highlight-color: transparent;
-}
-
-ul {
-    list-style: none;
-}
-
-.frame {
-    max-width: 100vmin;
-    box-sizing: border-box;
-}
-
-.navbar {
-    background-color: var(--primary-color);
-}
-
 .summary{
     background-color: var(--primary-color);
     display: flex;
@@ -104,38 +60,34 @@ footer > ul > li > a:hover{
     text-shadow: 3px 5px 15px;
 }
 
-.service {
-    flex-wrap: wrap;
-}
-
-.service a {
+.service{
     background-color: var(--primary-color);
     border-radius: 1rem;
     padding: 0.5rem;
     color: white;
+    width: 5rem;
+    height: 5rem;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 5rem;
 }
 
-.service a i {
+.service i {
     padding-top: 0.5rem;
     font-size: 2rem;
 }
 
-.service a span {
+.service span {
     font-size: 1rem;
 }
 
-.service a:hover{
+.service:hover{
     color: var(--primary-color);
     background-color: var(--white-color);
     text-shadow: 3px 5px 15px;
 }
-
 
 
 
