@@ -9,12 +9,33 @@ export function getFormValue(formElement) {
     const formData = new FormData(formElement),
         data = {};
 
-    // for (item of formData) {
-    //     data[item[0]] = item[1] === 'true' ? true : item[1];
-    // }
     for (var pair of formData.entries()) {
         data[pair[0]] = pair[1]
     }
 
     return data;
+}
+
+/**
+ * 
+ * 
+ * @returns Boolean
+ */
+export function isMobileDevice() {
+    let mobileList = /android|iphone|kindle|ipad/i;
+
+    return mobileList.test(navigator.userAgent);
+}
+
+/**
+ * 
+ * @param {*} * 
+ * 
+ */
+
+export function handleFormSubmited(callback, formSelector = "form") {
+    document.querySelector(formSelector).addEventListener('submit', e => {
+        callback(e);
+        e.preventDefault();
+    })
 }

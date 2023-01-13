@@ -35,7 +35,7 @@ footer :where(li, li a) {
 
 .carousel-item img {
     display: block;
-    height: 30vh;
+    height: 50vmin;
     background-size: cover;
     width: 100vmin;
     margin-left: auto;
@@ -87,6 +87,14 @@ footer > ul > li > a:hover{
     color: var(--primary-color);
     background-color: var(--white-color);
     text-shadow: 3px 5px 15px;
+}
+
+@media screen and (min-width: 992px) {
+    .service{
+        width: 10em;
+        height: 10em;
+        background-color: red;
+    }
 }
 
 

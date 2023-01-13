@@ -40,6 +40,7 @@ a {
 ul {
     list-style: none;
 }
+
 .navbar {
     background-color: var(--primary-color);
 }
@@ -49,10 +50,33 @@ ul {
     box-sizing: border-box;
 }
 
-.badge-blue{
-    color: var(--badge-text-blue-color);
-    background-color: var(--badge-blue-color);
+.badge{
     padding-left: 5px;
     padding-right: 5px;
     border-radius: 5px;
+}
+
+.badge-blue{
+    color: var(--badge-text-blue-color);
+    background-color: var(--badge-blue-color);
+}
+
+.badge-red{
+    color: var(--badge-text-red-color);
+    background-color: var(--badge-red-color);
+}
+
+.badge-green{
+    color: var(--badge-text-green-color);
+    background-color: var(--badge-green-color);
+}
+
+.badge-yellow{
+    color: var(--badge-text-yellow-color);
+    background-color: var(--badge-yellow-color);
+}
+
+.row{
+    margin-left: 0px;
+    margin-right: 0px;
 }
