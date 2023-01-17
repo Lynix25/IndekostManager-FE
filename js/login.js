@@ -1,34 +1,41 @@
 import { END_POINT } from "./config.js"
-import { getFormValue } from "./utils.js";
+import { APIPost, getFormValue, handleFormSubmited } from "./utils.js";
 
 window.addEventListener('load', e => {
-    const form = document.querySelector('#login_form');
-    // form.addEventListener('submit', (event,form) => {
-    //     console.log(event)
-    //     login(event, form)
-    // });
-    form.addEventListener('submit', login)
+    document.querySelector("#password-show-hide").addEventListener("click", e => {
+        passwordShowHide("#password", ".fa-eye", ".fa-eye-slash")
+    })
+
+    handleFormSubmited(login)
+
 })
+
+function passwordShowHide(inputTarget, showIcon, hideIcon) {
+    let inputBox = document.querySelector(inputTarget);
+    let showEye = document.querySelector(showIcon);
+    let hideEye = document.querySelector(hideIcon);
+    hideEye.classList.remove('d-none');
+    if (inputBox.type === "password") {
+        inputBox.type = "text";
+        showEye.style.display = "none";
+        hideEye.style.display = "block";
+    } else {
+        inputBox.type = "password";
+        showEye.style.display = "block";
+        hideEye.style.display = "none";
+    }
+}
 
 function login(e) {
     let data = getFormValue(e.target);
-    let axiosConfig = {
-        headers: {
-            'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "*",
+    APIPost("/account/login", data).then(response => {
+        console.log(response);
+        if (response.status == 200) {
+            // window.location.replace('./home.html');
         }
-    };
-
-    axios.post(END_POINT + "/account/login", data, axiosConfig).then(result => {
-        console.log(result.data)
-        if (result.status == 200) {
-            window.location.replace('./home.html');
-        }
-    }).catch(result => {
-        console.log(result.response.data)
+    }).catch(response => {
+        console.log(response)
     })
-
-    e.preventDefault();
 }
 
 

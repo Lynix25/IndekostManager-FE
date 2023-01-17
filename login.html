@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>In D'Kos</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <script src="https://kit-pro.fontawesome.com/releases/v5.10.1/js/pro.min.js" data-auto-fetch-svg></script>
     <link rel="stylesheet" href="css/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -27,7 +28,7 @@
                     <img src="asset/image/Logo.png" class="img-fluid" alt="Logo image">
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                    <form id="login_form" method="post" action="">
+                    <form method="post" action="">
                         <div class="divider d-flex align-items-center my-4">
                             <!-- <p class="text-center fw-bold mx-3 mb-0">Or</p> -->
                             <p class="text-center fw-bold mx-3 mb-0">In D'Kos</p>
@@ -43,22 +44,28 @@
                         <!-- Password input -->
                         <div class="mb-3">
                             <label class="form-label" for="password">Password</label>
-                            <input type="password" name="password" id="password" class="form-control form-control-lg"
-                                placeholder="Enter password" />
+                            <div class="input-group">
+                                <input type="password" name="password" id="password"
+                                    class="form-control form-control-lg border-end-0" placeholder="Enter password" />
+                                <span type="button" id="password-show-hide" class="input-group-text bg-transparent">
+                                    <i class="fad fa-eye text-center"></i>
+                                    <i class="fad fa-eye-slash text-center d-none"></i>
+                                </span>
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center">
                             <!-- Checkbox -->
                             <div class="form-check mb-0">
-                                <input class="form-check-input me-2" type="checkbox" name="remember-me" id="remember-me" value='true'/>
-                                <label class="form-check-label" for="remember-me">Remember me</label>
+                                <input class="form-check-input me-2" type="checkbox" name="remember-me" id="remember-me"
+                                    value='true' />
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
                             </div>
                             <!-- <a href="#!" class="text-body">Forgot password?</a> -->
                         </div>
 
-                        <div class="text-center text-lg-start mt-4 pt-2">
-                            <button type="submit" class="btn btn-primary btn-lg"
-                                style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+                        <div class="text-center text-lg-end">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">Login</button>
                             <!-- <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
                                     class="link-danger">Register</a></p> -->
                         </div>
@@ -75,10 +82,10 @@
                 </div>
                 <!-- Copyright -->
 
-                <!-- Right -->
+                <!-- Social Media -->
                 <div>
                     <a href="#!" class="text-white me-4">
-                        <i class="fa-brands fa-facebook-f"></i>
+                        <i class="fab fa-facebook-f"></i>
                     </a>
                     <a href="#!" class="text-white me-4">
                         <i class="fab fa-twitter"></i>
@@ -90,10 +97,14 @@
                         <i class="fab fa-linkedin-in"></i>
                     </a>
                 </div>
-                <!-- Right -->
+                <!-- Social Media -->
             </div>
         </footer>
     </section>
 </body>
+
+<script>
+
+</script>
 
 </html>
