@@ -38,8 +38,8 @@ $(document).ready(() => {
 
     handleFormSubmited((e) => {
         let data = getFormValue(e.target);
-        data["dateTime"] = new Date(data.dateTime).getTime();
-        delete data.service;
+        data["taskDate"] = new Date(data.taskDate).getTime();
+        delete data.category;
         APIPost("/task",data).then(res => {
             console.log(res);
         }).catch(res => {
@@ -49,21 +49,6 @@ $(document).ready(() => {
 
     let serviceList;
     let filteredServiceList = {};
-
-    document.querySelector("#service").addEventListener("change", e => {
-        let selected = e.target.value;
-        setVariant(filteredServiceList[selected]);
-    })
-
-    document.querySelector("#variant").addEventListener("change", e => {
-        let selected = e.target.value;
-        let selectedCategory = document.querySelector("#service").value;
-        filteredServiceList[selectedCategory].forEach(service => {
-            if(service.variant == selected){
-                updatePrice(service.price);
-            }
-        })
-    })
 
     APIGet("/service").then(res => {
         serviceList = res.data.data;
@@ -81,10 +66,27 @@ $(document).ready(() => {
     }).catch(res => {
         console.log(res);
     })
+
+    document.querySelector("#category").addEventListener("change", e => {
+        let selected = e.target.value;
+        setVariant(filteredServiceList[selected]);
+    })
+
+    document.querySelector("#serviceId").addEventListener("change", e => {
+        let selected = e.target.value;
+        let selectedCategory = document.querySelector("#category").value;
+        filteredServiceList[selectedCategory].forEach(service => {
+            console.log(service);
+            if(service.id === selected){
+                updatePrice(service.price);
+            }
+        })
+    })
+
 })
 
 function setService(objectOptions){
-    let selection = document.querySelector("#service");
+    let selection = document.querySelector("#category");
     let firstCategory = undefined;
     Object.keys(objectOptions).forEach(serviceCategory => {
         if( firstCategory === undefined) firstCategory = serviceCategory;
@@ -97,7 +99,7 @@ function setService(objectOptions){
 }
 
 function setVariant(ArrayOptions){
-    let variant = document.querySelector("#variant");
+    let variant = document.querySelector("#serviceId");
     let firstPrice = undefined;
     variant.innerHTML = "";
     ArrayOptions.forEach(service => {

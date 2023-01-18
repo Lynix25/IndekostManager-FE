@@ -17,6 +17,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script defer src="js/main.js"></script>
 
+    <script defer type="module" src="js/createroom.js"></script>
+
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"/>
@@ -30,22 +32,22 @@
             <label class="form-label" for="name">Nama Ruangan</label>
             <input class="form-control form-control-lg" type="text" name="name" id="name">
         </div>
-
         <div>
             <label class="form-label" for="floor">Lantai</label>
             <input class="form-control form-control-lg" type="text" name="floor" id="floor" value="1">
         </div>
-
         <div>
             <label class="form-label" for="price">Harga</label>
             <input class="form-control form-control-lg" type="text" name="price" id="price">
         </div>
-
         <div>
-            <label class="form-label" for="username">ID Akun</label>
-            <input class="form-control form-control-lg" type="text" name="username" id="username">
+            <label class="form-label" for="description">Deskripsi</label>
+            <input class="form-control form-control-lg" type="text" name="description" id="description">
         </div>
-
+        <div>
+            <label class="form-label" for="quota">Max People</label>
+            <input class="form-control form-control-lg" type="text" name="quota" id="quota">
+        </div>
         <div>
             <button type="submit" class="btn btn-primary">Buat</button>
         </div>

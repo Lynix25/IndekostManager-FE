@@ -70,8 +70,8 @@ function getUserID(){
     return "not implemented userid in cookie";
 }
 
-export function APIPost(resource, requestBody) {
-    requestBody.createdBy = getUserID();
+export function APIPost(resource, requestBody, requesterid = true) {
+    if (requesterid) requestBody.requesterIdUser = getUserID();
     console.log(requestBody);
     return new Promise((resolve, reject) => {
         axios.post(END_POINT + resource, requestBody, axiosConfig).then(result => {
@@ -111,7 +111,12 @@ export function forEach(objectOrArray, callback) {
 }
 
 export function numberWithThousandsSeparators(x, separator=".") {
+    if (isNum(x)) x = x.toString();
     return x.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+}
+
+function isNum(val) {
+    return !isNaN(val);
 }
 
 export function UNIXtimeConverter(UNIX_timestamp, format = "MM/DD/YY hh:mm:ss UTZ") {

@@ -19,7 +19,8 @@ function addRequest(taskObject) {
     let requestList = document.querySelector("#request-list");
     let task = document.createElement("li");
     task.setAttribute("data", taskObject.id);
-    task.classList.add("border", "rounded", "px-3", "py-1", "m-auto")
+    // task.classList.add("border", "rounded", "px-3", "py-1", "m-auto")
+    task.classList.add("item")
     task.innerHTML = `<div class="d-flex justify-content-between align-items-center">
     <div>
         <div class="order-room">${"Nama Kamar"}</div>
@@ -35,7 +36,7 @@ function addRequest(taskObject) {
         </div>
         <div class="">
             <div>${taskObject.summary}</div>
-            <div>Permintaan pengerjaan: ${UNIXtimeConverter(taskObject.service_date,"D/M/YYYY hh:mm")}</div>
+            <div>Permintaan pengerjaan: ${UNIXtimeConverter(taskObject.taskDate,"D/M/YYYY hh:mm")}</div>
         </div>
     </div>
     <div class="">
