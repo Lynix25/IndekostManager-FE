@@ -1,14 +1,12 @@
 import { END_POINT } from "./config.js"
-import { getFormValue } from "./utils.js";
+import { APIPost, APIPut, getFormValue, handleFormSubmited } from "./utils.js";
 
-window.addEventListener('load', e => {
-    const form = document.querySelector('#change_password_form');
-    // form.addEventListener('submit', (event,form) => {
-    //     console.log(event)
-    //     login(event, form)
-    // });
-    
-    form.addEventListener('submit', changePassword)
+handleFormSubmited(e => {
+    let data = getFormValue(e.target);
+
+    APIPut("/account/"+"e2401bed-f703-404c-b4e1-9e4086e6c11b",data).then(res => {
+        console.log(res);
+    })
 })
 
 function changePassword(e) {

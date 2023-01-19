@@ -71,7 +71,10 @@ function getUserID(){
 }
 
 export function APIPost(resource, requestBody, requesterid = true) {
-    if (requesterid) requestBody.requesterIdUser = getUserID();
+    if (requesterid === true) requestBody.requesterIdUser = getUserID();
+    else {
+        requestBody.requesterIdUser = requesterid;
+    }
     console.log(requestBody);
     return new Promise((resolve, reject) => {
         axios.post(END_POINT + resource, requestBody, axiosConfig).then(result => {
@@ -80,7 +83,21 @@ export function APIPost(resource, requestBody, requesterid = true) {
             reject(result.response)
         })
     })
+}
 
+export function APIPut(resource, requestBody, requesterid = true) {
+    if (requesterid === true) requestBody.requesterIdUser = getUserID();
+    else {
+        requestBody.requesterIdUser = requesterid;
+    }
+    console.log(requestBody);
+    return new Promise((resolve, reject) => {
+        axios.put(END_POINT + resource, requestBody, axiosConfig).then(result => {
+            resolve(result)
+        }).catch(result => {
+            reject(result.response)
+        })
+    })
 }
 
 export function APIGet(resource) {
