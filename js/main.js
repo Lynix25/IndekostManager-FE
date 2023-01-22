@@ -5,16 +5,6 @@ const navLinks = document.querySelectorAll('.nav-link').forEach(link => {
   }
 })
 
-
-function logout(event){
-    event.preventDefault();
-
-
-}
-
-
-
-
 // window.addEventListener('load', (e) => {
     // console.log(form.elementes[0]);
     // document.querySelector('#login_form').addEventListener('submit', (e) => {

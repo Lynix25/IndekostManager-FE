@@ -1,16 +1,14 @@
-import { APIPost, getFormValue, handleFormSubmited } from "./utils.js";
+import { APIGet, APIPost, getFormValue, handleFormSubmited } from "./utils.js";
 
 handleFormSubmited(e => {
     let data = getFormValue(e.target);
-    data.alias = "";
-    data.description = "";
-    data.role_id = "Tenant";
 
-    APIPost("/user/register", data).then(res => {
+    APIPost("/user", data).then(res => {
         console.log(res);
     }).catch(res => {
         console.log(res);
     })
+
     // {
     //     name: "Paul Eric"
     //     email: "pauleric22524@gmail.com"
@@ -34,3 +32,23 @@ handleFormSubmited(e => {
     //     "last_modified_by" : "asd"
     // }
 })
+
+APIGet("/room").then(res => {
+    addOptions("#room", res.data.data, "name");
+})
+
+APIGet("/account").then(res => {
+    addOptions("#account", res.data.data, "username");
+})
+
+
+function addOptions(selector, arrayOfObjectOptions, innerHTMLKey, valueKey = "id"){
+    let selection = document.querySelector(selector);
+
+    arrayOfObjectOptions.forEach(object => {
+        let option = document.createElement("option");
+        option.innerHTML = object[innerHTMLKey];
+        option.setAttribute('value', object[valueKey]);
+        selection.appendChild(option);
+    });
+}

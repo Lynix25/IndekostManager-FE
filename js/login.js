@@ -7,7 +7,6 @@ window.addEventListener('load', e => {
     })
 
     handleFormSubmited(login)
-
 })
 
 function passwordShowHide(inputTarget, showIcon, hideIcon) {
@@ -29,9 +28,9 @@ function passwordShowHide(inputTarget, showIcon, hideIcon) {
 function login(e) {
     let data = getFormValue(e.target);
     APIPost("/account/login", data).then(response => {
-        console.log(response);
         if (response.status == 200) {
-            // window.location.replace('./home.html');
+            document.cookie = "tokens="+response.data.data.user.id;
+            window.location.replace('./home.html');
         }
     }).catch(response => {
         console.log(response)

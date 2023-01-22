@@ -3,7 +3,7 @@ import { END_POINT } from "./config.js"
 /**
  * Get inputvalue from a form
  * 
- * @param {Element} formElement 
+ * @param {FormElement} formElement 
  * @returns Object
  */
 export function getFormValue(formElement) {
@@ -41,6 +41,38 @@ export function handleFormSubmited(callback, formSelector = "form", preventDefau
     })
 }
 
+/**
+ * Get cookie from a cookies list
+ * @param {String} cname 
+ * @returns value of the cookie 
+ */
+export function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return undefined;
+}
+
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+export function deleteCookie(name) {   
+    document.cookie = name+'=; Max-Age=-99999999;';  
+}
+
 
 /**
  * 
@@ -66,8 +98,9 @@ let axiosConfig = {
     }
 };
 
-function getUserID(){
-    return "not implemented userid in cookie";
+function getUserID() {
+    return getCookie("id");
+    // return "not implemented userid in cookie";
 }
 
 export function APIPost(resource, requestBody, requesterid = true) {
@@ -102,11 +135,15 @@ export function APIPut(resource, requestBody, requesterid = true) {
 
 export function APIGet(resource) {
     return new Promise((resolve, reject) => {
-        axios.get(END_POINT + resource, axiosConfig).then(result => {
-            resolve(result)
-        }).catch(result => {
-            reject(result.response)
-        })
+        let intervalId = setInterval(() => {
+            axios.get(END_POINT + resource, axiosConfig).then(result => {
+                clearInterval(intervalId);
+                resolve(result)
+            }).catch(result => {
+                clearInterval(intervalId);
+                reject(result.response)
+            })
+        }, 50);
     })
 
 }
@@ -127,7 +164,7 @@ export function forEach(objectOrArray, callback) {
     }
 }
 
-export function numberWithThousandsSeparators(x, separator=".") {
+export function numberWithThousandsSeparators(x, separator = ".") {
     if (isNum(x)) x = x.toString();
     return x.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
 }
@@ -165,7 +202,7 @@ export function UNIXtimeConverter(UNIX_timestamp, format = "MM/DD/YY hh:mm:ss UT
         MM: (month + 1).toString().padStart(2, "0"), //01-12
         M: month + 1, //1-12
         YYYY: year, //1900-9999
-        // YY: year, 
+        // YY: year, // 
         hh: hour.toString().padStart(2, "0"), //00-23
         mm: min.toString().padStart(2, "0"), //00-59
         ss: sec.toString().padStart(2, "0"), //00-59

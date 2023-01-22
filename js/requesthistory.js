@@ -1,5 +1,6 @@
 import { APIGet, handleFormSubmited, UNIXtimeConverter } from "./utils.js";
 
+
 APIGet("/task").then(res => {
     console.log(res);
     res.data.data.forEach(service => {
@@ -20,6 +21,7 @@ function addRequest(taskObject) {
     let task = document.createElement("li");
     task.setAttribute("data", taskObject.id);
     // task.classList.add("border", "rounded", "px-3", "py-1", "m-auto")
+    // task.setAttribute("onClick", toTaskDetail(e));
     task.classList.add("item")
     task.innerHTML = `<div class="d-flex justify-content-between align-items-center">
     <div>
@@ -36,13 +38,20 @@ function addRequest(taskObject) {
         </div>
         <div class="">
             <div>${taskObject.summary}</div>
-            <div>Permintaan pengerjaan: ${UNIXtimeConverter(taskObject.taskDate,"D/M/YYYY hh:mm")}</div>
+            <div>Permintaan pengerjaan: ${UNIXtimeConverter(taskObject.taskDate, "D/M/YYYY hh:mm")}</div>
         </div>
     </div>
     <div class="">
         <button class="btn bg-primary">Komplain</button>
     </div>
 </div>`
-
+    task.addEventListener("click", e => {
+        console.log(e.currentTarget.getAttribute("data"));
+        window.location.replace('./taskdetail.html?id='+e.currentTarget.getAttribute("data"));
+    })
     requestList.appendChild(task);
 }
+
+// function toTaskDetail(event){
+//     console.log(event)
+// }

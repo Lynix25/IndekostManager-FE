@@ -7,13 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>In D'Kos</title>
 
-    <script src="js/libarry.js"></script>
+    <script src="js/libary.js"></script>
 
     <link rel="stylesheet" href="css/home.css">
+
+    <script type="module">
+        import { deleteCookie } from "./js/utils.js";
+
+        function logout(){
+            deleteCookie("tokens");
+        }
+    </script>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg sticky-top">
+    <!-- <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="./asset/image/Logo.png" alt="In D'Kos" height="24">
@@ -66,7 +74,7 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav> -->
     <!-- data-bs-ride="true" -->
     <div class="row mt-3">
         <div class="col-lg-6">

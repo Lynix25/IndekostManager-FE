@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>In D'Kos</title>
 
-    <script src="js/libarry.js"></script>
+    <script src="js/libary.js"></script>
     
     <script defer type="module" src="js/registeruser.js"></script>
 </head>
@@ -20,14 +20,31 @@
         </div>
 
         <div>
+            <label class="form-label" for="alias">Alias</label>
+            <input class="form-control form-control-lg" type="text" name="alias" id="alias">
+        </div>
+
+        <div>
+            <label class="form-label" for="role">Kamar</label>
+            <select class="form-select" name="roleId" id="role">
+                <option value="Tenant">Tenant</option>
+            </select>
+        </div>
+
+        <div>
             <label class="form-label" for="email">Email</label>
             <input class="form-control form-control-lg" type="email" name="email" id="email">
         </div>
 
         <div>
             <label class="form-label" for="room">Kamar</label>
-            <select class="form-select" name="room" id="room">
-                <option value="">Kamar 101</option>
+            <select class="form-select" name="roomId" id="room">
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label" for="account">Akun</label>
+            <select class="form-select" name="accountId" id="account">
             </select>
         </div>
 
@@ -47,6 +64,11 @@
         <div>
             <label class="form-label" for="job">Pekerjaan</label>
             <input class="form-control form-control-lg" type="text" name="job" id="job">
+        </div>
+
+        <div>
+            <label class="form-label" for="description">Deskripsi</label>
+            <input class="form-control form-control-lg" type="text" name="description" id="description">
         </div>
 
         <div>
