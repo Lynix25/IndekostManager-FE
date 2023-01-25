@@ -1,8 +1,7 @@
-import { APIGet, handleFormSubmited, UNIXtimeConverter } from "./utils.js";
+import { APIGet, handleFormSubmited, statusToString, UNIXtimeConverter } from "./utils.js";
 
 
 APIGet("/task").then(res => {
-    console.log(res);
     res.data.data.forEach(service => {
         addRequest(service);
     });
@@ -21,14 +20,14 @@ function addRequest(taskObject) {
     let task = document.createElement("li");
     task.setAttribute("data", taskObject.id);
     // task.classList.add("border", "rounded", "px-3", "py-1", "m-auto")
-    // task.setAttribute("onClick", toTaskDetail(e));
     task.classList.add("item")
-    task.innerHTML = `<div class="d-flex justify-content-between align-items-center">
+    APIGet("/service/" + taskObject.serviceId).then(res => {
+        task.innerHTML = `<div class="d-flex justify-content-between align-items-center">
     <div>
-        <div class="order-room">${"Nama Kamar"}</div>
-        <div class="order-date">${taskObject.createdDate}</div>
+        <div class="order-room">${res.data.serviceName}</div>
+        <div class="order-date">${UNIXtimeConverter(taskObject.createdDate, "D/MMM/YYYY hh:mm")}</div>
     </div>
-    <div class="badge ${"badge-blue"}">${"Dalam Pengerjaan"}</div>
+    <div class="badge ${"badge-blue"}">${statusToString(taskObject.status)}</div>
 </div>
 <hr style="margin: .5rem 0px;">
 <div class="d-flex justify-content-between">
@@ -41,17 +40,13 @@ function addRequest(taskObject) {
             <div>Permintaan pengerjaan: ${UNIXtimeConverter(taskObject.taskDate, "D/M/YYYY hh:mm")}</div>
         </div>
     </div>
-    <div class="">
-        <button class="btn bg-primary">Komplain</button>
-    </div>
-</div>`
+    </div>`
+        // <div class="">
+        //     <button class="btn bg-primary">Komplain</button>
+        // </div>
+    })
     task.addEventListener("click", e => {
-        console.log(e.currentTarget.getAttribute("data"));
-        window.location.replace('./taskdetail.html?id='+e.currentTarget.getAttribute("data"));
+        window.location.replace('./taskdetail.html?id=' + e.currentTarget.getAttribute("data"));
     })
     requestList.appendChild(task);
 }
-
-// function toTaskDetail(event){
-//     console.log(event)
-// }

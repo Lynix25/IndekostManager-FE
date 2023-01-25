@@ -39,6 +39,7 @@ jQueryJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.
 document.head.appendChild(jQueryJs);
 
 let mainJs = document.createElement("script");
+// mainJs.setAttribute("type", "module");
 mainJs.setAttribute("src", "js/main.js");
 document.head.appendChild(mainJs);
 
@@ -67,6 +68,10 @@ document.addEventListener('DOMContentLoaded', e => {
                 Admin
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="/agenda.html">Agenda</a></li>
+                <li><a class="dropdown-item" href="/createroom.html">Add Room</a></li>
+                <li><a class="dropdown-item" href="/roomlist.html">Room List</a></li>
+                <li><a class="dropdown-item" href="/service.html">Add Service</a></li>
                 <li><a class="dropdown-item" href="/registeruser.html">Register User</a></li>
                 <li><a class="dropdown-item" href="#">History</a></li>
             </ul>
@@ -97,7 +102,7 @@ document.addEventListener('DOMContentLoaded', e => {
                     </a>
                 </span>
                 <hr class="dropdown-divider">
-                <a type="logout" class="dropdown-item" onClick="logout()">
+                <a type="button" class="dropdown-item">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
                     Logout
                 </a>
@@ -108,7 +113,6 @@ document.addEventListener('DOMContentLoaded', e => {
 </div>`;
     document.body.insertBefore(navBar, document.body.firstChild);
 })
-
 
 {/* <script src="https://kit-pro.fontawesome.com/releases/v5.10.1/js/pro.min.js" data-auto-fetch-svg></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>

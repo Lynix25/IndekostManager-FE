@@ -3,7 +3,7 @@ import { APIGet, APIPost, getFormValue, handleFormSubmited } from "./utils.js";
 handleFormSubmited(e => {
     let data = getFormValue(e.target);
 
-    APIPost("/user", data).then(res => {
+    APIPost("/user", data, "admin").then(res => {
         console.log(res);
     }).catch(res => {
         console.log(res);

@@ -69,8 +69,8 @@ function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-export function deleteCookie(name) {   
-    document.cookie = name+'=; Max-Age=-99999999;';  
+export function deleteCookie(name) {
+    document.cookie = name + '=; Max-Age=-99999999;';
 }
 
 
@@ -99,7 +99,7 @@ let axiosConfig = {
 };
 
 function getUserID() {
-    return getCookie("id");
+    return getCookie("tokens");
     // return "not implemented userid in cookie";
 }
 
@@ -148,14 +148,18 @@ export function APIGet(resource) {
 
 }
 
-export function forEach(objectOrArray, callback) {
+export function forEach(objectOrArray, callback, keySort = "none") {
     if (Array.isArray(objectOrArray)) {
         objectOrArray.forEach(value => {
             callback(value);
         })
     }
     else if (!(objectOrArray instanceof Function) && objectOrArray instanceof Object) {
-        Object.keys(objectOrArray).forEach(key => {
+        // Object.keys(objectOrArray).forEach(key => {
+        //     callback(key, objectOrArray[key])
+        // })
+        let keys = keySort == "ASC" ? Object.keys(objectOrArray).sort() : Object.keys(objectOrArray);
+        keys.forEach(key => {
             callback(key, objectOrArray[key])
         })
     }
@@ -173,7 +177,7 @@ function isNum(val) {
     return !isNaN(val);
 }
 
-export function UNIXtimeConverter(UNIX_timestamp, format = "MM/DD/YY hh:mm:ss UTZ") {
+export function UNIXtimeConverter(UNIX_timestamp, format = "MM/DD/YYYY hh:mm:ss UTZ") {
     let a = new Date(UNIX_timestamp),
         months = {
             long: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -216,3 +220,44 @@ export function UNIXtimeConverter(UNIX_timestamp, format = "MM/DD/YY hh:mm:ss UT
     return format;
 }
 
+export function logout() {
+    deleteCookie("tokens");
+}
+
+export function statusToString(statusCode) {
+    if (statusCode === -1) {
+        return "Dibatalkan";
+    }
+    if (statusCode === 0) {
+        return "Dalam Proses";
+    }
+    if (statusCode === 1) {
+        return "Di Terima";
+    }
+    if (statusCode === 2) {
+        return "Dalam Pengerjaan";
+    }
+    if (statusCode === 3) {
+        return "Selesai";
+    }
+    /**
+ * Status state
+ *
+ * -1 rejected
+ * 0 submited
+ * 1 approved
+ * 2 on prosses
+ * 3 completed
+ */
+}
+
+export function groupingMillisecondsToSameDate(arrayData, dateKey, dateFormatKey) {
+    let grouped = {}
+    arrayData.forEach(data => {
+        let date = UNIXtimeConverter(data[dateKey], dateFormatKey);
+        if (!(date in grouped)) grouped[date] = [];
+        grouped[date].push(data);
+    })
+
+    return grouped;
+}

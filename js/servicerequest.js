@@ -52,6 +52,7 @@ $(document).ready(() => {
 
     APIGet("/service").then(res => {
         serviceList = res.data.data;
+        console.log(res);
         serviceList.forEach(service => {
             if (service.serviceName in filteredServiceList) {
                 filteredServiceList[service.serviceName].push(service);
