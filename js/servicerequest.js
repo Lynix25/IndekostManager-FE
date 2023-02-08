@@ -1,5 +1,5 @@
 import { APIGet, APIPost, forEach, getFormValue, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
-$(document).ready(() => {
+// $(document).ready(() => {
     // $('.date')
     // // document.getElementsByClassName('date')
     // // document.getElementById("datepicker")
@@ -84,7 +84,7 @@ $(document).ready(() => {
         })
     })
 
-})
+// })
 
 function setService(objectOptions){
     let selection = document.querySelector("#category");

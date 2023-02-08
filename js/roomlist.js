@@ -14,9 +14,9 @@ APIGet("/room").then(res => {
         </div>`;
         document.querySelector("#room-list").appendChild(room);
 
-        // room.addEventListener("click", e => {
-        //     window.location.replace('./roomdetail.html?id=' + e.currentTarget.getAttribute("data"));
-        // })
+        room.addEventListener("click", e => {
+            window.location.replace('./roomdetail.html?id=' + e.currentTarget.getAttribute("data"));
+        })
     });
 
 

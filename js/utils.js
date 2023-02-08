@@ -6,15 +6,45 @@ import { END_POINT } from "./config.js"
  * @param {FormElement} formElement 
  * @returns Object
  */
-export function getFormValue(formElement) {
-    // Make sure all inputs tag has name attribute
+export function getFormValue(formElement, groupingConfig) {
+    // Make sure all input tag has name attribute
+
     const formData = new FormData(formElement),
-        data = {};
-    for (const [key, value] of formData) {
-        data[key] = value
+        data = {}, emptyData = {};
+    let isFilled = false;
+    for (let [key, value] of formData) {
+        addToData(key, value);
     }
 
-    return data;
+    formElement.querySelectorAll("[input]").forEach(element => {
+        let key = element.getAttribute("name");
+        let value = element.getAttribute("value");
+        addToData(key, value);
+    })
+
+    function addToData(key, value) {
+        // if (value === "") return;
+        if (groupingConfig != undefined && key.includes(groupingConfig.separator)) {
+            let temp = key.split(groupingConfig.separator, 2);
+            key = temp[0];
+            let index = temp[1];
+            if (!(groupingConfig.name in data)) {
+                data[groupingConfig.name] = [];
+            }
+
+            let length = index - data[groupingConfig.name].length;
+
+            while (length-- > 0) {
+                data[groupingConfig.name].push({});
+            }
+
+            data[groupingConfig.name][index - 1][key] = value;
+        }
+        else data[key] = value;
+        isFilled = true;
+    }
+
+    return isFilled ? data : null;
 }
 
 /**
@@ -35,10 +65,27 @@ export function isMobileDevice() {
  */
 
 export function handleFormSubmited(callback, formSelector = "form", preventDefault = true) {
-    document.querySelector(formSelector).addEventListener('submit', e => {
+    let form = document.querySelector(formSelector)
+    form.addEventListener('submit', e => {
         callback(e);
+        form.reset();
         if (preventDefault) e.preventDefault();
     })
+}
+
+export function addCustomEventListener(eventName, callback, element, triggerEvent = "click") {
+    // console.log("Call Custom", eventName);
+    const event = new Event(eventName);
+    element.addEventListener(eventName, e => {
+        // console.log("execute callback for event " + eventName);
+        callback(e);
+    })
+    element.addEventListener(triggerEvent, e => {
+        // console.log("dispatchEvent " + eventName + " because " + triggerEvent, element);
+        element.dispatchEvent(event);
+        e.preventDefault();
+    })
+    // console.log("finish");
 }
 
 /**
@@ -72,7 +119,6 @@ function setCookie(cname, cvalue, exdays) {
 export function deleteCookie(name) {
     document.cookie = name + '=; Max-Age=-99999999;';
 }
-
 
 /**
  * 
@@ -123,7 +169,7 @@ export function APIPut(resource, requestBody, requesterid = true) {
     else {
         requestBody.requesterIdUser = requesterid;
     }
-    console.log(requestBody);
+    // console.log(requestBody);
     return new Promise((resolve, reject) => {
         axios.put(END_POINT + resource, requestBody, axiosConfig).then(result => {
             resolve(result)
@@ -154,7 +200,7 @@ export function forEach(objectOrArray, callback, keySort = "none") {
             callback(value);
         })
     }
-    else if (!(objectOrArray instanceof Function) && objectOrArray instanceof Object) {
+    else if (isObject(objectOrArray)) {
         // Object.keys(objectOrArray).forEach(key => {
         //     callback(key, objectOrArray[key])
         // })
@@ -168,8 +214,14 @@ export function forEach(objectOrArray, callback, keySort = "none") {
     }
 }
 
-export function numberWithThousandsSeparators(x, separator = ".") {
+function isObject(data) {
+    if (!(data instanceof Function) && data instanceof Object) return true;
+    return false;
+}
+
+export function numberWithThousandsSeparators(x, removedSeparator = ".", separator = ".") {
     if (isNum(x)) x = x.toString();
+    x = x.replaceAll(removedSeparator, "");
     return x.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
 }
 
@@ -226,19 +278,19 @@ export function logout() {
 
 export function statusToString(statusCode) {
     if (statusCode === -1) {
-        return "Dibatalkan";
+        return ["badge-color" , "Dibatalkan"];
     }
     if (statusCode === 0) {
-        return "Dalam Proses";
+        return ["badge-yellow" , "Menunggu Konfirmasi"];
     }
     if (statusCode === 1) {
-        return "Di Terima";
+        return ["badge-color" , "Di Terima"];
     }
     if (statusCode === 2) {
-        return "Dalam Pengerjaan";
+        return ["badge-color" , "Dalam Pengerjaan"];
     }
     if (statusCode === 3) {
-        return "Selesai";
+        return ["badge-color" , "Selesai"];
     }
     /**
  * Status state

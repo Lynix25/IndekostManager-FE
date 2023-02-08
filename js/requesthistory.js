@@ -3,6 +3,7 @@ import { APIGet, handleFormSubmited, statusToString, UNIXtimeConverter } from ".
 
 APIGet("/task").then(res => {
     res.data.data.forEach(service => {
+        console.log(service);
         addRequest(service);
     });
 })
@@ -21,13 +22,14 @@ function addRequest(taskObject) {
     task.setAttribute("data", taskObject.id);
     // task.classList.add("border", "rounded", "px-3", "py-1", "m-auto")
     task.classList.add("item")
+    let [color, status] = statusToString(taskObject.status);
     APIGet("/service/" + taskObject.serviceId).then(res => {
         task.innerHTML = `<div class="d-flex justify-content-between align-items-center">
     <div>
         <div class="order-room">${res.data.serviceName}</div>
         <div class="order-date">${UNIXtimeConverter(taskObject.createdDate, "D/MMM/YYYY hh:mm")}</div>
     </div>
-    <div class="badge ${"badge-blue"}">${statusToString(taskObject.status)}</div>
+    <div class="badge ${color}">${status}</div>
 </div>
 <hr style="margin: .5rem 0px;">
 <div class="d-flex justify-content-between">
