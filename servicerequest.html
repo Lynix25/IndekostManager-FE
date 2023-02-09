@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In D'Kos</title>
+
+    <script src="js/libary.js"></script>
+    
+    <script type="module" src="js/servicerequest.js"></script>
+</head>
+
+
+<body>
+    <form id="form" class="frame m-auto" action="" method="post">
+        <div class="">
+            <label for="category" class="form-label">Category</label>
+            <select id="category" name="category" class="form-select">
+                <!-- <option>Laundry</option>
+                <option>Laundry</option>
+                <option>Laundry</option>
+                <option>Laundry</option> -->
+            </select>
+        </div>
+        <div class="">
+            <label for="taskDate" class="form-label">Waktu Pengerjaan</label>
+            <input type="datetime-local" id="taskDate" name="taskDate" class="form-control">
+            <!-- <div class="row"> -->
+            <!-- <div class="input-group date col" data-provide="datepicker">
+                    <input type="text" name="waktu pengerjaan" class="form-control">
+                    <div class="input-group-addon input-group-text">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                </div> -->
+            <!-- <div class="input-group col">
+                    <input type="text" name="waktu pengerjaan" class="form-control">
+                </div> -->
+            <!-- </div> -->
+        </div>
+        <div class="">
+            <label for="serviceId" class="form-label">Service</label>
+            <select id="serviceId" name="serviceId" class="form-select">
+                <!-- <option>Selimut</option>
+                <option>Selimut</option>
+                <option>Selimut</option>
+                <option>Selimut</option>
+                <option>Selimut</option> -->
+            </select>
+        </div>
+        <div class="price-tag">
+            <label for="price">Biaya</label>
+            <div id="price" name="price" class="fw-bold">Rp -</div>
+        </div>
+        <div class="">
+            <label for="summary" class="form-label">Ringkasan</label>
+            <input type="text" class="form-control" name="summary" id="summary" placeholder="Ringkasan">
+        </div>
+        <div class="">
+            <label for="notes" class="form-label">Catatan</label>
+            <input type="text" class="form-control" name="notes" id="notes" placeholder="Catatan">
+        </div>
+        <button class="btn btn-primary" type="submit">Buat</button>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+.profile-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile-image{
+    background-color: var(--primary-color);
+}

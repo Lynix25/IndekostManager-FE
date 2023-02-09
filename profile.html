@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In D'Kos</title>
+
+    <script src="js/libary.js"></script>
+
+    <link rel="stylesheet" href="css/profile.css">
+    <script defer type="module" src="js/profile.js"></script>
+</head>
+
+<body>
+    <div class="profile-box frame m-auto border p-4 my-3 rounded-3">
+        <div class="d-flex flex-column mx-auto justify-content-center">
+            <div class="profile-image ratio ratio-1x1 p-5 rounded-circle">
+                <div class="d-flex justify-content-center align-items-center">
+                    <i class="fa-solid fa-user fs-1"></i>
+                </div>
+            </div>
+            <div id="name" class="mx-auto"></div>
+        </div>
+        <div class="mx-auto">
+            <span id="gender"></span>
+            <span id="job"></span>
+            <span id="phone"></span>
+            <span id="city"></span>
+        </div>
+        <a class="mx-auto" href="/editprofile.html">Edit profile</a>
+        <div>
+            <hr class="my-2">
+            <a href="/changepassword.html" class="d-flex justify-content-between align-items-center">Ubah Kata Sandi <i class="fa-solid fa-angle-right"></i></a>
+            <hr class="my-2">
+            <a class="d-flex justify-content-between align-items-center">Rekening <i class="fa-solid fa-angle-right"></i></a>
+            <hr class="my-2">
+            <a class="d-flex justify-content-between align-items-center">Bantuan <i class="fa-solid fa-angle-right"></i></a>
+            <hr class="my-2">
+            <a class="d-flex justify-content-between align-items-center">Laporan <i class="fa-solid fa-angle-right"></i></a>
+            <hr class="my-2">
+            <a href="/login.html" class="d-flex justify-content-between align-items-center">Keluar <i class="fa-solid fa-angle-right"></i></a>
+            <hr class="my-2">
+        </div>
+    </div>
+    <!-- <div class="container rounded bg-white mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-5 border-right">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">Profile Settings</h4>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control"
+                                placeholder="first name" value=""></div>
+                        <div class="col-md-6"><label class="labels">Surname</label><input type="text"
+                                class="form-control" value="" placeholder="surname"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text"
+                                class="form-control" placeholder="enter phone number" value=""></div>
+                        <div class="col-md-12"><label class="labels">Address Line 1</label><input type="text"
+                                class="form-control" placeholder="enter address line 1" value=""></div>
+                        <div class="col-md-12"><label class="labels">Address Line 2</label><input type="text"
+                                class="form-control" placeholder="enter address line 2" value=""></div>
+                        <div class="col-md-12"><label class="labels">Postcode</label><input type="text"
+                                class="form-control" placeholder="enter address line 2" value=""></div>
+                        <div class="col-md-12"><label class="labels">State</label><input type="text"
+                                class="form-control" placeholder="enter address line 2" value=""></div>
+                        <div class="col-md-12"><label class="labels">Area</label><input type="text" class="form-control"
+                                placeholder="enter address line 2" value=""></div>
+                        <div class="col-md-12"><label class="labels">Email ID</label><input type="text"
+                                class="form-control" placeholder="enter email id" value=""></div>
+                        <div class="col-md-12"><label class="labels">Education</label><input type="text"
+                                class="form-control" placeholder="education" value=""></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6"><label class="labels">Country</label><input type="text"
+                                class="form-control" placeholder="country" value=""></div>
+                        <div class="col-md-6"><label class="labels">State/Region</label><input type="text"
+                                class="form-control" value="" placeholder="state"></div>
+                    </div>
+                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save
+                            Profile</button></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center experience"><span>Edit
+                            Experience</span><span class="border px-3 p-1 add-experience"><i
+                                class="fa fa-plus"></i>&nbsp;Experience</span></div><br>
+                    <div class="col-md-12"><label class="labels">Experience in Designing</label><input type="text"
+                            class="form-control" placeholder="experience" value=""></div> <br>
+                    <div class="col-md-12"><label class="labels">Additional Details</label><input type="text"
+                            class="form-control" placeholder="additional details" value=""></div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In D'Kos</title>
+
+    <script src="js/libary.js"></script>
+
+    <script defer type="module" src="js/service.js"></script>
+</head>
+
+<body>
+    <div class="frame">
+        <form id="form" class="frame m-auto" action="" method="post">
+            <div class="">
+                <label for="serviceName" class="form-label">Category Service</label>
+                <input type="text" class="form-control" name="serviceName" id="serviceName" placeholder="Kategori Service">
+                <!-- <select id="serviceName" name="serviceName" class="form-select">
+                    <option>Laundry</option>
+                    <option>Cleaning Room Service</option>
+                    <option>Other</option>
+                </select> -->
+            </div>
+            <div class="">
+                <label for="variant" class="form-label">Variant</label>
+                <input type="text" class="form-control" name="variant" id="variant" placeholder="Nama Variant">
+            </div>
+            <div class="">
+                <label for="price" class="form-label">Price</label>
+                <input type="text" class="form-control" name="price" id="price" placeholder="Harga">
+            </div>
+            <button class="btn btn-primary" type="submit">Buat</button>
+        </form>
+    </div>
+</body>
+
+</html>

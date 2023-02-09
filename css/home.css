@@ -1,0 +1,145 @@
+.summary {
+    background-color: var(--primary-color);
+    display: flex;
+    padding: 1rem;
+    border-radius: 1rem;
+    /* aspect-ratio: 16/auto; */
+}
+
+.bold {
+    font-weight: 1000;
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* height: 100vh; */
+}
+
+footer {
+    position: relative;
+    width: 100vw;
+    padding: 10px 20px;
+    background-color: white;
+}
+
+footer ul {
+    display: flex;
+    justify-content: center;
+}
+
+footer :where(li, li a) {
+    position: relative;
+}
+
+.carousel-item img {
+    display: block;
+    height: 50vmin;
+    background-size: cover;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 0.5rem;
+}
+
+footer li a {
+    background-color: var(--black-color);
+    width: 60px;
+    height: 60px;
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    z-index: 10;
+    transition: text-shadow .3s;
+}
+
+footer>ul>li>a:hover {
+    text-shadow: 3px 5px 15px;
+}
+
+.service {
+    background-color: var(--primary-color);
+    border-radius: 1rem;
+    padding: 0.5rem;
+    color: white;
+    width: 15%;
+    /* height: 5rem; */
+    aspect-ratio: 1/1;
+    height: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.service i {
+    padding-top: 0.5rem;
+    font-size: 2rem;
+}
+
+.service span {
+    font-size: 1rem;
+}
+
+.service:hover {
+    color: var(--primary-color);
+    background-color: var(--white-color);
+    text-shadow: 3px 5px 15px;
+}
+
+@media screen and (min-width: 992px) {
+    .service {
+        width: 23%;
+        aspect-ratio: 1/1;
+    }
+
+    .service-list{
+        height: 50vmin;
+    }
+}
+
+
+
+/* nav ul li.active > a {
+    background-color: aliceblue;
+    color: white;
+    border-radius: 50%;
+    transform: translateY(-40px);
+} */
+
+/* nav li.last {
+    position: absolute;
+    width: 100px;
+    height: 80px;
+    background-color: red;
+    border-radius: 0 0 50% 50% / 0 0 80% 80%;
+    top: -40px;
+    left: 10px;
+}
+
+nav li.last::before{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -21px;
+    width: 40px;
+    height: 40px;
+    background-color: blue;
+    border-top-right-radius: 40px;
+    box-shadow: 0 -20px 0 0 yellow;
+}
+nav li.last::after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -21px;
+    width: 40px;
+    height: 40px;
+    background-color: blue;
+    border-top-right-radius: 40px;
+    box-shadow: 0 -20px 0 0 yellow;
+} */

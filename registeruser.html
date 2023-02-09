@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In D'Kos</title>
+
+    <script src="js/libary.js"></script>
+
+    <script defer type="module" src="js/registeruser.js"></script>
+</head>
+
+<body>
+    <form class="frame" action="" method="post">
+        <div class="row">
+            <div class="col ps-0">
+                <label class="form-label" for="name">Nama</label>
+                <input class="form-control form-control-lg" type="text" name="name" id="name">
+            </div>
+
+            <div class="col pe-0">
+                <label class="form-label" for="alias">Alias</label>
+                <input class="form-control form-control-lg" type="text" name="alias" id="alias">
+            </div>
+        </div>
+
+        <div>
+            <label class="form-label" for="role">Kamar</label>
+            <select class="form-select" name="roleId" id="role">
+                <option value="Tenant">Tenant</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label" for="email">Email</label>
+            <input class="form-control form-control-lg" type="email" name="email" id="email">
+        </div>
+
+        <div>
+            <label class="form-label" for="room">Kamar</label>
+            <select class="form-select" name="roomId" id="room">
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label" for="account">Akun</label>
+            <select class="form-select" name="accountId" id="account">
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label" for="phone">No Telfon</label>
+            <input class="form-control form-control-lg" type="tel" name="phone" id="phone">
+        </div>
+
+        <!-- <div>
+            <input class="form-control form-control-lg" type="file" name="identityDocument" id="identityDocument">
+        </div> -->
+
+        <div>
+            <label class="form-label" for="gender">Gender</label>
+            <select class="form-select" name="gender" id="gender">
+                <option value="Male">Laki - Laki</option>
+                <option value="Female">Perempuan</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label" for="job">Pekerjaan</label>
+            <input class="form-control form-control-lg" type="text" name="job" id="job">
+        </div>
+
+        <div>
+            <label class="form-label" for="description">Deskripsi</label>
+            <input class="form-control form-control-lg" type="text" name="description" id="description">
+        </div>
+
+        <!-- <div>
+            <label class="form-label" for="identityCardImage">Foto KTP</label>
+            <input class="form-control form-control-lg" type="file" name="identityCardImage" id="identityCardImage">
+        </div> -->
+
+        <div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+
+    </form>
+
+</body>
+
+</html>
