@@ -82,6 +82,7 @@ export function addCustomEventListener(eventName, callback, element, triggerEven
     })
     element.addEventListener(triggerEvent, e => {
         // console.log("dispatchEvent " + eventName + " because " + triggerEvent, element);
+        // if(e.target === e.currentTarget) 
         element.dispatchEvent(event);
         e.preventDefault();
     })
@@ -169,7 +170,7 @@ export function APIPut(resource, requestBody, requesterid = true) {
     else {
         requestBody.requesterIdUser = requesterid;
     }
-    // console.log(requestBody);
+    console.log(requestBody);
     return new Promise((resolve, reject) => {
         axios.put(END_POINT + resource, requestBody, axiosConfig).then(result => {
             resolve(result)
@@ -278,19 +279,19 @@ export function logout() {
 
 export function statusToString(statusCode) {
     if (statusCode === -1) {
-        return ["badge-color" , "Dibatalkan"];
+        return ["badge-red", "Dibatalkan"];
     }
     if (statusCode === 0) {
-        return ["badge-yellow" , "Menunggu Konfirmasi"];
-    }
-    if (statusCode === 1) {
-        return ["badge-color" , "Di Terima"];
+        return ["badge-yellow", "Menunggu Konfirmasi"];
     }
     if (statusCode === 2) {
-        return ["badge-color" , "Dalam Pengerjaan"];
+        return ["badge-blue", "Di Terima"];
+    }
+    if (statusCode === 1) {
+        return ["badge-blue", "Dalam Pengerjaan"];
     }
     if (statusCode === 3) {
-        return ["badge-color" , "Selesai"];
+        return ["badge-color", "Selesai"];
     }
     /**
  * Status state
