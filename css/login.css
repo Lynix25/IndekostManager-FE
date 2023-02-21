@@ -61,6 +61,20 @@ body {
     background-color: white;
 }
 
+.btn {
+    background-color: var(--primary-color);
+    color: var(--black-color);
+}
+
+.btn:hover {
+    background-color: cadetblue;
+}
+
+footer {
+    background-color: var(--primary-color);
+    color: var(--black-color);
+}
+
 @media (max-width: 450px) {
     .h-custom {
         height: 100%;
