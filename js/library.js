@@ -44,8 +44,10 @@ mainJs.setAttribute("src", "js/main.js");
 document.head.appendChild(mainJs);
 
 // DEV NavBar Component
+let filesystem = "D:/IndekostManager-FE"
 let currentPath = window.location.pathname;
-if (currentPath !== "/login.html")
+if (currentPath !== `/${filesystem}/login.html` && 
+    currentPath !== `/${filesystem}/forgotpassword.html`)
 document.addEventListener('DOMContentLoaded', e => {
     let navBar = document.createElement("nav");
     navBar.classList.add("navbar", "navbar-expand-lg", "sticky-top");
