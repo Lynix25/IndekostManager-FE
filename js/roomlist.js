@@ -1,4 +1,4 @@
-import { addCustomEventListener, APIDelete, APIGet, goTo, setAttributes } from "./utils.js";
+import { addCustomEventListener, APIGet } from "./utils.js";
 
 APIGet("/room").then(res => {
     console.log(res);
@@ -54,12 +54,3 @@ APIGet("/room").then(res => {
 }).catch(e => {
     console.log(e);
 })
-
-addCustomEventListener("confirm-delete", e => {
-    console.log(e.target.getAttribute("data"));
-    const toastLiveExample = document.getElementById('liveToast')
-    const toast = new bootstrap.Toast(toastLiveExample, { delay: 1500 })
-    document.querySelector("#roomName").innerHTML = e.target.getAttribute("data-room-name");
-    toast.show()
-
-}, document.querySelector("[type='confirm-delete']"))

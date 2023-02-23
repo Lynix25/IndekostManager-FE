@@ -125,3 +125,11 @@ ul {
     font-size: .8rem;
     color: gray;
 }
+
+.has-content {
+    visibility: hidden;
+}
+
+.has-content:has(*){
+    visibility: visible;
+}

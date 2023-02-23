@@ -9,11 +9,20 @@ APIGet("/task/" + getURLParam("id")).then(res => {
     document.querySelector(".requesterUser").innerHTML = res.data.data.createdBy;
 
     APIGet("/service/" + res.data.data.serviceId).then(res => {
-        console.log(res);
+        // console.log(res);
         // document.querySelector(".category").innerHTML = res.data.serviceName;
         document.querySelector(".service").innerHTML = res.data.serviceName;
         document.querySelector(".room").innerHTML = res.data.variant;
         document.querySelector(".price").innerHTML = res.data.price;
     })
-    
+
 })
+
+
+addCustomEventListener("process", e => {
+    APIPut("/task/" + params.get('id'), { "status": 1 })
+}, document.querySelector("[type='process']"))
+
+addCustomEventListener("cancel", e => {
+    APIPut("/task/" + params.get('id'), { "status": -1 })
+}, document.querySelector("[type='cancel']"))
