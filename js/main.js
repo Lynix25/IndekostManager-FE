@@ -34,7 +34,7 @@ function logout() {
     // }).then(res => {
     //     if(res.status == 200){
     //         console.log(res.data);
-    //         window.location.replace('./index.html');
+    //         goTo('./index.html');
     //     }
     // })
 

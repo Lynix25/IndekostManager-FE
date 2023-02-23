@@ -13,8 +13,42 @@
 </head>
 
 <body>
+    <!-- Toast Message -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3 top-0 end-0">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <!-- <img src="..." class="rounded me-2" alt="..."> -->
+                <strong class="me-auto">In D'Kos</strong>
+                <!-- <small>1 sec ago</small> -->
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Berhasil menghapus kamar <span id="roomName"></span>
+            </div>
+        </div>
+    </div>
+
     <div class="frame">
         <ul id="room-list"></ul>
+    </div>
+
+    <!-- Confirmation Delete -->
+    <div class="modal fade" id="confirmation" tabindex="-1" aria-labelledby="confirmationLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="confirmationLabel">Delete Room</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Do you really want to delete room <span id="room-name"></span> ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="confirm-delete" class="btn btn-primary" data-bs-dismiss="modal">Delete</button>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

@@ -1,5 +1,5 @@
 import { END_POINT } from "./config.js"
-import { APIPost, APIPut, getFormValue, handleFormSubmited } from "./utils.js";
+import { APIPost, APIPut, getFormValue, goTo, handleFormSubmited } from "./utils.js";
 
 handleFormSubmited(e => {
     let data = getFormValue(e.target);
@@ -22,7 +22,7 @@ function changePassword(e) {
     axios.post(END_POINT + "/account/password", data, axiosConfig).then(result => {
         console.log(result.data)
         if (result.status == 200) {
-            window.location.replace('./profile.html');
+            goTo('./profile.html');
         }
     }).catch(result => {
         console.log(result.response.data)

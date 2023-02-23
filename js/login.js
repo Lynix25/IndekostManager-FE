@@ -1,5 +1,5 @@
 import { END_POINT } from "./config.js"
-import { APIPost, getFormValue, handleFormSubmited } from "./utils.js";
+import { APIPost, getFormValue, goTo, handleFormSubmited } from "./utils.js";
 
 window.addEventListener('load', e => {
     document.querySelector("#password-show-hide").addEventListener("click", e => {
@@ -30,7 +30,7 @@ function login(e) {
     APIPost("/account/login", data).then(response => {
         if (response.status == 200) {
             document.cookie = "tokens="+response.data.data.user.id;
-            window.location.replace('./home.html');
+            goTo('./home.html');
         }
     }).catch(response => {
         console.log(response)

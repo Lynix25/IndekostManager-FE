@@ -1,4 +1,4 @@
-import { APIGet, handleFormSubmited, statusToString, UNIXtimeConverter } from "./utils.js";
+import { APIGet, goTo, handleFormSubmited, statusToString, UNIXtimeConverter } from "./utils.js";
 
 
 APIGet("/task").then(res => {
@@ -48,7 +48,7 @@ function addRequest(taskObject) {
         // </div>
     })
     task.addEventListener("click", e => {
-        window.location.replace('./taskdetail.html?id=' + e.currentTarget.getAttribute("data"));
+        goTo('./taskdetail.html?id=' + e.currentTarget.getAttribute("data"));
     })
     requestList.appendChild(task);
 }

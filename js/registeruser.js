@@ -42,7 +42,7 @@ APIGet("/account").then(res => {
 })
 
 
-function addOptions(selector, arrayOfObjectOptions, innerHTMLKey, valueKey = "id"){
+function addOptions(selector, arrayOfObjectOptions, innerHTMLKey, valueKey = "id") {
     let selection = document.querySelector(selector);
 
     arrayOfObjectOptions.forEach(object => {
@@ -52,3 +52,22 @@ function addOptions(selector, arrayOfObjectOptions, innerHTMLKey, valueKey = "id
         selection.appendChild(option);
     });
 }
+
+document.querySelector("#identityCardImage").addEventListener("change", event => {
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    let loading = document.createElement("i");
+
+    reader.addEventListener("loadend", e => {
+        document.querySelector(".fa-spin").setAttribute("hidden", "")
+        event.target?.parentElement.querySelector("img").setAttribute("src", reader.result);
+    })
+
+    reader.addEventListener("loadstart", e => {
+        document.querySelector(".fa-spin").removeAttribute("hidden")
+    })
+
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+})

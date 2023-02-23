@@ -1,12 +1,12 @@
-import { getCookie } from "./utils.js";
+import { getCookie, getCurrentPath, goTo } from "./utils.js";
 
 checkIsUserLogIn();
 
 function checkIsUserLogIn(){
-    let currentPath = window.location.pathname;
+    let currentPath = getCurrentPath();
     if(currentPath === "/login.html") {
         return;
     }
     let userToken = getCookie("tokens");
-    if(userToken === undefined) window.location.replace('./login.html');
+    if(userToken === undefined) goTo('./login.html');
 }

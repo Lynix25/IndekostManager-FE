@@ -1,23 +1,23 @@
-import { APIGet } from "./utils.js";
+import { APIGet, getURLParam } from "./utils.js";
 
-let params = new URLSearchParams(location.search);
+console.log(window.history);
+// let params = new URLSearchParams(location.search);
 
-APIGet("/room/" + params.get("id")).then(res => {
-    let data = res.data;
-    console.log(data);
-    document.querySelector(".name").innerHTML = data.data.name;
-    // document.querySelector(".status").innerHTML = statusToString(res.data.data.status);
-    // document.querySelector(".id").innerHTML = res.data.data.id;
-    // document.querySelector(".createdDate").innerHTML = UNIXtimeConverter(res.data.data.createdDate, "MM/DD/YYYY hh:mm");
-    // console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
-    // document.querySelector(".requesterUser").innerHTML = res.data.data.createdBy;
+APIGet("/room/" + getURLParam("id")).then(res => {
+    let room = res.data.data;
+    console.log(room);
+    document.querySelector(".name").innerHTML = room.name;
+    document.querySelector(".allotment").innerHTML = room.allotment;
+    document.querySelector(".floor").innerHTML = 'Lantai ' + room.floor;
 
-    // APIGet("/service/" + res.data.data.serviceId).then(res => {
-    //     console.log(res);
-    //     // document.querySelector(".category").innerHTML = res.data.serviceName;
-    //     document.querySelector(".service").innerHTML = res.data.serviceName;
-    //     document.querySelector(".room").innerHTML = res.data.variant;
-    //     document.querySelector(".price").innerHTML = res.data.price;
-    // })
+    room.facilities.forEach(facility => {
+        let detail = document.createElement("li");
+        detail.innerHTML = `<i class="fad fa-user"></i>
+        <div>${facility.name}</div>`
+        if(facility.category == "Spesifikasi") document.querySelector(".specifications").appendChild(detail);
+        // console.log(facility);
+    });
+    
+
     
 })

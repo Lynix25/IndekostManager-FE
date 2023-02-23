@@ -1,11 +1,12 @@
-import { addCustomEventListener, APIPost, forEach, getFormValue, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
+import { addCustomEventListener, APIPost, forEach, getFormValue, getFormValueBeta, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 
 handleFormSubmited(e => {
-    let data = getFormValue(e.target, { "name": "details", "separator": "_" });
+    // let data = getFormValueBeta(e.target, { "name": "details", "separator": "_" });
+    let data = getFormValueBeta(e?.target);
     console.log(data);
-    // APIPost("/room", data).then(res => {
-    //     console.log(res);
-    // })
+    APIPost("/room", data).then(res => {
+        console.log(res);
+    })
 })
 
 // document.addEventListener("click", e => {
@@ -47,8 +48,8 @@ addCustomEventListener('update', e => {
     let data = getFormValue(form);
     let index = e.target.getAttribute('data');
     let row = document.querySelector("table").rows[index];
-    row.querySelector(`[name='capacity_${index}']`).innerHTML = data.capacity + " Orang";
-    row.querySelector(`[name='price_${index}']`).innerHTML = data.price;
+    row.querySelector(`[name='capacity_${index}']`).innerHTML = data?.capacity + " Orang";
+    row.querySelector(`[name='price_${index}']`).innerHTML = data?.price;
     form.reset();
 }, updateRoomDetailButton)
 
@@ -57,18 +58,20 @@ document.querySelector("#addRoomPrice #price").addEventListener('input', e => {
 })
 
 handleFormSubmited(e => {
-    console.log("#addRoomPrice submit event triggered", e.type);
+    // console.log("#addRoomPrice submit event triggered", e.type);
     let data = getFormValue(e.target);
     if (data == null) return;
 
     let table = document.querySelector("table tbody");
     let newRow = table.insertRow();
-    newRow.innerHTML = `<td>
-    <div input name="capacity_${table.rows.length}" value=${data.capacity}>${data.capacity} Orang</div>
-</td>
-<td>
-    <div input name="price_${table.rows.length}" value="${data.price.replaceAll(".","")}">${data.price}</div>
-</td>`;
+    newRow.setAttribute("data", "asdas");
+    newRow.innerHTML =
+        `<td>
+            <div input name="capacity" value=${data?.capacity}>${data?.capacity} Orang</div>
+        </td>
+        <td>
+            <div input name="price" value="${data?.price.replaceAll(".", "")}">${data?.price}</div>
+        </td>`;
 
     let editDetail = document.createElement("button");
     editDetail.classList.add("btn")
@@ -103,7 +106,6 @@ handleFormSubmited(e => {
     cell = newRow.insertCell();
     cell.appendChild(deleteDetail);
     addCustomEventListener("delete", e => {
-        let index;
         let row = e.target;
         let table = document.querySelector("table")
         forEach(table.rows, (ro, e) => {
@@ -125,18 +127,25 @@ handleFormSubmited(e => {
 // title.innerHTML = "Price Detail";
 // }, addFaciltyButton)
 
+function* countGenerator() {
+    let count = 1;
+
+    while (true) {
+        yield count;
+        count++;
+    }
+}
+
+const facilitiesCount = countGenerator();
+
 handleFormSubmited(e => {
     let data = getFormValue(e.target);
-    console.log(document.querySelector("#addFacility button[type='submit']"));
-    if (data.facility == "") return;
-    // data-bs-dismiss="modal"
-    document.querySelector("#addFacility button[type='submit']").setAttribute("data-bs-dismiss", "modal");
-    let facilities = document.querySelector('.facilities');
+    if (data?.facility == "") return;
 
+    let facilities = document.querySelector('.facilities');
     let facility = document.createElement('li');
     facility.setAttribute("input", "");
-    facility.setAttribute("name", "facility");
-    facility.innerHTML = data.facility;
+    facility.setAttribute("name", "facility_" + facilitiesCount.next().value);
+    facility.innerHTML = data?.facility;
     facilities.append(facility);
-
 }, "#addFacility")

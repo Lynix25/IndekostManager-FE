@@ -100,3 +100,28 @@ ul {
     margin: auto;
     margin-bottom: .5rem;
 }
+
+.item i {
+    font-size: 2.2rem;
+}
+
+.item svg {
+    font-size: 2.2rem;
+}
+
+.label{
+    display: inline-block;
+    border-radius: 50rem;
+    background-color: #1DA42C;
+    padding: 1%;
+}
+
+.order-room{
+    font-size: .8rem;
+    color: gray;
+}
+
+.order-date{
+    font-size: .8rem;
+    color: gray;
+}

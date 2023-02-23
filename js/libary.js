@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', e => {
                 <li><a class="dropdown-item" href="/roomlist.html">Room List</a></li>
                 <li><a class="dropdown-item" href="/service.html">Add Service</a></li>
                 <li><a class="dropdown-item" href="/registeruser.html">Register User</a></li>
+                <li><a class="dropdown-item" href="/listuser.html">List User</a></li>
                 <li><a class="dropdown-item" href="#">History</a></li>
             </ul>
         </li>

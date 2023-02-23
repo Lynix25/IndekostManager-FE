@@ -10,7 +10,7 @@ export function getFormValue(formElement, groupingConfig) {
     // Make sure all input tag has name attribute
 
     const formData = new FormData(formElement),
-        data = {}, emptyData = {};
+        data = {}, grouping = {};
     let isFilled = false;
     for (let [key, value] of formData) {
         addToData(key, value);
@@ -47,6 +47,67 @@ export function getFormValue(formElement, groupingConfig) {
     return isFilled ? data : null;
 }
 
+export function getFormValueBeta(element) {
+    // Make sure all input tag has name attribute
+    let result = {};
+
+    let hasName = element.hasAttribute("name");
+    let hasValue = element.hasAttribute("value");
+    if (hasName && hasValue) {
+        let name = element.getAttribute("name");
+        let value = element.getAttribute("value");
+        result[name] = value;
+        return result;
+    }
+
+    if (hasName) {
+        let name = element.getAttribute("name");
+        result[name] = element.innerText;
+        return result;
+    }
+
+    let isGroup = element.hasAttribute("group-name");
+    if (isGroup) {
+        let groupName = element.getAttribute("group-name");
+        result[groupName] = [];
+        forEach(element.children, (_, children) => {
+            let data = getFormValueBeta(children);
+            if (!isObjectEmpty(data)) result[groupName].push(data);
+        })
+        return result;
+    }
+
+    forEach(element.children, (_, children) => {
+        let data = getFormValueBeta(children);
+        Object.assign(result, data);
+    })
+
+    return result;
+}
+
+function getCustomFormValue(customFormElement) {
+    {
+        details: [
+            {
+                capacity: "capacity_1",
+                price: "price_1"
+            }
+        ]
+        facilities: [
+            {
+                name: "facility_1"
+            },
+            {
+                name: "facility_2"
+            },
+        ]
+    }
+    customFormElement.querySelectorAll("[input]").forEach(element => {
+        let key = element.getAttribute("name");
+        let value = element.getAttribute("value");
+    })
+}
+
 /**
  * 
  * 
@@ -56,6 +117,19 @@ export function isMobileDevice() {
     let mobileList = /android|iphone|kindle|ipad/i;
 
     return mobileList.test(navigator.userAgent);
+}
+
+function isObject(data) {
+    if (!(data instanceof Function) && data instanceof Object) return true;
+    return false;
+}
+
+function isNum(val) {
+    return !isNaN(val);
+}
+
+function isObjectEmpty(object) {
+    return Object.keys(object).length <= 0 ? true : false;
 }
 
 /**
@@ -73,9 +147,9 @@ export function handleFormSubmited(callback, formSelector = "form", preventDefau
     })
 }
 
-export function addCustomEventListener(eventName, callback, element, triggerEvent = "click") {
+export function addCustomEventListener(eventName, callback, element, eventConfig = {}, triggerEvent = "click") {
     // console.log("Call Custom", eventName);
-    const event = new Event(eventName);
+    const event = new Event(eventName, eventConfig);
     element.addEventListener(eventName, e => {
         // console.log("execute callback for event " + eventName);
         callback(e);
@@ -84,40 +158,41 @@ export function addCustomEventListener(eventName, callback, element, triggerEven
         // console.log("dispatchEvent " + eventName + " because " + triggerEvent, element);
         element.dispatchEvent(event);
         e.preventDefault();
-    })
+        e.stopPropagation();
+    });
     // console.log("finish");
 }
 
 /**
  * Get cookie from a cookies list
- * @param {String} cname 
+ * @param {String} cookieName 
  * @returns value of the cookie 
  */
-export function getCookie(cname) {
-    let name = cname + "=";
+export function getCookie(cookieName) {
+    let name = cookieName + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
+    let cookieList = decodedCookie.split(';');
+    for (let i = 0; i < cookieList.length; i++) {
+        let cookie = cookieList[i];
+        while (cookie.charAt(0) == ' ') {
+            cookie = cookie.substring(1);
         }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
+        if (cookie.indexOf(name) == 0) {
+            return cookie.substring(name.length, cookie.length);
         }
     }
     return undefined;
 }
 
-function setCookie(cname, cvalue, exdays) {
+function setCookie(cookieNmae, cookieValue, expireDays) {
     const d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    d.setTime(d.getTime() + (expireDays * 24 * 60 * 60 * 1000));
     let expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    document.cookie = cookieNmae + "=" + cookieValue + ";" + expires + ";path=/";
 }
 
-export function deleteCookie(name) {
-    document.cookie = name + '=; Max-Age=-99999999;';
+export function deleteCookie(cookieName) {
+    document.cookie = cookieName + '=; Max-Age=-99999999;';
 }
 
 /**
@@ -139,8 +214,10 @@ export function dateTimeLocalInputToMilliseconds(dateTimelocal) {
  */
 let axiosConfig = {
     headers: {
-        'Content-Type': 'application/json',
         "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        // "Content-Type": "multipart/form-data",
+        // "responseType": 'blob'
     }
 };
 
@@ -169,7 +246,7 @@ export function APIPut(resource, requestBody, requesterid = true) {
     else {
         requestBody.requesterIdUser = requesterid;
     }
-    // console.log(requestBody);
+    console.log(requestBody);
     return new Promise((resolve, reject) => {
         axios.put(END_POINT + resource, requestBody, axiosConfig).then(result => {
             resolve(result)
@@ -191,8 +268,27 @@ export function APIGet(resource) {
             })
         }, 50);
     })
-
 }
+
+export function APIDelete(resource) {
+    return new Promise((resolve, reject) => {
+        let intervalId = setInterval(() => {
+            axios.delete(END_POINT + resource, axiosConfig).then(result => {
+                clearInterval(intervalId);
+                resolve(result)
+            }).catch(result => {
+                clearInterval(intervalId);
+                reject(result.response)
+            })
+        }, 50);
+    })
+}
+
+export function setAttributes(element, attribute) {
+    Object.entries(attribute).forEach((key) => {
+        element.setAttribute(key[0], key[1])
+    })
+};
 
 export function forEach(objectOrArray, callback, keySort = "none") {
     if (Array.isArray(objectOrArray)) {
@@ -214,9 +310,12 @@ export function forEach(objectOrArray, callback, keySort = "none") {
     }
 }
 
-function isObject(data) {
-    if (!(data instanceof Function) && data instanceof Object) return true;
-    return false;
+export function goTo(path) {
+    // / Absolute
+    // ./ relative
+    if (getCurrentPath() == path) return;
+    window.location.href = path;
+    // window.location.assign(path);
 }
 
 export function numberWithThousandsSeparators(x, removedSeparator = ".", separator = ".") {
@@ -225,19 +324,31 @@ export function numberWithThousandsSeparators(x, removedSeparator = ".", separat
     return x.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
 }
 
-function isNum(val) {
-    return !isNaN(val);
+function calculateUNIXTime(UNIXTimestamp, manipulate) {
+
 }
 
-export function UNIXtimeConverter(UNIX_timestamp, format = "MM/DD/YYYY hh:mm:ss UTZ") {
-    let a = new Date(UNIX_timestamp),
+export function UNIXtimeConverter(UNIXTimestamp, format = "MM/DD/YYYY hh:mm:ss UTZ", language = "id") {
+    let a = new Date(UNIXTimestamp),
         months = {
-            long: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-            short: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+            'eng': {
+                long: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                short: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+            },
+            "id": {
+                long: ["januari", "February", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+                short: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"]
+            }
         },
         dates = {
-            long: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thurday", "Friday", "Saturday"],
-            short: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+            'eng': {
+                long: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thurday", "Friday", "Saturday"],
+                short: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+            },
+            'id': {
+                long: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"],
+                short: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+            }
         },
         year = a.getFullYear(),
         month = a.getMonth(),
@@ -249,12 +360,13 @@ export function UNIXtimeConverter(UNIX_timestamp, format = "MM/DD/YYYY hh:mm:ss 
         tzn = a.toTimeString().substring(9);
 
     let formatList = {
-        DDDD: dates.long[day], //Sunday - Saturday
-        DDD: dates.short[day], //Sun - Sat
+        DDDD: dates[language].long[day], //Sunday - Saturday
+        DDD: dates[language].short[day], //Sun - Sat
         DD: date.toString().padStart(2, "0"), //01-31
         D: date, //1-31
-        MMMM: months.long[month], //January - Desember
-        MMM: months.short[month], //Jan - Des
+        d: day, //0-6
+        MMMM: months[language].long[month], //January - Desember
+        MMM: months[language].short[month], //Jan - Des
         MM: (month + 1).toString().padStart(2, "0"), //01-12
         M: month + 1, //1-12
         YYYY: year, //1900-9999
@@ -278,19 +390,19 @@ export function logout() {
 
 export function statusToString(statusCode) {
     if (statusCode === -1) {
-        return ["badge-color" , "Dibatalkan"];
+        return ["badge-color", "Dibatalkan"];
     }
     if (statusCode === 0) {
-        return ["badge-yellow" , "Menunggu Konfirmasi"];
+        return ["badge-yellow", "Menunggu Konfirmasi"];
     }
     if (statusCode === 1) {
-        return ["badge-color" , "Di Terima"];
+        return ["badge-color", "Di Terima"];
     }
     if (statusCode === 2) {
-        return ["badge-color" , "Dalam Pengerjaan"];
+        return ["badge-color", "Dalam Pengerjaan"];
     }
     if (statusCode === 3) {
-        return ["badge-color" , "Selesai"];
+        return ["badge-color", "Selesai"];
     }
     /**
  * Status state
@@ -304,12 +416,60 @@ export function statusToString(statusCode) {
 }
 
 export function groupingMillisecondsToSameDate(arrayData, dateKey, dateFormatKey) {
-    let grouped = {}
+    let grouped = getCurrentWeekList(dateFormatKey);
+    // grouped["Senin 6 Feb 2023"] = "";
+    // grouped["Selasa 7 Feb 2023"] = "";
+
     arrayData.forEach(data => {
         let date = UNIXtimeConverter(data[dateKey], dateFormatKey);
-        if (!(date in grouped)) grouped[date] = [];
-        grouped[date].push(data);
+        if (date in grouped) {
+            grouped[date].push(data);
+        }
     })
 
+    // grouped["Kamis 9 Feb 2023"] = "";
+    // grouped["Jumat 10 Feb 2023"] = "";
+    // grouped["Sabtu 11 Feb 2023"] = "";
+    // grouped["Minggu 12 Feb 2023"] = "";
+
     return grouped;
+}
+
+export function getURLParam(paramId) {
+    let params = new URLSearchParams(location.search);
+    return params.get(paramId);
+}
+
+export function convertImage64ToSrc(imageInBase64, imageExt = "png") {
+    return `data:image/${imageExt};base64,` + imageInBase64;
+}
+
+export function getCurrentPath() {
+    let currentPath = window.location.pathname;
+    return currentPath;
+}
+
+export function getTempID() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+}
+
+function getCurrentWeekList(dateFormat) {
+    let weekList = {};
+
+    let dayInMillis = 86400000;
+
+    let currentMillis = +new Date();
+    // let currentMillis = 1675728001000;
+    let currentDate = new Date(currentMillis);
+    let currentDay = currentDate.getDay();
+
+    for (let i = 0; i < 7; i++) {
+        let offset = i - currentDay;
+        let temp = currentMillis + (offset * dayInMillis);
+        weekList[UNIXtimeConverter(temp, dateFormat)] = [];
+    }
+
+    return weekList;
 }
