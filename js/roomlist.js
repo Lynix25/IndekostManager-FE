@@ -1,4 +1,4 @@
-import { addCustomEventListener, APIGet } from "./utils.js";
+import { addCustomEventListener, APIGet, goTo, setAttributes } from "./utils.js";
 
 APIGet("/room").then(res => {
     console.log(res);

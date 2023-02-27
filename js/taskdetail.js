@@ -1,4 +1,4 @@
-import { APIGet, getURLParam, statusToString, UNIXtimeConverter } from "./utils.js";
+import { addCustomEventListener, APIGet, getURLParam, statusToString, UNIXtimeConverter } from "./utils.js";
 
 APIGet("/task/" + getURLParam("id")).then(res => {
     console.log(res);

@@ -418,8 +418,6 @@ export function statusToString(statusCode) {
 
 export function groupingMillisecondsToSameDate(arrayData, dateKey, dateFormatKey) {
     let grouped = getCurrentWeekList(dateFormatKey);
-    // grouped["Senin 6 Feb 2023"] = "";
-    // grouped["Selasa 7 Feb 2023"] = "";
 
     arrayData.forEach(data => {
         let date = UNIXtimeConverter(data[dateKey], dateFormatKey);
@@ -427,11 +425,6 @@ export function groupingMillisecondsToSameDate(arrayData, dateKey, dateFormatKey
             grouped[date].push(data);
         }
     })
-
-    // grouped["Kamis 9 Feb 2023"] = "";
-    // grouped["Jumat 10 Feb 2023"] = "";
-    // grouped["Sabtu 11 Feb 2023"] = "";
-    // grouped["Minggu 12 Feb 2023"] = "";
 
     return grouped;
 }
