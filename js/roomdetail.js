@@ -9,6 +9,7 @@ APIGet("/room/" + getURLParam("id")).then(res => {
 
     room.details.forEach(facility => {
         let detail = document.createElement("li");
+        detail.classList.add("d-flex");
         detail.innerHTML = `<i class="fad fa-user"></i>
         <div>${facility.name}</div>`
         if(facility.category == "Spesifikasi") document.querySelector(".specifications").appendChild(detail);

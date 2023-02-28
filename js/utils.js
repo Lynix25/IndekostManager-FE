@@ -260,13 +260,14 @@ export function APIPut(resource, requestBody, requesterid = true) {
 export function APIGet(resource) {
     return new Promise((resolve, reject) => {
         let intervalId = setInterval(() => {
-            axios.get(END_POINT + resource, axiosConfig).then(result => {
+            if (axios) {
                 clearInterval(intervalId);
-                resolve(result)
-            }).catch(result => {
-                clearInterval(intervalId);
-                reject(result.response)
-            })
+                axios.get(END_POINT + resource, axiosConfig).then(result => {
+                    resolve(result)
+                }).catch(result => {
+                    reject(result.response)
+                })
+            }
         }, 50);
     })
 }
@@ -360,6 +361,9 @@ export function UNIXtimeConverter(UNIXTimestamp, format = "MM/DD/YYYY hh:mm:ss U
         sec = a.getSeconds(),
         tzn = a.toTimeString().substring(9);
 
+    let tempFormat = {}
+    let tempKey = ["~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "="];
+
     let formatList = {
         DDDD: dates[language].long[day], //Sunday - Saturday
         DDD: dates[language].short[day], //Sun - Sat
@@ -378,8 +382,17 @@ export function UNIXtimeConverter(UNIXTimestamp, format = "MM/DD/YYYY hh:mm:ss U
         UTZ: tzn, //XXX+XXXX
     }
 
+    for (let i = 0; i < Object.keys(formatList).length; i++) {
+        let key = Object.keys(formatList)[i]
+        tempFormat[key] = tempKey[i];
+    }
+
     forEach(formatList, (key, value) => {
-        format = format.replace(key, value)
+        format = format.replace(key, tempFormat[key])
+    })
+
+    forEach(formatList, (key, value) => {
+        format = format.replace(tempFormat[key], value)
     })
 
     return format;
