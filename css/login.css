@@ -10,6 +10,71 @@
     height: calc(100% - 73px);
 }
 
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    gap: 30px;
+    background-color: white;
+}
+
+.form {
+    position: relative;
+}
+
+.form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgb(213, 213, 213);
+    background-color: transparent;
+    border-radius: 8px;
+    outline: none;
+    color: black;
+    font-size: 1em;
+}
+
+.form label {
+    position: absolute;
+    left: 4px;
+    top: 0px;
+    padding: 10px;
+    pointer-events: none;
+    font-size: 1em;
+    color: gray;
+    transition: 0.5s;
+}
+
+.form input:valid ~ label,
+.form input:focus ~ label {
+    color: rgb(119, 160, 236);
+    transform: translateX(4px) translateY(-13px);
+    font-size: 0.90em;
+    padding: 0 10px;
+    background-color: white;
+}
+
+.btn {
+    background-color: var(--primary-color);
+    color: var(--black-color);
+}
+
+.btn:hover {
+    background-color: cadetblue;
+}
+
+footer {
+    background-color: var(--primary-color);
+    color: var(--black-color);
+}
+
 @media (max-width: 450px) {
     .h-custom {
         height: 100%;
