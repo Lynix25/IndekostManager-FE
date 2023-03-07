@@ -1,36 +1,14 @@
-import { APIGet, APIPost, getFormValue, handleFormSubmited } from "./utils.js";
+import { APIGet, APIPost, getCookie, getFormValue, handleFormSubmited } from "./utils.js";
 
 handleFormSubmited(e => {
     let data = getFormValue(e.target);
-
-    APIPost("/user", data, "admin").then(res => {
+    console.log(data);
+    APIPost("/user", data, {"Requester-ID" : getCookie("tokens"), "Content-Type": "multipart/form-data"}).then(res => {
         console.log(res);
     }).catch(res => {
         console.log(res);
     })
 
-    // {
-    //     name: "Paul Eric"
-    //     email: "pauleric22524@gmail.com"
-    //     alias: ""
-    //     phone: "012345678910"
-    //     job: "Mahasiswa"
-    //     gender: ""
-    //     room: ""
-    // }
-
-    // {
-    //     "name" : "Paul Eric"
-    //     "email" : "pauleric22524@gmail.com"
-    //     "alias" : "Paul"
-    //     "phone" : "085887021660"
-    //     "job" : "Mahasiswa"
-    //     "gender" : "Male"
-    //     "description" : ""
-    //     "role_id" : "Tenant"
-    //     "created_by" : "asd"
-    //     "last_modified_by" : "asd"
-    // }
 })
 
 APIGet("/room").then(res => {

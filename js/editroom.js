@@ -1,12 +1,24 @@
-import { APIGet, getURLParam } from "./utils.js";
+import { APIGet, getFormValue, getFormValueBeta, getURLParam, handleFormSubmited } from "./utils.js";
 
 APIGet("/room/" + getURLParam("id")).then(res => {
     let room = res.data.data;
     console.log(room);
 
-    document.querySelector("#name").value = room.name;
-    document.querySelector("#floor").value = room.floor;
-    document.querySelector("#description").value = room.description;
-    document.querySelector("#allotment").value = room.allotment;
+    document.getElementById("name").value = room.name;
+    document.getElementById("floor").value = room.floor;
+    document.getElementById("description").value = room.description;
+    // document.getElementById("allotment").value = room.allotment;
+    document.getElementById("allotment").setAttribute("value",room.allotment);
 
+})
+
+handleFormSubmited(e => {
+    let data = getFormValue(e.target);
+    console.log(data);
+
+    // APIPost("/user", data, "admin").then(res => {
+    //     console.log(res);
+    // }).catch(res => {
+    //     console.log(res);
+    // })
 })

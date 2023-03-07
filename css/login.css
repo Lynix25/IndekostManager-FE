@@ -10,7 +10,7 @@
     height: calc(100% - 73px);
 }
 
-*{
+* {
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
@@ -52,8 +52,8 @@ body {
     transition: 0.5s;
 }
 
-.form input:valid ~ label,
-.form input:focus ~ label {
+.form input:valid~label,
+.form input:focus~label {
     color: rgb(119, 160, 236);
     transform: translateX(4px) translateY(-13px);
     font-size: 0.90em;
@@ -80,3 +80,20 @@ footer {
         height: 100%;
     }
 }
+
+/* Bootstrap Overwrite */
+
+.form-floating>.form-control-plaintext~label,
+.form-floating>.form-control:focus~label,
+.form-floating>.form-select~label,
+.form-floating>.form-control:not(:placeholder-shown)~label {
+    opacity: 1;
+    transform: scale(.85) translateY(-1.8rem) translateX(0.6rem);
+    background-color: white;
+}
+
+.form-floating>label {
+    width: auto;
+}
+
+/* Bootstrap Overwrite */
