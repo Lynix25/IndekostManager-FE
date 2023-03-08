@@ -1,7 +1,7 @@
-import { APIGet, APIPost, getCookie, getFormValue, handleFormSubmited } from "./utils.js";
+import { APIGet, APIPost, getCookie, getFormValue, getFormValueBeta, handleFormSubmited } from "./utils.js";
 
 handleFormSubmited(e => {
-    let data = getFormValue(e.target);
+    let data = getFormValueBeta(e.target);
     console.log(data);
     APIPost("/user", data, {"Requester-ID" : getCookie("tokens"), "Content-Type": "multipart/form-data"}).then(res => {
         console.log(res);

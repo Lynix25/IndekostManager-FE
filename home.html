@@ -10,6 +10,7 @@
     <script src="js/library.js"></script>
 
     <link rel="stylesheet" href="css/home.css">
+    <script defer type="module" src="js/home.js"></script>
 </head>
 
 <body>
@@ -100,18 +101,18 @@
 
             <div class="summary flex-column mt-3">
                 <div class="d-flex justify-content-between lh-1">
-                    <div class="fw-bold fs-3">Tengku Kos</div>
+                    <div class="fw-bold fs-3 kost-name">In D'Kos House</div>
                     <div class="d-flex">
                         <a href="/payment.html" class="d-flex m-auto">
-                            <div class="me-3 fs-3 fw-bold">Rp 2.050.000</div>
+                            <div class="me-3 fs-3 fw-bold">Rp <span class="unpaid-total"></span></div>
                             <i class="fs-3 fa-solid fa-angle-right fw-bold"></i>
                         </a>
                     </div>
                 </div>
-                <div class="mt-1">Room 101</div>
+                <div class="mt-1 room-name">Room 101</div>
                 <div class="d-flex justify-content-between">
                     <div>
-                        Tanggal Jatuh Tempo <span class="fw-bold">31 Januari 2023</span>
+                        Tanggal Jatuh Tempo <span class="fw-bold due-date"></span>
                     </div>
                     <button class="border border-0 rounded-3 px-4 fw-bold text-center">Bayar</button>
                 </div>

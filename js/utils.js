@@ -50,9 +50,10 @@ export function getFormValue(formElement, groupingConfig) {
 export function getFormValueBeta(element) {
     // Make sure all input tag has name attribute
     let result = {};
-
+    
     let hasName = element.hasAttribute("name");
     let hasValue = element.hasAttribute("value");
+
     if (hasName && hasValue) {
         let name = element.getAttribute("name");
         let value = element.getAttribute("value");
@@ -81,6 +82,47 @@ export function getFormValueBeta(element) {
 
     forEach(element.children, (_, children) => {
         let data = getFormValueBeta(children);
+        Object.assign(result, data);
+    })
+
+    return result;
+}
+
+export function getUpdateFormValue(element) {
+    // Make sure all input tag has name attribute
+    let result = {};
+
+    let hasName = element.hasAttribute("name");
+    let hasValue = element.hasAttribute("value");
+    let hasChange = element.hasAttribute("changed");
+    if (hasName && hasValue && hasChange) {
+        let name = element.name;
+        let value = element.value;
+        result[name] = value;
+        return result;
+    }
+
+    if (hasName && hasChange) {
+        let name = element.getAttribute("name");
+        if (element.value)
+            result[name] = element.value;
+        else result[name] = element.innerHTML;
+        return result;
+    }
+
+    let isGroup = element.hasAttribute("group-name");
+    if (isGroup) {
+        let groupName = element.getAttribute("group-name");
+        result[groupName] = [];
+        forEach(element.children, (_, children) => {
+            let data = getUpdateFormValue(children);
+            if (!isObjectEmpty(data)) result[groupName].push(data);
+        })
+        return result;
+    }
+
+    forEach(element.children, (_, children) => {
+        let data = getUpdateFormValue(children);
         Object.assign(result, data);
     })
 
@@ -157,6 +199,25 @@ export function addCustomEventListener(eventName, callback, element, eventConfig
         callback(e);
     })
     element.addEventListener(triggerEvent, e => {
+        // console.log("dispatchEvent " + eventName + " because " + triggerEvent, element);
+        // if(e.target === e.currentTarget) 
+        element.dispatchEvent(event);
+        e.preventDefault();
+        e.stopPropagation();
+    });
+    // console.log("finish");
+}
+
+export function addCustomEventListenerV2(eventName, callback, element, triggerElement, eventConfig = {}, triggerEvent = "click") {
+    // console.log("Call Custom", eventName);
+    const event = new Event(eventName, eventConfig);
+    element.addEventListener(eventName, e => {
+        console.log("Who is Listener ", e, e.target);
+        // console.log("execute callback for event " + eventName);
+        callback(e);
+    })
+    triggerElement.addEventListener(triggerEvent, e => {
+        console.log("Who is Trigger ", e, e.target);
         // console.log("dispatchEvent " + eventName + " because " + triggerEvent, element);
         // if(e.target === e.currentTarget) 
         element.dispatchEvent(event);
@@ -390,7 +451,7 @@ export function UNIXtimeConverter(UNIXTimestamp, format = "MM/DD/YYYY hh:mm:ss U
                 short: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
             },
             "id": {
-                long: ["januari", "February", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+                long: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
                 short: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"]
             }
         },
