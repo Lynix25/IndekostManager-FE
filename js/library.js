@@ -98,12 +98,14 @@ document.addEventListener('DOMContentLoaded', e => {
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                 </a>
-                <span>
-                    <a class="dropdown-item" href="/notification.html">
-                        <i class="fas fa-bell fa-sm fa-fw mr-2"></i>
-                        Notifications
-                    </a>
-                </span>
+                <a class="dropdown-item" href="/notification.html">
+                    <i class="fas fa-bell fa-sm fa-fw mr-2"></i>
+                    Notifications
+                </a>
+                <a class="dropdown-item" href="/settings.html">
+                    <i class="fad fa-cogs fa-sm fa-fw mr-2"></i>
+                    Settings
+                </a>
                 <hr class="dropdown-divider">
                 <a type="button" class="dropdown-item">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
