@@ -1,4 +1,4 @@
-import { END_POINT } from "./config.js"
+import { END_POINT, SECRET } from "./config.js"
 
 /**
  * Get inputvalue from a form
@@ -248,11 +248,12 @@ export function getCookie(cookieName) {
     return undefined;
 }
 
-function setCookie(cookieNmae, cookieValue, expireDays) {
+export function setCookie(cookieName, cookieValue, expiresIn) {
     const d = new Date();
-    d.setTime(d.getTime() + (expireDays * 24 * 60 * 60 * 1000));
+    // d.setTime(d.getTime() + (expireDays * 24 * 60 * 60 * 1000));
+    d.setTime(d.getTime() + (1 * expiresIn * 60 * 60 * 1000));
     let expires = "expires=" + d.toUTCString();
-    document.cookie = cookieNmae + "=" + cookieValue + ";" + expires + ";path=/";
+    document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
 }
 
 export function deleteCookie(cookieName) {
@@ -285,9 +286,38 @@ let axiosConfig = {
     }
 };
 
-function getUserID() {
-    return getCookie("tokens");
+export function getUserID() {
+    let cookie = getCookie("tokens");
+    if(cookie == undefined) return undefined;
+    else {
+        /*
+            [0]: 26da19e0-c540-11ed-821e-00059a3c7a00
+            [1]: role
+            [2]: Manager
+        */
+        let splittedCookie = cookie.split(/[\|\=]+/);
+        if(splittedCookie[0] === "role") {
+            alert("User not registered!");
+            return;
+        } 
+        else return splittedCookie[0].replace(SECRET, '');
+    }
+    // return getCookie("tokens")
     // return "not implemented userid in cookie";
+}
+
+export function getRoleOfUser() {
+    let cookie = getCookie("tokens");
+    if(cookie == undefined) return undefined;
+    else {
+        /*
+            [0]: 26da19e0-c540-11ed-821e-00059a3c7a00
+            [1]: role
+            [2]: Manager
+        */
+        let splittedCookie = cookie.split(/[\|\=]+/);
+        return splittedCookie[2];
+    }
 }
 
 // function APIPost(resource, requestBody, requesterid = true) {
@@ -340,7 +370,7 @@ export function APIPut(resource, requestBody, requestHeader, requesterid = true)
 
 export function APIPost(resource, requestBody, requestHeader, requesterid = true) {
     let headers = { headers: {} }
-
+    
     if (requesterid === true) requestBody.requesterIdUser = getUserID();
     else {
         requestBody.requesterIdUser = requesterid;
@@ -523,7 +553,7 @@ export function statusToString(statusCode) {
         return ["badge-yellow", "Menunggu Konfirmasi"];
     }
     if (statusCode === 2) {
-        return ["badge-blue", "Di Terima"];
+        return ["badge-blue", "Diterima"];
     }
     if (statusCode === 1) {
         return ["badge-blue", "Dalam Pengerjaan"];
