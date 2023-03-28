@@ -17,27 +17,28 @@
     <section class="vh-100">
         <div class="container-fluid h-custom">
             <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-md-9 col-lg-6 col-xl-5 text-center">
+                <div class="col-md-5 col-lg-6 col-xl-5 text-center img-wrapper">
                     <img src="asset/image/Logo.png" class="img-fluid" alt="Logo image">
                 </div>
-                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                    <form method="post" action="">
+                <div class="col-md-5 col-lg-5 col-xl-4 offset-xl-1">
+                    <form method="post" action="" class="p-4">
                         <div class="divider d-flex align-items-center my-4">
-                            <p class="text-center text-muted mx-3 mb-0">Sahabat sejati kos-kosan Anda!</p>
+                            <p class="text-center mx-3 mb-0">Sahabat sejati kos-kosan Anda!</p>
                         </div>
 
                         <!-- Username input -->
-                        <div class="form mb-4">
-                            <input type="text" name="username" id="username" class="form-control form-control-lg"
-                                placeholder="" required/>
+                        <div class="form-floating mb-4">
+                            <input type="text" name="username" id="username" class="form-control"
+                                placeholder="Username" required/>
                             <label class="form-label" for="username">Username</label>
                         </div>
 
+                        <!-- Password input -->
                         <div class="input-group">
                             <div class="form-floating">
                                 <input type="password" name="password" class="form-control border-end-0" id="password"
-                                    placeholder="Password">
-                                <label for="password">Password</label>
+                                    placeholder="Password" required>
+                                <label class="form-label" for="password">Password</label>
                             </div>
                             <span type="button" id="password-show-hide" class="input-group-text bg-transparent">
                                 <i class="fad fa-eye text-center"></i>
@@ -45,40 +46,29 @@
                             </span>
                         </div>
 
-                        <!-- Password input -->
-                        <!-- <div class="form mb-3">
-                            <input type="password" name="password" id="password" class="form-control form-control-lg"
-                                placeholder="" required/>
-                            <label class="form-label" for="password">Password</label>
-                        </div> -->
-
                         <div class="d-flex justify-content-between align-items-center">
                             <!-- Checkbox -->
-                            <div class="col form-check mb-3">
+                            <div class="col form-check my-3">
                                 <input class="form-check-input me-2" type="checkbox" name="remember-me" id="remember-me"
                                     value='true' />
-                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                                <label class="form-check-label" for="rememberMe">Ingat Saya</label>
                             </div>
-                            <a href="#!"class="link mb-3">Forgot password</a>
+                            <a href="/forgotpassword.html"class="link">Lupa Kata Sandi</a>
                         </div>
 
                         <div class="text-center text-lg-end mt-3">
-                            <button type="submit" class="btn btn-lg px-5">Login</button>
+                            <button type="submit" class="btn btn-primary btn-lg px-5">Login</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <footer>
+        <!-- <footer>
             <div
                 class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 login">
-                <!-- Copyright -->
                 <div class="mb-3 mb-md-0">
                     Copyright © 2022. All rights reserved.
                 </div>
-                <!-- Copyright -->
-
-                <!-- Social Media -->
                 <div>
                     <a href="#!" class="me-4">
                         <i class="fab fa-facebook-f"></i>
@@ -93,9 +83,8 @@
                         <i class="fab fa-linkedin-in"></i>
                     </a>
                 </div>
-                <!-- Social Media -->
             </div>
-        </footer>
+        </footer> -->
     </section>
 </body>
 
