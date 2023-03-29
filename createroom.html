@@ -13,7 +13,9 @@
 </head>
 
 <body>
-    <form class="frame" action="" method="post">
+    <form class="frame card p-4 mx-auto my-4" action="" method="post">
+        <h5 class="text-center">Tambahkan Ruangan</h5>
+        <hr/>
         <div>
             <label class="form-label" for="name">Nama Ruangan</label>
             <input class="form-control form-control-lg" type="text" name="name" id="name" value="Kamar 101">
@@ -41,9 +43,11 @@
             <input class="form-control form-control-lg" type="text" name="allotment" id="allotment" value="Laki - Laki">
         </div>
 
-        <!-- Button trigger room price modal -->
-        <button type="add-price-detail" class="btn btn-primary" data-bs-toggle="modal"
-            data-bs-target="#addRoomPrice">+</button>
+        <div class="mt-2">
+            <!-- Button trigger room price modal -->
+            <button type="add-price-detail" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#addRoomPrice">+</button>
+        </div>
 
         <!-- Button trigger facility modal -->
         <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFacility">+</button> -->
@@ -66,7 +70,8 @@
         </ul> -->
         <table class="table price-details">
             <thead>
-                <div class="text-center">Detail Harga</div>
+                <h6 class="text-center">Detail Harga</h6>
+                <hr/>
                 <tr>
                     <th scope="col">Kapasitas</th>
                     <th scope="col">Harga</th>
