@@ -21,17 +21,14 @@ APIGet("/user/" + getCookie('tokens')).then(res => {
     // document.querySelector("#job").innerHTML = user.job + " | ";
     // document.querySelector("#phone").innerHTML = user.phone;
     // document.querySelector("#city").innerHTML = user.city;
-})
-
+}) 
 
 addCustomEventListener("show-room-info", e => {
-    console.log("show room info");
     document.getElementById("tenant-information").setAttribute("hidden", "");
     document.getElementById("room-information").removeAttribute("hidden");
 });
 
 addCustomEventListener("show-tenant-info", e => {
-    console.log("show tenant info");
     document.getElementById("room-information").setAttribute("hidden", "");
     document.getElementById("tenant-information").removeAttribute("hidden");
 });

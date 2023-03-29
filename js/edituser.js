@@ -57,11 +57,11 @@ function reloadData(user){
 
 handleFormSubmited(e => {
     let data = getUpdateFormValue(e.target);
-
-    APIPut("/user/" + getURLParam("id"), data).then(res => {
-        console.log(res);
-        reloadData(res.data.data);
-    })
+    console.log(data);
+    // APIPut("/user/" + getURLParam("id"), data,  {"Requester-ID" : getCookie("tokens"), "Content-Type": "multipart/form-data"}).then(res => {
+    //     console.log(res);
+    //     reloadData(res.data.data);
+    // })
 })
 
 document.addEventListener("change", e => {

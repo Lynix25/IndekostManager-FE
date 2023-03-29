@@ -3,7 +3,7 @@ import { APIGet, APIPost, getCookie, getFormValue, getFormValueBeta, handleFormS
 handleFormSubmited(e => {
     let data = getFormValueBeta(e.target);
     console.log(data);
-    APIPost("/user", data, {"Requester-ID" : getCookie("tokens"), "Content-Type": "multipart/form-data"}).then(res => {
+    APIPost("/user", data, {"Requester-ID" : getCookie("tokens"), "Content-Type": "multipart/form-data"}, "test").then(res => {
         console.log(res);
     }).catch(res => {
         console.log(res);

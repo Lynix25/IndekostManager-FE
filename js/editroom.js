@@ -85,13 +85,13 @@ document.addEventListener("change", e => {
     e.target.setAttribute("changed", "");
 })
 
-// handleFormSubmited(e => {
-//     let data = getUpdateFormValue(e.target);
+handleFormSubmited(e => {
+    let data = getUpdateFormValue(e.target);
 
-//     APIPut("/room/" + getURLParam("id"), data, getCookie("tokens")).then(res => {
-//         console.log(res);
-//         reloadData(res.data);
-//     }).catch(res => {
-//         console.log(res);
-//     })
-// })
+    APIPut("/room/" + getURLParam("id"), data, getCookie("tokens")).then(res => {
+        console.log(res);
+        reloadData(res.data);
+    }).catch(res => {
+        console.log(res);
+    })
+})

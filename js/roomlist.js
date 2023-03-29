@@ -43,7 +43,7 @@ APIGet("/room").then(res => {
         controlButton.appendChild(deleteButton);
 
         addCustomEventListener("delete", e => {
-            document.querySelector("#room-name").innerHTML = data.name;
+            document.querySelector("#roomName").innerHTML = data.name;
             document.querySelector("[type='confirm-delete']").setAttribute("data", data.id);
             document.querySelector("[type='confirm-delete']").setAttribute("data-room-name", data.name);
         }, deleteButton);
@@ -54,3 +54,13 @@ APIGet("/room").then(res => {
 }).catch(e => {
     console.log(e);
 })
+
+const toastTrigger = document.getElementById('liveToastBtn')
+const toastLiveExample = document.getElementById('liveToast')
+if (toastTrigger) {
+    toastTrigger.addEventListener('click', () => {
+        const toast = new bootstrap.Toast(toastLiveExample)
+
+        toast.show()
+    })
+}

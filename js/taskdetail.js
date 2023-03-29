@@ -1,4 +1,4 @@
-import { addCustomEventListener, APIGet, getURLParam, statusToString, UNIXtimeConverter } from "./utils.js";
+import { addCustomEventListener, APIGet, APIPut, getURLParam, statusToString, UNIXtimeConverter } from "./utils.js";
 
 APIGet("/task/" + getURLParam("id")).then(res => {
     console.log(res);
@@ -20,9 +20,13 @@ APIGet("/task/" + getURLParam("id")).then(res => {
 
 
 addCustomEventListener("process", e => {
-    APIPut("/task/" + params.get('id'), { "status": 1 })
+    APIPut("/task/" + getURLParam('id'), { "status": 1 })
 }, document.querySelector("[type='process']"))
 
 addCustomEventListener("cancel", e => {
-    APIPut("/task/" + params.get('id'), { "status": -1 })
+    APIPut("/task/" + getURLParam('id'), { "status": -1 })
 }, document.querySelector("[type='cancel']"))
+
+addCustomEventListener("finish", e => {
+    APIPut("/task/" + getURLParam('id'), { "status": 3 })
+}, document.querySelector("[type='finish']"))
