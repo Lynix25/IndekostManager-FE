@@ -49,10 +49,79 @@ export function getFormValue(formElement, groupingConfig) {
 
 export function getFormValueBeta(element) {
     // Make sure all input tag has name attribute
+    function getValue(element) {
+        let tag = element.tagName;
+        if (tag != 'INPUT')
+            return element.getAttribute("value");
+
+        let type = element.type;
+        if (type == "checkbox")
+            return element.getAttribute("checked");
+    }
     let result = {};
-    
     let hasName = element.hasAttribute("name");
     let hasValue = element.hasAttribute("value");
+
+    if (hasName && hasValue) {
+        let name = element.getAttribute("name");
+        let value = element.getAttribute("value");
+        result[name] = value;
+        return result;
+    }
+
+    if (hasName) {
+        let name = element.getAttribute("name");
+        if (element.value)
+            result[name] = element.value;
+        else result[name] = element.innerHTML;
+        return result;
+    }
+
+    let isGroup = element.hasAttribute("group-name");
+    if (isGroup) {
+        let groupName = element.getAttribute("group-name");
+        result[groupName] = [];
+        forEach(element.children, (_, children) => {
+            let data = getFormValueBeta(children);
+            if (!isObjectEmpty(data)) result[groupName].push(data);
+        })
+        return result;
+    }
+
+    forEach(element.children, (_, children) => {
+        let data = getFormValueBeta(children);
+        Object.assign(result, data);
+    })
+
+    return result;
+}
+
+export function getFormValueV2(element) {
+    // Make sure all input tag has name attribute
+    function getValue(element) {
+        let hasValue = element.hasAttribute("name") || element.value ? true : false;
+        let valueValue;
+
+        let tag = element.tagName;
+        if (tag != 'INPUT')
+            return element.getAttribute("value");
+
+        let type = element.type;
+        if (type == "checkbox")
+            return element.getAttribute("checked");
+
+    }
+
+    function getName(element){
+        let hasAttrName = element.hasAttribute("name");
+        let nameAttrValue = element.getAttribute("name");
+
+        return [hasAttrName, nameAttrValue];
+    }
+    let result = {};
+
+    let hasName = element.hasAttribute("name");
+    let hasValue = element.hasAttribute("value") || element.value ? true : false;
 
     if (hasName && hasValue) {
         let name = element.getAttribute("name");
@@ -194,6 +263,7 @@ export function handleFormSubmited(callback, formSelector = "form", preventDefau
 export function addCustomEventListener(eventName, callback, element, eventConfig = {}, triggerEvent = "click") {
     // console.log("Call Custom", eventName);
     const event = new Event(eventName, eventConfig);
+    element = element || document.querySelector(`[type=${eventName}]`);
     element.addEventListener(eventName, e => {
         // console.log("execute callback for event " + eventName);
         callback(e);
@@ -225,6 +295,21 @@ export function addCustomEventListenerV2(eventName, callback, element, triggerEl
         e.stopPropagation();
     });
     // console.log("finish");
+}
+
+export function addCustomEventListenerV3(eventName, callback, element, triggerElement, eventConfig = {}, triggerEvent = "click") {
+    element.addEventListener(eventName, e => {
+        callback(e);
+    })
+    triggerElement.addEventListener(triggerEvent, e => {
+        const event = new CustomEvent(eventName, {
+            detail: {
+                target: triggerElement
+            }
+        });
+
+        element.dispatchEvent(event);
+    });
 }
 
 /**
@@ -342,7 +427,7 @@ export function APIPost(resource, requestBody, requestHeader, requesterid = true
     let headers = { headers: {} }
 
     if (requesterid === true) requestBody.requesterIdUser = getUserID();
-    else {
+    else if (requesterid !== false) {
         requestBody.requesterIdUser = requesterid;
     }
 
@@ -431,6 +516,10 @@ export function goTo(path) {
     if (getCurrentPath() == path) return;
     window.location.href = path;
     // window.location.assign(path);
+}
+
+export function goBack() {
+    history.back();
 }
 
 export function numberWithThousandsSeparators(x, removedSeparator = ".", separator = ".") {
