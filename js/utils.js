@@ -6,113 +6,41 @@ import { END_POINT, SECRET } from "./config.js"
  * @param {FormElement} formElement 
  * @returns Object
  */
-export function getFormValue(formElement, groupingConfig) {
+export function getFormValue(formElement) {
     // Make sure all input tag has name attribute
 
-    const formData = new FormData(formElement),
-        data = {}, grouping = {};
-    let isFilled = false;
+    const formData = new FormData(formElement), data = {};
     for (let [key, value] of formData) {
-        addToData(key, value);
+        data[key] = value;
     }
 
     formElement.querySelectorAll("[input]").forEach(element => {
-        let key = element.getAttribute("name");
-        let value = element.getAttribute("value");
-        addToData(key, value);
+        let key = element.name;
+        let value = element.value;
+        data[key] = value;
     })
 
-    function addToData(key, value) {
-        // if (value === "") return;
-        if (groupingConfig != undefined && key.includes(groupingConfig.separator)) {
-            let temp = key.split(groupingConfig.separator, 2);
-            key = temp[0];
-            let index = temp[1];
-            if (!(groupingConfig.name in data)) {
-                data[groupingConfig.name] = [];
-            }
-
-            let length = index - data[groupingConfig.name].length;
-
-            while (length-- > 0) {
-                data[groupingConfig.name].push({});
-            }
-
-            data[groupingConfig.name][index - 1][key] = value;
-        }
-        else data[key] = value;
-        isFilled = true;
-    }
-
-    return isFilled ? data : null;
-}
-
-export function getFormValueBeta(element) {
-    // Make sure all input tag has name attribute
-    function getValue(element) {
-        let tag = element.tagName;
-        if (tag != 'INPUT')
-            return element.getAttribute("value");
-
-        let type = element.type;
-        if (type == "checkbox")
-            return element.getAttribute("checked");
-    }
-    let result = {};
-    let hasName = element.hasAttribute("name");
-    let hasValue = element.hasAttribute("value");
-
-    if (hasName && hasValue) {
-        let name = element.getAttribute("name");
-        let value = element.getAttribute("value");
-        result[name] = value;
-        return result;
-    }
-
-    if (hasName) {
-        let name = element.getAttribute("name");
-        if (element.value)
-            result[name] = element.value;
-        else result[name] = element.innerHTML;
-        return result;
-    }
-
-    let isGroup = element.hasAttribute("group-name");
-    if (isGroup) {
-        let groupName = element.getAttribute("group-name");
-        result[groupName] = [];
-        forEach(element.children, (_, children) => {
-            let data = getFormValueBeta(children);
-            if (!isObjectEmpty(data)) result[groupName].push(data);
-        })
-        return result;
-    }
-
-    forEach(element.children, (_, children) => {
-        let data = getFormValueBeta(children);
-        Object.assign(result, data);
-    })
-
-    return result;
+    return data;
 }
 
 export function getFormValueV2(element) {
     // Make sure all input tag has name attribute
     function getValue(element) {
-        let hasValue = element.hasAttribute("name") || element.value ? true : false;
-        let valueValue;
+        let hasAttrValue = element.hasAttribute("name") || element.value ? true : false;
+        let valueValue = element.value || element.getAttribute("value");
 
         let tag = element.tagName;
-        if (tag != 'INPUT')
-            return element.getAttribute("value");
+        // if (tag != 'INPUT')
+        //     return element.getAttribute("value");
 
         let type = element.type;
         if (type == "checkbox")
-            return element.getAttribute("checked");
-
+            valueValue = element.getAttribute("checked");
+        
+        return [hasAttrValue, valueValue];
     }
 
-    function getName(element){
+    function getName(element) {
         let hasAttrName = element.hasAttribute("name");
         let nameAttrValue = element.getAttribute("name");
 
@@ -120,21 +48,11 @@ export function getFormValueV2(element) {
     }
     let result = {};
 
-    let hasName = element.hasAttribute("name");
-    let hasValue = element.hasAttribute("value") || element.value ? true : false;
+    let [hasName, name] = getName(element);
+    let [hasValue, value] = getValue(element);
 
     if (hasName && hasValue) {
-        let name = element.getAttribute("name");
-        let value = element.getAttribute("value");
         result[name] = value;
-        return result;
-    }
-
-    if (hasName) {
-        let name = element.getAttribute("name");
-        if (element.value)
-            result[name] = element.value;
-        else result[name] = element.innerHTML;
         return result;
     }
 
@@ -150,7 +68,7 @@ export function getFormValueV2(element) {
     }
 
     forEach(element.children, (_, children) => {
-        let data = getFormValueBeta(children);
+        let data = getFormValueV2(children);
         Object.assign(result, data);
     })
 
@@ -198,29 +116,6 @@ export function getUpdateFormValue(element) {
     return result;
 }
 
-function getCustomFormValue(customFormElement) {
-    {
-        details: [
-            {
-                capacity: "capacity_1",
-                price: "price_1"
-            }
-        ]
-        facilities: [
-            {
-                name: "facility_1"
-            },
-            {
-                name: "facility_2"
-            },
-        ]
-    }
-    customFormElement.querySelectorAll("[input]").forEach(element => {
-        let key = element.getAttribute("name");
-        let value = element.getAttribute("value");
-    })
-}
-
 /**
  * 
  * 
@@ -255,49 +150,14 @@ export function handleFormSubmited(callback, formSelector = "form", preventDefau
     let form = document.querySelector(formSelector)
     form.addEventListener('submit', e => {
         callback(e);
-        form.reset();
+        // form.reset();
         if (preventDefault) e.preventDefault();
     })
 }
 
-export function addCustomEventListener(eventName, callback, element, eventConfig = {}, triggerEvent = "click") {
-    // console.log("Call Custom", eventName);
-    const event = new Event(eventName, eventConfig);
+export function addCustomEventListener(eventName, callback, element, triggerElement, eventConfig = {}, triggerEvent = "click") {
     element = element || document.querySelector(`[type=${eventName}]`);
-    element.addEventListener(eventName, e => {
-        // console.log("execute callback for event " + eventName);
-        callback(e);
-    })
-    element.addEventListener(triggerEvent, e => {
-        // console.log("dispatchEvent " + eventName + " because " + triggerEvent, element);
-        // if(e.target === e.currentTarget) 
-        element.dispatchEvent(event);
-        e.preventDefault();
-        e.stopPropagation();
-    });
-    // console.log("finish");
-}
-
-export function addCustomEventListenerV2(eventName, callback, element, triggerElement, eventConfig = {}, triggerEvent = "click") {
-    // console.log("Call Custom", eventName);
-    const event = new Event(eventName, eventConfig);
-    element.addEventListener(eventName, e => {
-        console.log("Who is Listener ", e, e.target);
-        // console.log("execute callback for event " + eventName);
-        callback(e);
-    })
-    triggerElement.addEventListener(triggerEvent, e => {
-        console.log("Who is Trigger ", e, e.target);
-        // console.log("dispatchEvent " + eventName + " because " + triggerEvent, element);
-        // if(e.target === e.currentTarget) 
-        element.dispatchEvent(event);
-        e.preventDefault();
-        e.stopPropagation();
-    });
-    // console.log("finish");
-}
-
-export function addCustomEventListenerV3(eventName, callback, element, triggerElement, eventConfig = {}, triggerEvent = "click") {
+    triggerElement = triggerElement || element;
     element.addEventListener(eventName, e => {
         callback(e);
     })
@@ -313,67 +173,17 @@ export function addCustomEventListenerV3(eventName, callback, element, triggerEl
 }
 
 /**
- * Get cookie from a cookies list
- * @param {String} cookieName 
- * @returns value of the cookie 
- */
-export function getCookie(cookieName) {
-    let name = cookieName + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let cookieList = decodedCookie.split(';');
-    for (let i = 0; i < cookieList.length; i++) {
-        let cookie = cookieList[i];
-        while (cookie.charAt(0) == ' ') {
-            cookie = cookie.substring(1);
-        }
-        if (cookie.indexOf(name) == 0) {
-            return cookie.substring(name.length, cookie.length);
-        }
-    }
-    return undefined;
-}
-
-export function setCookie(cookieName, cookieValue, expiresIn) {
-    const d = new Date();
-    // d.setTime(d.getTime() + (expireDays * 24 * 60 * 60 * 1000));
-    d.setTime(d.getTime() + (1 * expiresIn * 60 * 60 * 1000));
-    let expires = "expires=" + d.toUTCString();
-    document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
-}
-
-export function deleteCookie(cookieName) {
-    document.cookie = cookieName + '=; Max-Age=-99999999;';
-}
-
-/**
  * 
  * @param {String} dateTimelocal 
  * @returns 
  */
-
 export function dateTimeLocalInputToMilliseconds(dateTimelocal) {
     return new Date(dateTimelocal).getTime();
 }
 
-/**
- * 
- * @requires AXIOS
- * @param {*} resource 
- * @param {JSON} requestBody 
- * @returns 
- */
-let axiosConfig = {
-    headers: {
-        "Access-Control-Allow-Origin": "*",
-        'Content-Type': 'application/json',
-        // "Content-Type": "multipart/form-data",
-        // "responseType": 'blob'
-    }
-};
-
 export function getUserID() {
     let cookie = getCookie("tokens");
-    if(cookie == undefined) return undefined;
+    if (cookie == undefined) return undefined;
     else {
         /*
             [0]: 26da19e0-c540-11ed-821e-00059a3c7a00
@@ -381,10 +191,10 @@ export function getUserID() {
             [2]: Manager
         */
         let splittedCookie = cookie.split(/[\|\=]+/);
-        if(splittedCookie[0] === "role") {
+        if (splittedCookie[0] === "role") {
             alert("User not registered!");
             return;
-        } 
+        }
         else return splittedCookie[0].replace(SECRET, '');
     }
     // return getCookie("tokens")
@@ -393,7 +203,7 @@ export function getUserID() {
 
 export function getRoleOfUser() {
     let cookie = getCookie("tokens");
-    if(cookie == undefined) return undefined;
+    if (cookie == undefined) return undefined;
     else {
         /*
             [0]: 26da19e0-c540-11ed-821e-00059a3c7a00
@@ -403,115 +213,6 @@ export function getRoleOfUser() {
         let splittedCookie = cookie.split(/[\|\=]+/);
         return splittedCookie[2];
     }
-}
-
-// function APIPost(resource, requestBody, requesterid = true) {
-//     if (requesterid === true) requestBody.requesterIdUser = getUserID();
-//     else {
-//         requestBody.requesterIdUser = requesterid;
-//     }
-//     console.log(requestBody);
-//     return new Promise((resolve, reject) => {
-//         axios.post(END_POINT + resource, requestBody, axiosConfig).then(result => {
-//             resolve(result)
-//         }).catch(result => {
-//             reject(result.response)
-//         })
-//     })
-// }
-
-// function APIPut(resource, requestBody, requesterid = true) {
-//     if (requesterid === true) requestBody.requesterIdUser = getUserID();
-//     else {
-//         requestBody.requesterIdUser = requesterid;
-//     }
-//     console.log(requestBody);
-//     return new Promise((resolve, reject) => {
-//         axios.put(END_POINT + resource, requestBody, axiosConfig).then(result => {
-//             resolve(result)
-//         }).catch(result => {
-//             reject(result.response)
-//         })
-//     })
-// }
-
-export function APIPut(resource, requestBody, requestHeader, requesterid = true) {
-    let headers = { headers: {} }
-
-    if (requesterid === true) requestBody.requesterIdUser = getUserID();
-    else {
-        requestBody.requesterIdUser = requesterid;
-    }
-
-    Object.assign(headers.headers, axiosConfig.headers, requestHeader);
-    return new Promise((resolve, reject) => {
-        axios.put(END_POINT + resource, requestBody, headers).then(result => {
-            resolve(result)
-        }).catch(result => {
-            reject(result.response)
-        })
-    })
-}
-
-export function APIPost(resource, requestBody, requestHeader, requesterid = true) {
-    let headers = { headers: {} }
-    
-    if (requesterid === true) requestBody.requesterIdUser = getUserID();
-    else if (requesterid !== false) {
-        requestBody.requesterIdUser = requesterid;
-    }
-
-    Object.assign(headers.headers, axiosConfig.headers, requestHeader);
-    return new Promise((resolve, reject) => {
-        axios.post(END_POINT + resource, requestBody, headers).then(result => {
-            resolve(result)
-        }).catch(result => {
-            reject(result.response)
-        })
-    })
-}
-
-// export function APIPostV2(resource, requestBody, requestHeader) {
-//     requestBody.requesterIdUser = getUserID();
-//     let headers = { headers: {} }
-//     Object.assign(headers.headers, axiosConfig.headers, requestHeader);
-//     console.log(requestBody);
-//     return new Promise((resolve, reject) => {
-//         axios.post(END_POINT + resource, requestBody, headers).then(result => {
-//             resolve(result)
-//         }).catch(result => {
-//             reject(result.response)
-//         })
-//     })
-// }
-
-export function APIGet(resource) {
-    return new Promise((resolve, reject) => {
-        let intervalId = setInterval(() => {
-            if (axios) {
-                clearInterval(intervalId);
-                axios.get(END_POINT + resource, axiosConfig).then(result => {
-                    resolve(result)
-                }).catch(result => {
-                    reject(result.response)
-                })
-            }
-        }, 50);
-    })
-}
-
-export function APIDelete(resource) {
-    return new Promise((resolve, reject) => {
-        let intervalId = setInterval(() => {
-            axios.delete(END_POINT + resource, axiosConfig).then(result => {
-                clearInterval(intervalId);
-                resolve(result)
-            }).catch(result => {
-                clearInterval(intervalId);
-                reject(result.response)
-            })
-        }, 50);
-    })
 }
 
 export function setAttributes(element, attribute) {

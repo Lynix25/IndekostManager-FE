@@ -1,8 +1,11 @@
-import { APIGet, APIPut, getCookie, getFormValue, handleFormSubmited } from "./utils.js";
+import { APIGet, APIPut } from "./api.js";
+import { ServiceURL } from "./config.js";
+import { getCookie } from "./cookiemanagement.js";
+import { getUpdateFormValue, handleFormSubmited } from "./utils.js";
 
-APIGet("/user/"+getCookie("tokens")).then(res => {
-    let user = res.data;
-    console.log(user);
+APIGet(ServiceURL.User.getById(getCookie("id"))).then(res => {
+    let user = res.data.data.user;
+
     let nameInput = document.querySelector("#name");
     nameInput.setAttribute("disabled", "");
     nameInput.setAttribute("value", user.name);
@@ -28,12 +31,17 @@ APIGet("/user/"+getCookie("tokens")).then(res => {
     genderInput.setAttribute("disabled", "");
 })
 
+document.addEventListener("change", e => {
+    e.target.setAttribute("changed","");
+    console.log(e.target);
+})
+
 handleFormSubmited(e => {
-    let data = getFormValue(e.target);
-
-    APIPut("/user/" + getCookie("tokens"), data).then(res => {
+    let data = getUpdateFormValue(e.target);
+    
+    APIPut(ServiceURL.User.getById(getCookie("id")), data).then(res => {
         console.log(res);
+    }).catch(err => {
+        console.log(err);
     })
-
-    console.log(data);
 })
