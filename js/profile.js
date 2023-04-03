@@ -1,8 +1,11 @@
-import { addCustomEventListener, APIGet, getCookie, goTo } from "./utils.js";
+import { APIGet } from "./api.js";
+import { ServiceURL } from "./config.js";
+import { getCookie } from "./cookiemanagement.js";
+import { addCustomEventListener } from "./utils.js";
 
-APIGet("/user/" + getCookie('tokens')).then(res => {
-    let user = res.data;
-    console.log(user);
+APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
+    let user = res.data.data.user;
+    console.log(res);
     document.querySelector("#name").innerText = user.name;
     document.querySelector("#alias").innerText = `(${user.alias})`;
     document.querySelector("#email").innerText = user.email;

@@ -1,6 +1,10 @@
-import { APIGet, getCookie, getFormValue, getFormValueBeta } from "./utils.js";
+import { APIGet } from "./api.js";
+import { ServiceURL } from "./config.js";
+import { getCookie } from "./cookiemanagement.js";
+import { getFormValue } from "./utils.js";
 
-APIGet(`/user/${getCookie("tokens")}/settings`).then(res => {
+
+APIGet(ServiceURL.User.getUserSetting(getCookie("id"))).then(res => {
     let userSettings = res.data;
 
     let privateRoomSwitchEl = document.getElementById("privateRoomSwitch");
@@ -14,8 +18,8 @@ APIGet(`/user/${getCookie("tokens")}/settings`).then(res => {
 
 document.querySelector("form").addEventListener("change", e => {
     changeSwitchLabel(e.target.parentElement);
-    let formData = getFormValueBeta(e.currentTarget);
-    console.log(e.target, e.target.attributes);
+    let formData = getFormValue(e.currentTarget);
+    console.log(formData);
 })
 
 function changeSwitchLabel(parentElement) {

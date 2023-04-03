@@ -1,30 +1,12 @@
-import { addCustomEventListener, APIPost, forEach, getFormValue, getFormValueBeta, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
+import { addCustomEventListener, APIPost, forEach, getFormValue, getFormValueBeta, getFormValueV2, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 
 handleFormSubmited(e => {
-    // let data = getFormValueBeta(e.target, { "name": "details", "separator": "_" });
-    let data = getFormValueBeta(e?.target);
+    let data = getFormValueV2(e.target);
     console.log(data);
-    APIPost("/room", data).then(res => {
-        console.log(res);
-    })
+    // APIPost("/room", data).then(res => {
+    //     console.log(res);
+    // })
 })
-
-// document.addEventListener("click", e => {
-//     let elementTag = e.target.tagName;
-//     if (elementTag !== "BUTTON") return;
-
-//     let defaultType = ["button", "submit", "reset"]
-//     let type = e.target.getAttribute('type');
-//     console.log("checking type");
-//     if(defaultType.includes(type)) {
-//         console.log(e);
-//         return;
-//     }
-
-//     const event = new Event(type);
-//     e.target.dispatchEvent(event);
-//     console.log("finish");
-// })
 
 let addRoomDetailButton = document.querySelector("button[type='add-price-detail']");
 addCustomEventListener('add-price-detail', e => {

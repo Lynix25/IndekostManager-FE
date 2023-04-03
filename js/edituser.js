@@ -1,4 +1,5 @@
-import { APIGet, APIPut, convertImage64ToSrc, getCookie, getFormValue, getFormValueBeta, getUpdateFormValue, getURLParam, handleFormSubmited } from "./utils.js";
+import { APIGet, APIPut } from "./api.js";
+import { getUpdateFormValue, getURLParam, handleFormSubmited } from "./utils.js";
 
 APIGet("/user/" + getURLParam("id")).then(res => {
     let user = res.data;
