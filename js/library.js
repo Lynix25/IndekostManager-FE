@@ -15,6 +15,11 @@ bootstrapCss.setAttribute("rel", "stylesheet");
 bootstrapCss.setAttribute("href", "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css");
 document.head.appendChild(bootstrapCss);
 
+let toastCss = document.createElement("link");
+toastCss.setAttribute("rel", "stylesheet");
+toastCss.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css");
+document.head.appendChild(toastCss);
+
 let styleCSS = document.createElement("link");
 styleCSS.setAttribute("rel", "stylesheet");
 styleCSS.setAttribute("href", "css/style.css");
@@ -38,87 +43,107 @@ let jQueryJs = document.createElement("script");
 jQueryJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js")
 document.head.appendChild(jQueryJs);
 
+let toastJs = document.createElement("script");
+toastJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js");
+toastJs.setAttribute("data-auto-fetch-svg", "");
+document.head.appendChild(toastJs);
+
 let mainJs = document.createElement("script");
 // mainJs.setAttribute("type", "module");
 mainJs.setAttribute("src", "js/main.js");
 document.head.appendChild(mainJs);
 
-// DEV NavBar Component
+/* Get Role
+    [0]: tokens
+    [1]: 26da19e0-c540-11ed-821e-00059a3c7a00
+    [2]: role
+    [3]: Manager
+*/
+let role = ((document.cookie).split(/[\|\=]+/))[3];
+
+// NavBar Component
 let currentPath = window.location.pathname;
-if (currentPath !== `/login.html` && currentPath !== `/forgotpassword.html`)
-document.addEventListener('DOMContentLoaded', e => {
-    let navBar = document.createElement("nav");
-    navBar.classList.add("navbar", "navbar-expand-lg", "sticky-top");
-    // nav class="navbar navbar-expand-lg sticky-top"
-    navBar.innerHTML = `<div class="container-fluid">
-<a class="navbar-brand" href="#">
-    <img src="./asset/image/Logo.png" alt="In D'Kos" height="24">
-</a>
-<button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-</button>
+if (currentPath !== "/login.html" && currentPath !== "/forgotpassword.html")
+    document.addEventListener('DOMContentLoaded', e => {
+        let navBar = document.createElement("nav");
+        navBar.classList.add("navbar", "navbar-expand-lg", "sticky-top");
+        // nav class="navbar navbar-expand-lg sticky-top"
 
-<div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-            <a class="nav-link fw-bolder" aria-current="page" href="/home.html">Home</a>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                Admin
+        // Menus Only For Admin
+        let forAdmin = "";
+        if(role.toLowerCase() === "owner" || role.toLowerCase() === "admin") {
+            forAdmin = `
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Admin
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/agenda.html">Agenda</a></li>
+                        <li><a class="dropdown-item" href="/createroom.html">Add Room</a></li>
+                        <li><a class="dropdown-item" href="/roomlist.html">Room List</a></li>
+                        <li><a class="dropdown-item" href="/service.html">Add Service</a></li>
+                        <li><a class="dropdown-item" href="/registeruser.html">Register User</a></li>
+                        <li><a class="dropdown-item" href="/listuser.html">List User</a></li>
+                        <li><a class="dropdown-item" href="#">History</a></li>
+                    </ul>
+                </li>`
+        }
+
+        navBar.innerHTML = `<div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="./asset/image/Logo.png" alt="In D'Kos" height="28em">
             </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="/agenda.html">Agenda</a></li>
-                <li><a class="dropdown-item" href="/createroom.html">Add Room</a></li>
-                <li><a class="dropdown-item" href="/roomlist.html">Room List</a></li>
-                <li><a class="dropdown-item" href="/service.html">Add Service</a></li>
-                <li><a class="dropdown-item" href="/registeruser.html">Register User</a></li>
-                <li><a class="dropdown-item" href="/listuser.html">List User</a></li>
-                <li><a class="dropdown-item" href="#">History</a></li>
-            </ul>
-        </li>
-        <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Tenant
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="/servicerequest.html">Request Service</a></li>
-            <li><a class="dropdown-item" href="/requesthistory.html">Request Service History</a></li>
-        </ul>
-    </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link" href="#" data-bs-toggle="dropdown">
-                <i class="fa-solid fa-circle-user fs-4"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end">
-                <a class="dropdown-item" href="/profile.html">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
-                </a>
-                <a class="dropdown-item" href="/notification.html">
-                    <i class="fas fa-bell fa-sm fa-fw mr-2"></i>
-                    Notifications
-                </a>
-                <a class="dropdown-item" href="/settings.html">
-                    <i class="fad fa-cogs fa-sm fa-fw mr-2"></i>
-                    Settings
-                </a>
-                <hr class="dropdown-divider">
-                <a type="button" class="dropdown-item">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
-                    Logout
-                </a>
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link fw-bolder" aria-current="page" href="/home.html">Home</a>
+                    </li>
+                    ${forAdmin}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Tenant
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/servicerequest.html">Request Service</a></li>
+                            <li><a class="dropdown-item" href="/requesthistory.html">Request Service History</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" data-bs-toggle="dropdown">
+                            <i class="fa-solid fa-circle-user fs-4"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="/profile.html">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Profile
+                            </a>
+                            <a class="dropdown-item" href="/notification.html">
+                                <i class="fas fa-bell fa-sm fa-fw mr-2"></i>
+                                Notifications
+                            </a>
+                            <a class="dropdown-item" href="/settings.html">
+                                <i class="fad fa-cogs fa-sm fa-fw mr-2"></i>
+                                Settings
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a type="button" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
             </div>
-        </li>
-    </ul>
-</div>
-</div>`;
-    document.body.insertBefore(navBar, document.body.firstChild);
-})
-
+        </div>`;
+        document.body.insertBefore(navBar, document.body.firstChild);
+    })
 {/* <script src="https://kit-pro.fontawesome.com/releases/v5.10.1/js/pro.min.js" data-auto-fetch-svg></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
