@@ -1,11 +1,13 @@
-import { getFormValue, handleFormSubmited, APIPost } from "./utils.js";
+import { APIPost } from "./api.js";
+import { ServiceURL } from "./config.js";
+import { getFormValue, handleFormSubmited } from "./utils.js";
 
 handleFormSubmited((e) => {
     let data = getFormValue(e.target);
-    console.log(data);
-    APIPost("/service", data).then(response => {
+
+    APIPost(ServiceURL.Service.getAll, data).then(response => {
         console.log(response)
-    }).catch(response => {
-        console.log(response)
+    }).catch(err => {
+        console.log(err)
     })
 })

@@ -1,4 +1,5 @@
 import { END_POINT } from "./config.js";
+import { getCookie } from "./cookiemanagement.js";
 
 /**
  * 
@@ -12,7 +13,7 @@ function headers(aditionalConfig){
     let defaultConfig = {
         headers: {
             "Access-Control-Allow-Origin": "*",
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
         }
     }
 
@@ -20,6 +21,7 @@ function headers(aditionalConfig){
 }
 
 export function APIPut(resource, requestBody, requestHeader) {
+    requestBody.requesterId = getCookie("id");
     return new Promise((resolve, reject) => {
         axios.put(END_POINT + resource, requestBody, headers(requestHeader)).then(result => {
             resolve(result)
@@ -30,10 +32,9 @@ export function APIPut(resource, requestBody, requestHeader) {
 }
 
 export function APIPost(resource, requestBody, requestHeader) {
+    requestBody.requesterId = getCookie("id");
     return new Promise((resolve, reject) => {
-        console.log(END_POINT + resource, requestBody, headers(requestHeader));
         axios.post(END_POINT + resource, requestBody, headers(requestHeader)).then(result => {
-            console.log(result);
             resolve(result)
         }).catch(result => {
             reject(result.response)

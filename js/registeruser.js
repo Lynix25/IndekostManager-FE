@@ -1,12 +1,15 @@
-import { APIGet, APIPost, getCookie, getFormValue, getFormValueBeta, handleFormSubmited } from "./utils.js";
+import { APIGet, APIPost } from "./api.js";
+import { ServiceURL } from "./config.js";
+import { getCookie } from "./cookiemanagement.js";
+import { getFormValue, getFormValueV2, handleFormSubmited } from "./utils.js";
 
 handleFormSubmited(e => {
-    let data = getFormValueBeta(e.target);
-    console.log(data);
-    APIPost("/user", data, {"Requester-ID" : getCookie("tokens"), "Content-Type": "multipart/form-data"}, "test").then(res => {
+    let data = getFormValueV2(e.target);
+    
+    APIPost(ServiceURL.User.register, data, {"Requester-ID" : getCookie("id"), "Content-Type": "multipart/form-data"}).then(res => {
         console.log(res);
-    }).catch(res => {
-        console.log(res);
+    }).catch(err => {
+        console.log(err);
     })
 
 })

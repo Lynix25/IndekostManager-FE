@@ -1,8 +1,9 @@
-import { addCustomEventListener, APIGet, goTo, setAttributes } from "./utils.js";
+import { APIGet } from "./api.js";
+import { addCustomEventListener, goTo, setAttributes } from "./utils.js";
 
 APIGet("/room").then(res => {
-    console.log(res);
     let roomList = res.data.data;
+    
     roomList.forEach(data => {
         let room = document.createElement("li");
         room.classList.add("item", "d-flex", "align-items-center", "justify-content-between");

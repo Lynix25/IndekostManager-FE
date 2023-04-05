@@ -34,7 +34,7 @@ export const ServiceURL = {
 
         // User account
         login: "/user/login",
-        changePassword: (id) => `/user/changepassword/${id}`,
+        changePassword: `/user/changepassword`,
         forgotPassword: "/user/resetpassword",
         logout: "/user/logout",
 
@@ -70,6 +70,9 @@ export const ServiceURL = {
         addPrice: "/room/$1/prices",
         editPrice: "/room/$1/prices",
         removePrice: "/room/$1/prices"
+    },
+    Service:{
+        getAll: "/service"
     },
     Announcement: {
         getAll: "/announcement",

@@ -1,6 +1,6 @@
 import { APIGet } from "./api.js";
-import { getCookie } from "./cookiemanagement.js";
 import { ServiceURL } from "./config.js";
+import { getCookie } from "./cookiemanagement.js";
 import { UNIXtimeConverter, numberWithThousandsSeparators } from "./utils.js";
 
 APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {

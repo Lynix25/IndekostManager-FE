@@ -15,19 +15,18 @@
 <body>
     <form class="frame card p-4 mx-auto my-4" action="" method="post">
         <h5 class="text-center">Tambahkan Ruangan</h5>
-        <hr/>
+        <hr />
         <div>
             <label class="form-label" for="name">Nama Ruangan</label>
-            <input class="form-control form-control-lg" type="text" name="name" id="name" value="Kamar 101">
+            <input class="form-control form-control-lg" type="text" name="name" id="name">
         </div>
         <div>
             <label class="form-label" for="floor">Lantai</label>
-            <input class="form-control form-control-lg" type="text" name="floor" id="floor" value="1">
+            <input class="form-control form-control-lg" type="text" name="floor" id="floor">
         </div>
         <div>
             <label class="form-label" for="description">Deskripsi</label>
-            <input class="form-control form-control-lg" type="text" name="description" id="description"
-                value="Deskripsi">
+            <input class="form-control form-control-lg" type="text" name="description" id="description">
         </div>
         <!-- <div>
             <label class="form-label" for="quota">Kuota</label>
@@ -36,42 +35,26 @@
         </div> -->
         <div>
             <label class="form-label" for="quota">Kuota</label>
-            <input class="form-control form-control-lg" type="text" name="quota" id="quota" value="1">
+            <input class="form-control form-control-lg" type="text" name="quota" id="quota">
         </div>
         <div>
             <label class="form-label" for="allotment">Kamar Untuk</label>
-            <input class="form-control form-control-lg" type="text" name="allotment" id="allotment" value="Laki - Laki">
+            <input class="form-control form-control-lg" type="text" name="allotment" id="allotment">
         </div>
 
         <div class="mt-2">
             <!-- Button trigger room price modal -->
             <button type="add-price-detail" class="btn btn-primary" data-bs-toggle="modal"
                 data-bs-target="#addRoomPrice">+</button>
+            <!-- Button trigger facility modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#addFacility">+</button>
         </div>
 
-        <!-- Button trigger facility modal -->
-        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFacility">+</button> -->
-
-        <!-- <ul class="room-details border rounded">
-            <div class="row">
-                <div class="col-4">Kapasitas</div>
-                <div class="col">Harga</div>
-            </div>
-            <li class="room-details-item row">
-                <label class="col-4 text-center" for="price1">1 Orang</label>
-                <input class="col form-control" type="text" name="" id="price1">
-                <button class="col-2 btn" type="button"><i class="fas fa-trash"></i></button>
-            </li>
-            <li class="room-details-item row">
-                <label class="col-4 text-center" for="price2">2 Orang</label>
-                <input class="col form-control" type="text" name="" id="price2">
-                <button class="col-2 btn" type="button"><i class="fas fa-trash"></i></button>
-            </li>
-        </ul> -->
         <table class="table price-details">
             <thead>
                 <h6 class="text-center">Detail Harga</h6>
-                <hr/>
+                <hr />
                 <tr>
                     <th scope="col">Kapasitas</th>
                     <th scope="col">Harga</th>
@@ -80,7 +63,7 @@
                 </tr>
             </thead>
             <tbody group-name="prices">
-                <tr>
+                <!-- <tr>
                     <td>
                         <div input name="capacity" value=1>1 Orang</div>
                     </td>
@@ -107,7 +90,7 @@
                     <td>
                         <button class="btn" type="button"><i class="fa fa-trash"></i></button>
                     </td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
         <ul group-name="details">
@@ -125,7 +108,6 @@
                 <div name="name">Shower</div>
             </li> -->
         </ul>
-
         <div>
             <button class="btn btn-primary">Buat</button>
         </div>
@@ -153,6 +135,32 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Add Price</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Update Room Price Modal -->
+    <form id="updateRoomPrice" action="" method="post" class="modal fade" tabindex="-1" aria-labelledby="updateRoomPriceLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="updateRoomPriceLabel">Update Price Detail</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <input id="capacity" name="capacity" type="text" class="form-control" placeholder="Kapasitas"
+                            aria-label="Kapasitas" aria-describedby="basic-addon2">
+                        <span class="input-group-text" id="basic-addon2">Orang</span>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Rp</span>
+                        <input id="price" name="price" type="text" class="form-control" aria-label="Harga">
+                    </div>
+                </div>
+                <div class="modal-footer">
                     <button type="update" class="btn btn-primary" data-bs-dismiss="modal">Update Price</button>
                 </div>
             </div>
@@ -160,8 +168,8 @@
     </form>
 
     <!-- Room Facility Modal -->
-    <form id="addFacility" action="" method="post" class="modal fade" tabindex="-1" aria-labelledby="addRoomFacilityLabel"
-        aria-hidden="true">
+    <form id="addFacility" action="" method="post" class="modal fade" tabindex="-1"
+        aria-labelledby="addRoomFacilityLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">

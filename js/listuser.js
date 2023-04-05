@@ -1,6 +1,8 @@
-import { addCustomEventListener, APIGet, getCookie, goTo } from "./utils.js";
+import { APIGet } from "./api.js";
+import { ServiceURL } from "./config.js";
+import { addCustomEventListener, goTo } from "./utils.js";
 
-APIGet("/user").then(res => {
+APIGet(ServiceURL.User.getAll).then(res => {
     let users = res.data.data;
 
     users.forEach(data => {

@@ -1,9 +1,8 @@
 import { APIGet } from "./api.js";
-import { addCustomEventListenerV2, getURLParam, numberWithThousandsSeparators } from "./utils.js";
+import { getURLParam, numberWithThousandsSeparators } from "./utils.js";
 
 APIGet("/room/" + getURLParam("id")).then(res => {
     let room = res.data.data;
-    console.log(room);
 
     reloadData(room);
 })
@@ -92,7 +91,7 @@ handleFormSubmited(e => {
     APIPut("/room/" + getURLParam("id"), data, getCookie("tokens")).then(res => {
         console.log(res);
         reloadData(res.data);
-    }).catch(res => {
-        console.log(res);
+    }).catch(err => {
+        console.log(err);
     })
 })

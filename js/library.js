@@ -49,7 +49,7 @@ toastJs.setAttribute("data-auto-fetch-svg", "");
 document.head.appendChild(toastJs);
 
 let mainJs = document.createElement("script");
-// mainJs.setAttribute("type", "module");
+mainJs.setAttribute("type", "module");
 mainJs.setAttribute("src", "js/main.js");
 document.head.appendChild(mainJs);
 

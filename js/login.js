@@ -40,7 +40,7 @@ function login(e) {
         }
     }).catch(err => {
         let message = "Unknown Error";
-        if ((err.data.message).toLowerCase() === "invalid username or password") message = err.data.message;
+        if (err.data.message.toLowerCase() === "invalid username or password") message = err.data.message;
         else message = "User not registered";
 
         Toast(Constant.httpStatus.ERROR, message);

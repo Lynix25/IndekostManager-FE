@@ -1,4 +1,5 @@
-import { addCustomEventListener, APIGet, APIPut, getURLParam, statusToString, UNIXtimeConverter } from "./utils.js";
+import { APIGet, APIPut } from "./api.js";
+import { addCustomEventListener, getURLParam, statusToString, UNIXtimeConverter } from "./utils.js";
 
 APIGet("/task/" + getURLParam("id")).then(res => {
     console.log(res);
@@ -9,7 +10,6 @@ APIGet("/task/" + getURLParam("id")).then(res => {
     document.querySelector(".requesterUser").innerHTML = res.data.data.createdBy;
 
     APIGet("/service/" + res.data.data.serviceId).then(res => {
-        // console.log(res);
         // document.querySelector(".category").innerHTML = res.data.serviceName;
         document.querySelector(".service").innerHTML = res.data.serviceName;
         document.querySelector(".room").innerHTML = res.data.variant;

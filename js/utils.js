@@ -1,4 +1,4 @@
-import { END_POINT, SECRET } from "./config.js"
+import { SECRET } from "./config.js";
 
 /**
  * Get inputvalue from a form
@@ -20,7 +20,7 @@ export function getFormValue(formElement) {
         data[key] = value;
     })
 
-    return data;
+    return isObjectEmpty(data) ? null : data;
 }
 
 export function getFormValueV2(element) {
@@ -35,8 +35,8 @@ export function getFormValueV2(element) {
 
         let type = element.type;
         if (type == "checkbox")
-            valueValue = element.getAttribute("checked");
-        
+            valueValue = element.checked;
+
         return [hasAttrValue, valueValue];
     }
 
@@ -61,7 +61,7 @@ export function getFormValueV2(element) {
         let groupName = element.getAttribute("group-name");
         result[groupName] = [];
         forEach(element.children, (_, children) => {
-            let data = getFormValueBeta(children);
+            let data = getFormValueV2(children);
             if (!isObjectEmpty(data)) result[groupName].push(data);
         })
         return result;
@@ -150,69 +150,26 @@ export function handleFormSubmited(callback, formSelector = "form", preventDefau
     let form = document.querySelector(formSelector)
     form.addEventListener('submit', e => {
         callback(e);
-        // form.reset();
+        form.reset();
         if (preventDefault) e.preventDefault();
     })
 }
 
-export function addCustomEventListener(eventName, callback, element, triggerElement, eventConfig = {}, triggerEvent = "click") {
+export function addCustomEventListener(eventName, callback, element, triggerElement, eventConfig = {}, triggerEvent = "click", preventDefault = true) {
     element = element || document.querySelector(`[type=${eventName}]`);
     triggerElement = triggerElement || element;
     element.addEventListener(eventName, e => {
         callback(e);
-    })
+    });
     triggerElement.addEventListener(triggerEvent, e => {
         const event = new CustomEvent(eventName, {
             detail: {
                 target: triggerElement
             }
         });
-
         element.dispatchEvent(event);
+        if (preventDefault) e.preventDefault();
     });
-}
-
-/**
- * 
- * @param {String} dateTimelocal 
- * @returns 
- */
-export function dateTimeLocalInputToMilliseconds(dateTimelocal) {
-    return new Date(dateTimelocal).getTime();
-}
-
-export function getUserID() {
-    let cookie = getCookie("tokens");
-    if (cookie == undefined) return undefined;
-    else {
-        /*
-            [0]: 26da19e0-c540-11ed-821e-00059a3c7a00
-            [1]: role
-            [2]: Manager
-        */
-        let splittedCookie = cookie.split(/[\|\=]+/);
-        if (splittedCookie[0] === "role") {
-            alert("User not registered!");
-            return;
-        }
-        else return splittedCookie[0].replace(SECRET, '');
-    }
-    // return getCookie("tokens")
-    // return "not implemented userid in cookie";
-}
-
-export function getRoleOfUser() {
-    let cookie = getCookie("tokens");
-    if (cookie == undefined) return undefined;
-    else {
-        /*
-            [0]: 26da19e0-c540-11ed-821e-00059a3c7a00
-            [1]: role
-            [2]: Manager
-        */
-        let splittedCookie = cookie.split(/[\|\=]+/);
-        return splittedCookie[2];
-    }
 }
 
 export function setAttributes(element, attribute) {
@@ -259,8 +216,119 @@ export function numberWithThousandsSeparators(x, removedSeparator = ".", separat
     return x.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
 }
 
-function calculateUNIXTime(UNIXTimestamp, manipulate) {
+export function convertImage64ToSrc(imageInBase64, imageExt = "png") {
+    return `data:image/${imageExt};base64,` + imageInBase64;
+}
 
+export function getCurrentPath() {
+    let currentPath = window.location.pathname;
+    return currentPath;
+}
+
+export function getParamOnURL(paramId) {
+    let params = new URLSearchParams(location.search);
+    return params.get(paramId);
+}
+
+export function getTempID() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+}
+
+export function statusToString(statusCode) {
+    /**
+     * Status state
+     *
+     * -1 rejected
+     * 0 submited
+      * 1 approved
+     * 2 on prosses
+     * 3 completed
+     */
+    if (statusCode === -1) {
+        return ["badge-red", "Dibatalkan"];
+    }
+    if (statusCode === 0) {
+        return ["badge-yellow", "Menunggu Konfirmasi"];
+    }
+    if (statusCode === 2) {
+        return ["badge-blue", "Diterima"];
+    }
+    if (statusCode === 1) {
+        return ["badge-blue", "Dalam Pengerjaan"];
+    }
+    if (statusCode === 3) {
+        return ["badge-color", "Selesai"];
+    }
+}
+
+export function getUserID() {
+    let cookie = getCookie("tokens");
+    if (cookie == undefined) return undefined;
+    else {
+        /*
+            [0]: 26da19e0-c540-11ed-821e-00059a3c7a00
+            [1]: role
+            [2]: Manager
+        */
+        let splittedCookie = cookie.split(/[\|\=]+/);
+        if (splittedCookie[0] === "role") {
+            alert("User not registered!");
+            return;
+        }
+        else return splittedCookie[0].replace(SECRET, '');
+    }
+    // return getCookie("tokens")
+    // return "not implemented userid in cookie";
+}
+
+export function getRoleOfUser() {
+    let cookie = getCookie("tokens");
+    if (cookie == undefined) return undefined;
+    else {
+        /*
+            [0]: 26da19e0-c540-11ed-821e-00059a3c7a00
+            [1]: role
+            [2]: Manager
+        */
+        let splittedCookie = cookie.split(/[\|\=]+/);
+        return splittedCookie[2];
+    }
+}
+
+// ====================================== DATE ======================================
+
+export const dayInMillis = 86400000;
+
+export function groupingMillisecondsToSameDate(arrayData, dateKey, dateFormatKey) {
+    let grouped = getCurrentWeekList(dateFormatKey);
+
+    arrayData.forEach(data => {
+        let date = UNIXtimeConverter(data[dateKey], dateFormatKey);
+        if (date in grouped) {
+            grouped[date].push(data);
+        }
+    })
+
+    return grouped;
+}
+
+function getCurrentWeekList(dateFormat) {
+    let weekList = {};
+
+    let currentMillis = +new Date();
+    // let currentMillis = 1675728001000;
+    let currentDate = new Date(currentMillis);
+    let currentDay = currentDate.getDay();
+
+    for (let i = 0; i < 7; i++) {
+        let offset = i - currentDay;
+        let temp = currentMillis + (offset * dayInMillis);
+        weekList[UNIXtimeConverter(temp, dateFormat)] = [];
+    }
+
+    return weekList;
 }
 
 export function UNIXtimeConverter(UNIXTimestamp, format = "MM/DD/YYYY hh:mm:ss UTZ", language = "id") {
@@ -331,85 +399,11 @@ export function UNIXtimeConverter(UNIXTimestamp, format = "MM/DD/YYYY hh:mm:ss U
     return format;
 }
 
-export function logout() {
-    deleteCookie("tokens");
-}
-
-export function statusToString(statusCode) {
-    if (statusCode === -1) {
-        return ["badge-red", "Dibatalkan"];
-    }
-    if (statusCode === 0) {
-        return ["badge-yellow", "Menunggu Konfirmasi"];
-    }
-    if (statusCode === 2) {
-        return ["badge-blue", "Diterima"];
-    }
-    if (statusCode === 1) {
-        return ["badge-blue", "Dalam Pengerjaan"];
-    }
-    if (statusCode === 3) {
-        return ["badge-color", "Selesai"];
-    }
-    /**
- * Status state
- *
- * -1 rejected
- * 0 submited
- * 1 approved
- * 2 on prosses
- * 3 completed
+/**
+ * 
+ * @param {String} dateTimelocal 
+ * @returns 
  */
-}
-
-export function groupingMillisecondsToSameDate(arrayData, dateKey, dateFormatKey) {
-    let grouped = getCurrentWeekList(dateFormatKey);
-
-    arrayData.forEach(data => {
-        let date = UNIXtimeConverter(data[dateKey], dateFormatKey);
-        if (date in grouped) {
-            grouped[date].push(data);
-        }
-    })
-
-    return grouped;
-}
-
-export function getURLParam(paramId) {
-    let params = new URLSearchParams(location.search);
-    return params.get(paramId);
-}
-
-export function convertImage64ToSrc(imageInBase64, imageExt = "png") {
-    return `data:image/${imageExt};base64,` + imageInBase64;
-}
-
-export function getCurrentPath() {
-    let currentPath = window.location.pathname;
-    return currentPath;
-}
-
-export function getTempID() {
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
-}
-
-function getCurrentWeekList(dateFormat) {
-    let weekList = {};
-
-    let dayInMillis = 86400000;
-
-    let currentMillis = +new Date();
-    // let currentMillis = 1675728001000;
-    let currentDate = new Date(currentMillis);
-    let currentDay = currentDate.getDay();
-
-    for (let i = 0; i < 7; i++) {
-        let offset = i - currentDay;
-        let temp = currentMillis + (offset * dayInMillis);
-        weekList[UNIXtimeConverter(temp, dateFormat)] = [];
-    }
-
-    return weekList;
+export function dateTimeLocalInputToMilliseconds(dateTimelocal) {
+    return new Date(dateTimelocal).getTime();
 }
