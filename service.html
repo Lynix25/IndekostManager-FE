@@ -13,28 +13,52 @@
 </head>
 
 <body>
-    <div class="frame">
-        <form id="form" class="frame m-auto" action="" method="post">
-            <div class="">
-                <label for="serviceName" class="form-label">Category Service</label>
-                <input type="text" class="form-control" name="serviceName" id="serviceName" placeholder="Kategori Service">
-                <!-- <select id="serviceName" name="serviceName" class="form-select">
-                    <option>Laundry</option>
-                    <option>Cleaning Room Service</option>
-                    <option>Other</option>
-                </select> -->
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center m-4">
+            <div class="page-title my-4">
+                <div class="hover-text">
+                    <span class="tooltip-text tooltip-top-title">Kembali</span>
+                    <span><a href="./home.html"><i class="fa fa-chevron-left"></i></a></span>
+                </div>
+                <h4 class="m-0">Kelola Layanan</h4>
             </div>
-            <div class="">
-                <label for="variant" class="form-label">Variant</label>
-                <input type="text" class="form-control" name="variant" id="variant" placeholder="Nama Variant">
+            <div class="d-flex gap-3">
+                <div class="w-50">
+                    <div class="input-group-text mb-1 my-4">
+                        <h5 class="mt-2">Buat Layanan Baru</h5>
+                    </div>
+                    <form id="form" class="frame card p-4 m-0" action="" method="post">
+                        <div class="">
+                            <label for="serviceName" class="form-label">Category Service</label>
+                            <input type="text" class="form-control" name="serviceName" id="serviceName" placeholder="Kategori Service">
+                            <!-- <select id="serviceName" name="serviceName" class="form-select">
+                                <option>Laundry</option>
+                                <option>Cleaning Room Service</option>
+                                <option>Other</option>
+                            </select> -->
+                        </div>
+                        <div class="">
+                            <label for="variant" class="form-label">Variant</label>
+                            <input type="text" class="form-control" name="variant" id="variant" placeholder="Nama Variant">
+                        </div>
+                        <div class="">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="text" class="form-control" name="price" id="price" placeholder="Harga">
+                        </div>
+                        <div class="card-footer text-end mt-2">
+                            <button class="btn btn-primary" type="submit">Buat</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="vr"></div>
+                <div class="frame w-50 m-0 my-4">
+                    <div class="input-group-text mb-1">
+                        <h5 class="mt-2">Service Tersedia</h5>
+                    </div>
+                    <ul id="service-list"></ul>
+                </div>
             </div>
-            <div class="">
-                <label for="price" class="form-label">Price</label>
-                <input type="text" class="form-control" name="price" id="price" placeholder="Harga">
-            </div>
-            <button class="btn btn-primary" type="submit">Buat</button>
-        </form>
+        </div>
     </div>
 </body>
-
 </html>

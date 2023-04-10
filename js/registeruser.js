@@ -12,6 +12,7 @@ handleFormSubmited(e => {
 })
 
 APIGet("/room").then(res => {
+    console.log(res.data.data)
     addOptions("#room", res.data.data, "name");
 })
 

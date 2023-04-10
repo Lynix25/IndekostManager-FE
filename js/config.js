@@ -12,6 +12,13 @@ export const Constant = {
         OWNER: "Owner",
         ADMIN: "Admin", 
         TENANT: "Tenant"
+    },
+    roomDetailsCategory: {
+        KAMAR_TIDUR: "Kamar Tidur", 
+        KAMAR_MANDI: "Kamar Mandi", 
+        FURNITURE: "Furniture", 
+        ALAT_ELEKTRONIK: "Alat Elektronik", 
+        FASILITAS_KAMAR_LAINNYA: "Fasilitas Kamar Lainnya"
     }
 }
 
@@ -26,7 +33,7 @@ export const ServiceURL = {
         getById: "/account/$1"
     }, 
     User: {
-        getAll: "/user",
+        getAll: "/user?room=$1",
         getById: "/user/$1",
         register: "/user",
         update: "/user/$1",
@@ -77,5 +84,8 @@ export const ServiceURL = {
         create: "/announcement",
         update: "/announcement/$1",
         delete: "/announcement/$1",
+    }, 
+    Service: {
+        getAll: "/service"
     }
 }

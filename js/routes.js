@@ -12,4 +12,7 @@ function checkIsUserLogIn(){
     let userToken = getCookie("tokens");
     if(userToken === undefined && window.location.pathname !== "/forgotpassword.html") 
         goTo('./login.html');
+    // else{
+    //     if(getr)
+    // }
 }

@@ -1,4 +1,4 @@
-import { END_POINT, SECRET } from "./config.js"
+import { Constant, END_POINT, SECRET } from "./config.js"
 
 /**
  * Get inputvalue from a form
@@ -318,6 +318,11 @@ export function getRoleOfUser() {
         let splittedCookie = cookie.split(/[\|\=]+/);
         return splittedCookie[2];
     }
+}
+
+export function isOwnerOrAdmin() {
+    if(getRoleOfUser() === Constant.role.OWNER || getRoleOfUser() === Constant.role.ADMIN) return true
+    else return false;
 }
 
 // function APIPost(resource, requestBody, requesterid = true) {
