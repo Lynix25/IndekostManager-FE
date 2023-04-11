@@ -16,7 +16,7 @@ export const Constant = {
 }
 
 export const CONTENT_TYPE = {
-    FORM : "multipart/form-data"
+    FORM: "multipart/form-data"
 }
 
 // ====================================== END POINT ======================================
@@ -33,8 +33,8 @@ export const ServiceURL = {
         getAll: "/user",
         getById: (id) => `/user/${id}`,
         register: "/user",
-        update: "/user/$1",
-        delete: "/user/$1",
+        update: (id) => `/user/${id}`,
+        delete: (id) => `/user/${id}`,
 
         // User account
         login: "/user/login",
@@ -43,47 +43,47 @@ export const ServiceURL = {
         logout: "/user/logout",
 
         // User Document
-        removeUserDocument: "/user/$1/document",
+        removeUserDocument: (id) => `/user/${id}/document`,
 
         // User Setting
         getUserSetting: (id) => `/user/${id}/settings`,
-        updateUserSetting: "/user/$1/settings",
+        updateUserSetting: (id) => `/user/${id}/settings`,
 
         // Contactable Person
-        getAllContactable: "/user/$1/contactable",
-        addContactable: "/user/$1/contactable",
-        editContactable: "/user/$1/contactable",
-        deleteContactable: "/user/$1/contactable"
+        getAllContactable: (id) => `/user/${id}/contactable`,
+        addContactable: (id) => `/user/${id}/contactable`,
+        editContactable: (id) => `/user/${id}/contactable`,
+        deleteContactable: (id) => `/user/${id}/contactable`
     },
     Room: {
         getAll: "/room",
         getAllAvailable: "/room/available",
-        getById: "/room/$1",
+        getById: (id) => `/room/${id}`,
         create: "/room",
-        update: "/room/$1",
-        delete: "/room/$1",
+        update: (id) => `/room/${id}`,
+        delete: (id) => `/room/${id}`,
 
         // Room Details
-        getDetail: "/room/$1/details",
-        addDetail: "/room/$1/details",
-        editDetail: "/room/$1/details",
-        removeDetail: "/room/$1/details",
+        getDetail: (id) => `/room/${id}/details`,
+        addDetail: (id) => `/room/${id}/details`,
+        editDetail: (id) => `/room/${id}/details`,
+        removeDetail: (id) => `/room/${id}/details`,
 
         // Room Price Detail
-        getPrice: "/room/$1/prices",
-        addPrice: "/room/$1/prices",
-        editPrice: "/room/$1/prices",
-        removePrice: "/room/$1/prices"
+        getPrice: (id) => `/room/${id}/prices`,
+        addPrice: (id) => `/room/${id}/prices`,
+        editPrice: (id) => `/room/${id}/prices`,
+        removePrice: (id) => `/room/${id}/prices`
     },
-    Service:{
+    Service: {
         getAll: "/service"
     },
     Announcement: {
         getAll: "/announcement",
-        getById: "/announcement/$1",
+        getById: (id) => `/announcement/${id}`,
         create: "/announcement",
-        update: "/announcement/$1",
-        delete: "/announcement/$1",
+        update: (id) => `/announcement/${id}`,
+        delete: (id) => `/announcement/${id}`,
     },
     Transaction: {
         unpaid: (id) => `/transaction/unpaid/${id}`,
