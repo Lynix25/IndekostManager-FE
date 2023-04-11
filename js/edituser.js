@@ -1,4 +1,5 @@
-import { APIGet, APIPut, convertImage64ToSrc, getCookie, getFormValue, getFormValueBeta, getUpdateFormValue, getURLParam, handleFormSubmited } from "./utils.js";
+import { APIGet, APIPut } from "./api.js";
+import { getUpdateFormValue, getURLParam, handleFormSubmited } from "./utils.js";
 
 APIGet("/user/" + getURLParam("id")).then(res => {
     let user = res.data;
@@ -57,11 +58,11 @@ function reloadData(user){
 
 handleFormSubmited(e => {
     let data = getUpdateFormValue(e.target);
-
-    APIPut("/user/" + getURLParam("id"), data).then(res => {
-        console.log(res);
-        reloadData(res.data.data);
-    })
+    console.log(data);
+    // APIPut("/user/" + getURLParam("id"), data,  {"Requester-ID" : getCookie("tokens"), "Content-Type": "multipart/form-data"}).then(res => {
+    //     console.log(res);
+    //     reloadData(res.data.data);
+    // })
 })
 
 document.addEventListener("change", e => {

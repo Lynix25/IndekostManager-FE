@@ -1,12 +1,13 @@
-import { addCustomEventListener, addCustomEventListenerV2, APIGet, getCookie, getFormValue, getFormValueBeta, numberWithThousandsSeparators, UNIXtimeConverter } from "./utils.js";
+import { APIGet } from "./api.js";
+import { ServiceURL } from "./config.js";
+import { getCookie } from "./cookiemanagement.js";
+import { addCustomEventListener, getFormValue, numberWithThousandsSeparators, UNIXtimeConverter } from "./utils.js";
 
-APIGet("/transaction/unpaid/" + getCookie("tokens")).then(res => {
+APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
     let data = res.data;
     let unpaidItem = document.querySelector(".cart");
     let rentItems = data.rentItem;
     let serviceItems = data.serviceItem;
-    
-    console.log(data);
 
     rentItems.forEach(rent => {
         let item = document.createElement("li");
@@ -41,10 +42,10 @@ APIGet("/transaction/unpaid/" + getCookie("tokens")).then(res => {
     unpaidItem.addEventListener("change", e => {
         let totalPrice = parseInt(document.querySelector(".total-price").getAttribute("data-total-price"));
         let totalSelected = parseInt(document.querySelector(".total-item").getAttribute("data-selected"));
-        if(e.target.checked){
+        if (e.target.checked) {
             totalPrice += parseInt(e.target.getAttribute("data-price"));
             totalSelected += 1;
-            
+
         }
         else {
             totalPrice -= parseInt(e.target.getAttribute("data-price"));
@@ -52,17 +53,13 @@ APIGet("/transaction/unpaid/" + getCookie("tokens")).then(res => {
         }
         document.querySelector(".total-price").setAttribute("data-total-price", totalPrice);
         document.querySelector(".total-price").innerHTML = "Rp. " + numberWithThousandsSeparators(totalPrice);
-        
+
         document.querySelector(".total-item").setAttribute("data-selected", totalSelected);
         document.querySelector(".total-item").innerHTML = totalSelected;
     })
-
-    // document.querySelector(".total-price").
-
 })
 
-addCustomEventListenerV2("pay", e => {
+addCustomEventListener("pay", e => {
     let data = getFormValue(e.target);
     // console.log(document.querySelector(".cart").children[0].children[0].children[0].type);
-    console.log(data);
-}, document.querySelector("form"), document.querySelector("button[type='pay']"));
+}, document.querySelector("form"));

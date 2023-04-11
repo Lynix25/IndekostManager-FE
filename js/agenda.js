@@ -1,4 +1,5 @@
-import { APIGet, forEach, goTo, groupingMillisecondsToSameDate, UNIXtimeConverter } from "./utils.js";
+import { APIGet } from "./api.js";
+import { forEach, goTo, groupingMillisecondsToSameDate, UNIXtimeConverter } from "./utils.js";
 
 APIGet("/task").then(res => {
     let data = res.data.data;

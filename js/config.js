@@ -10,7 +10,7 @@ export const Constant = {
     },
     role: {
         OWNER: "Owner",
-        ADMIN: "Admin", 
+        ADMIN: "Admin",
         TENANT: "Tenant"
     },
     roomDetailsCategory: {
@@ -30,18 +30,18 @@ export const ServiceURL = {
     },
     Account: {
         getAll: "/account",
-        getById: "/account/$1"
-    }, 
+        getById: (id) => `/account/${id}`
+    },
     User: {
-        getAll: "/user?room=$1",
-        getById: "/user/$1",
+        getAll: "/user",
+        getById: (id) => `/user/${id}`,
         register: "/user",
         update: "/user/$1",
         delete: "/user/$1",
 
         // User account
         login: "/user/login",
-        changePassword: "/user/changepassword",
+        changePassword: `/user/changepassword`,
         forgotPassword: "/user/resetpassword",
         logout: "/user/logout",
 
@@ -49,7 +49,7 @@ export const ServiceURL = {
         removeUserDocument: "/user/$1/document",
 
         // User Setting
-        getUserSetting: "/user/$1/settings",
+        getUserSetting: (id) => `/user/${id}/settings`,
         updateUserSetting: "/user/$1/settings",
 
         // Contactable Person
@@ -57,7 +57,7 @@ export const ServiceURL = {
         addContactable: "/user/$1/contactable",
         editContactable: "/user/$1/contactable",
         deleteContactable: "/user/$1/contactable"
-    }, 
+    },
     Room: {
         getAll: "/room",
         getAllAvailable: "/room/available",
@@ -77,15 +77,18 @@ export const ServiceURL = {
         addPrice: "/room/$1/prices",
         editPrice: "/room/$1/prices",
         removePrice: "/room/$1/prices"
-    }, 
+    },
+    Service:{
+        getAll: "/service"
+    },
     Announcement: {
         getAll: "/announcement",
         getById: "/announcement/$1",
         create: "/announcement",
         update: "/announcement/$1",
         delete: "/announcement/$1",
-    }, 
-    Service: {
-        getAll: "/service"
+    },
+    Transaction: {
+        unpaid: (id) => `/transaction/unpaid/${id}`,
     }
 }

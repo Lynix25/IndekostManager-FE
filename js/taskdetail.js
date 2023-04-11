@@ -1,4 +1,5 @@
-import { addCustomEventListener, APIGet, getURLParam, statusToString, UNIXtimeConverter } from "./utils.js";
+import { APIGet, APIPut } from "./api.js";
+import { addCustomEventListener, getURLParam, statusToString, UNIXtimeConverter } from "./utils.js";
 
 APIGet("/task/" + getURLParam("id")).then(res => {
     console.log(res);
@@ -9,7 +10,6 @@ APIGet("/task/" + getURLParam("id")).then(res => {
     document.querySelector(".requesterUser").innerHTML = res.data.data.createdBy;
 
     APIGet("/service/" + res.data.data.serviceId).then(res => {
-        // console.log(res);
         // document.querySelector(".category").innerHTML = res.data.serviceName;
         document.querySelector(".service").innerHTML = res.data.serviceName;
         document.querySelector(".room").innerHTML = res.data.variant;
@@ -20,9 +20,13 @@ APIGet("/task/" + getURLParam("id")).then(res => {
 
 
 addCustomEventListener("process", e => {
-    APIPut("/task/" + params.get('id'), { "status": 1 })
+    APIPut("/task/" + getURLParam('id'), { "status": 1 })
 }, document.querySelector("[type='process']"))
 
 addCustomEventListener("cancel", e => {
-    APIPut("/task/" + params.get('id'), { "status": -1 })
+    APIPut("/task/" + getURLParam('id'), { "status": -1 })
 }, document.querySelector("[type='cancel']"))
+
+addCustomEventListener("finish", e => {
+    APIPut("/task/" + getURLParam('id'), { "status": 3 })
+}, document.querySelector("[type='finish']"))

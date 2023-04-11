@@ -1,4 +1,5 @@
-import { APIGet, goTo, handleFormSubmited, statusToString, UNIXtimeConverter } from "./utils.js";
+import { APIGet } from "./api.js";
+import { goTo, statusToString, UNIXtimeConverter } from "./utils.js";
 
 
 APIGet("/task").then(res => {
@@ -7,14 +8,6 @@ APIGet("/task").then(res => {
         addRequest(service);
     });
 })
-
-// createdDate: "2023-01-17T05:56:53Z"
-// id: "a9418a9c-93ad-4f6f-8c79-b2cbb05f16ab"
-// lastModifiedDate: "2023-01-17T05:56:53Z"
-// notes: "Notes"
-// service_date: 1673934900000
-// service_id: "0f475280-e322-4f87-806f-69b5555b3f29"
-// summary: "Title"
 
 function addRequest(taskObject) {
     let requestList = document.querySelector("#request-list");

@@ -1,7 +1,9 @@
+import { APIGet } from "./api.js";
 import { ServiceURL } from "./config.js";
-import { APIGet, getCookie, numberWithThousandsSeparators, UNIXtimeConverter, goTo, getUserID, isOwnerOrAdmin } from "./utils.js";
+import { getCookie } from "./cookiemanagement.js";
+import { UNIXtimeConverter, numberWithThousandsSeparators } from "./utils.js";
 
-APIGet("/transaction/unpaid/" + getUserID(getCookie("tokens"))).then(res => {
+APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
     let data = res.data;
 
     document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);

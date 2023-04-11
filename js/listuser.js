@@ -1,7 +1,8 @@
+import { APIGet } from "./api.js";
 import { ServiceURL } from "./config.js";
-import { addCustomEventListener, APIGet, getCookie, goTo } from "./utils.js";
+import { addCustomEventListener, goTo } from "./utils.js";
 
-APIGet(ServiceURL.User.getAll.replace("$1", "")).then(res => {
+APIGet(ServiceURL.User.getAll).then(res => {
     let users = res.data.data;
     users.forEach(data => {
         // console.log(data);

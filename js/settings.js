@@ -1,7 +1,11 @@
-import { APIGet, getCookie, getFormValue, getFormValueBeta } from "./utils.js";
+import { APIGet } from "./api.js";
+import { ServiceURL } from "./config.js";
+import { getCookie } from "./cookiemanagement.js";
+import { getFormValue, getFormValueV2 } from "./utils.js";
 
-APIGet(`/user/${getCookie("tokens")}/settings`).then(res => {
-    let userSettings = res.data;
+
+APIGet(ServiceURL.User.getUserSetting(getCookie("id"))).then(res => {
+    let userSettings = res.data.data;
 
     let privateRoomSwitchEl = document.getElementById("privateRoomSwitch");
     privateRoomSwitchEl.checked = userSettings.shareRoom;
@@ -14,13 +18,12 @@ APIGet(`/user/${getCookie("tokens")}/settings`).then(res => {
 
 document.querySelector("form").addEventListener("change", e => {
     changeSwitchLabel(e.target.parentElement);
-    let formData = getFormValueBeta(e.currentTarget);
-    console.log(e.target, e.target.attributes);
+    let formData = get(e.currentTarget);
+    console.log(formData);
 })
 
 function changeSwitchLabel(parentElement) {
     let isChecked = parentElement.children[0].checked;
-
     if (isChecked) {
         parentElement.children[1].innerText = "ON";
     }
