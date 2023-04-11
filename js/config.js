@@ -15,6 +15,10 @@ export const Constant = {
     }
 }
 
+export const CONTENT_TYPE = {
+    FORM : "multipart/form-data"
+}
+
 // ====================================== END POINT ======================================
 export const ServiceURL = {
     MasterData: {

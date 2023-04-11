@@ -37,6 +37,9 @@ export function getFormValueV2(element) {
         if (type == "checkbox")
             valueValue = element.checked;
 
+        if (type == "file")
+            valueValue = element.files[0];
+
         return [hasAttrValue, valueValue];
     }
 
