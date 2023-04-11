@@ -1,22 +1,29 @@
-import { APIGet } from "./api.js";
-import { addCustomEventListener, goTo, setAttributes } from "./utils.js";
+import { ServiceURL } from "./config.js";
+import { addCustomEventListener, APIGet, goTo, setAttributes } from "./utils.js";
 
-APIGet("/room").then(res => {
+APIGet(ServiceURL.Room.getAll).then(res => {
     let roomList = res.data.data;
-    
-    roomList.forEach(data => {
+    let count = 0;
+    roomList.forEach(data => {        
+        if(count !== 0) {
+            let separator = document.createElement("hr");
+            document.querySelector("#room-list").appendChild(separator);
+        }
         let room = document.createElement("li");
         room.classList.add("item", "d-flex", "align-items-center", "justify-content-between");
-        room.innerHTML = `
+        room.innerHTML += `
         <div class="d-flex">
-            <i class="fad ${data.users.length >= data.quota ? "fa-door-closed" : "fa-door-open"} me-3 my-auto" style="font-size: 2.2rem;"></i>
+            <div class="hover-text">
+                <span class="tooltip-text tooltip-top-title">${data.tenant >= data.room.quota ? "Kamar penuh" : "Kamar tersedia"}</span>
+                <span id="back"><a href="#!"><i class="fad ${data.tenant >= data.room.quota ? "fa-door-closed" : "fa-door-open"} me-3 my-auto" style="font-size: 2.2rem;"></i></a></span>
+            </div>
             <div>
-                <div>${data.name}</div>
-                <div>${data.floor}</div>
+                <div>${data.room.name}</div>
+                <div>${data.room.floor}</div>
             </div>
         </div>`;
         room.addEventListener("click", e => {
-            goTo('./roomdetail.html?id=' + data.id);
+            goTo('./roomdetail.html?id=' + data.room.id);
         })
 
         let controlButton = document.createElement("div");
@@ -29,7 +36,7 @@ APIGet("/room").then(res => {
         controlButton.appendChild(editButton);
 
         addCustomEventListener("edit", e => {
-            goTo('./editroom.html?id=' + data.id);
+            goTo('./editroom.html?id=' + data.room.id);
         }, editButton);
 
         let deleteButton = document.createElement("button");
@@ -44,13 +51,14 @@ APIGet("/room").then(res => {
         controlButton.appendChild(deleteButton);
 
         addCustomEventListener("delete", e => {
-            document.querySelector("#roomName").innerHTML = data.name;
-            document.querySelector("[type='confirm-delete']").setAttribute("data", data.id);
-            document.querySelector("[type='confirm-delete']").setAttribute("data-room-name", data.name);
+            document.querySelector("#room-name").innerHTML = data.room.name;
+            document.querySelector("[type='confirm-delete']").setAttribute("data", data.room.id);
+            document.querySelector("[type='confirm-delete']").setAttribute("data-room-name", data.room.name);
         }, deleteButton);
 
         room.appendChild(controlButton);
         document.querySelector("#room-list").appendChild(room);
+        count++;
     });
 }).catch(e => {
     console.log(e);

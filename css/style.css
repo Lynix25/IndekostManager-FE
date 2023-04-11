@@ -31,6 +31,20 @@
     color: var(--black-color);
 }
 
+.page-title {
+    display: flex;
+    align-items: center;
+}
+
+.page-title span {
+    margin: 10px;
+    cursor: pointer;
+}
+
+.form-control {
+    color: var(--black-color);
+}
+
 .toast {
     opacity: 90% !important;
 }
@@ -179,6 +193,11 @@ ul {
 
 .tooltip-top {
     top: -28px;
+    left: -50%;
+}
+
+.tooltip-top-title {
+    top: -40px;
     left: -50%;
 }
 

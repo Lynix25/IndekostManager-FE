@@ -33,7 +33,71 @@ footer :where(li, li a) {
     position: relative;
 }
 
+.carousel-button {
+    width: 4rem;
+    height: auto;
+    color: var(--black-color);
+}
+
+.carousel-button span {
+    background-color: var(--black-color);
+    opacity: 24%;
+}
+
+.div-shadow {
+    box-shadow: 0 0 8px #00000033!important;
+}
+
+.card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 4rem;
+    width: auto;
+    padding: 0.5rem;
+    box-shadow: 0 0 0.5rem 0.25rem rgba(0, 0, 0, 0.055)!important;
+    background-color: var(--primary-color);
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0.5rem;
+    width: 2rem;
+    aspect-ratio: 1/1;
+    box-sizing: border-box;
+}
+
+#carousel {
+    border-radius: 0.5rem;;
+}
+
+.carousel-item figcaption {
+    display: flex;
+    padding-left: 1rem;
+    align-items: center;
+    height: 6vmin;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    background-color: var(--primary-color);
+    font-weight: 500;
+}
+
 .carousel-item img {
+    display: block;
+    height: 50vmin;
+    background-size: cover;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.img-no-text {
     display: block;
     height: 50vmin;
     background-size: cover;
@@ -101,45 +165,3 @@ footer>ul>li>a:hover {
         height: 50vmin;
     }
 }
-
-
-
-/* nav ul li.active > a {
-    background-color: aliceblue;
-    color: white;
-    border-radius: 50%;
-    transform: translateY(-40px);
-} */
-
-/* nav li.last {
-    position: absolute;
-    width: 100px;
-    height: 80px;
-    background-color: red;
-    border-radius: 0 0 50% 50% / 0 0 80% 80%;
-    top: -40px;
-    left: 10px;
-}
-
-nav li.last::before{
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: -21px;
-    width: 40px;
-    height: 40px;
-    background-color: blue;
-    border-top-right-radius: 40px;
-    box-shadow: 0 -20px 0 0 yellow;
-}
-nav li.last::after{
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: -21px;
-    width: 40px;
-    height: 40px;
-    background-color: blue;
-    border-top-right-radius: 40px;
-    box-shadow: 0 -20px 0 0 yellow;
-} */

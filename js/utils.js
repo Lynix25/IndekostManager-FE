@@ -1,4 +1,5 @@
-import { SECRET } from "./config.js";
+import { Constant, END_POINT, SECRET } from "./config.js"
+import { getCookie } from "./cookiemanagement.js";
 
 /**
  * Get inputvalue from a form
@@ -267,37 +268,20 @@ export function statusToString(statusCode) {
 }
 
 export function getUserID() {
-    let cookie = getCookie("tokens");
+    let cookie = getCookie("id");
     if (cookie == undefined) return undefined;
-    else {
-        /*
-            [0]: 26da19e0-c540-11ed-821e-00059a3c7a00
-            [1]: role
-            [2]: Manager
-        */
-        let splittedCookie = cookie.split(/[\|\=]+/);
-        if (splittedCookie[0] === "role") {
-            alert("User not registered!");
-            return;
-        }
-        else return splittedCookie[0].replace(SECRET, '');
-    }
-    // return getCookie("tokens")
-    // return "not implemented userid in cookie";
+    return cookie;
 }
 
 export function getRoleOfUser() {
-    let cookie = getCookie("tokens");
+    let cookie = getCookie("role");
     if (cookie == undefined) return undefined;
-    else {
-        /*
-            [0]: 26da19e0-c540-11ed-821e-00059a3c7a00
-            [1]: role
-            [2]: Manager
-        */
-        let splittedCookie = cookie.split(/[\|\=]+/);
-        return splittedCookie[2];
-    }
+    return cookie;
+}
+
+export function isOwnerOrAdmin() {
+    if(getRoleOfUser() === Constant.role.OWNER || getRoleOfUser() === Constant.role.ADMIN) return true;
+    else return false;
 }
 
 // ====================================== DATE ======================================

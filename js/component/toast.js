@@ -1,5 +1,3 @@
-import { Constant } from "../config.js";
-
 export function Toast(status, message) {
     toastr.options = {
         "closeButton": false,

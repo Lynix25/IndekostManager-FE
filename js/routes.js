@@ -13,4 +13,7 @@ function checkIsUserLogIn() {
     let userToken = getCookie("tokens");
     if (userToken === undefined)
         goTo('./login.html');
+    // else{
+    //     if(getr)
+    // }
 }
