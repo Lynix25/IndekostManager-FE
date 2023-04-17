@@ -70,24 +70,58 @@ if (currentPath !== "/login.html" && currentPath !== "/forgotpassword.html")
         // nav class="navbar navbar-expand-lg sticky-top"
 
         // Menus Only For Admin
-        let forAdmin = "";
+        let menu = "";
         if(role.toLowerCase() === "owner" || role.toLowerCase() === "admin") {
-            forAdmin = `
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Admin
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="/agenda.html">Agenda</a></li>
-                        <li><a class="dropdown-item" href="/createroom.html">Add Room</a></li>
-                        <li><a class="dropdown-item" href="/roomlist.html">Room List</a></li>
-                        <li><a class="dropdown-item" href="/service.html">Add Service</a></li>
-                        <li><a class="dropdown-item" href="/registeruser.html">Register User</a></li>
-                        <li><a class="dropdown-item" href="/listuser.html">List User</a></li>
-                        <li><a class="dropdown-item" href="#">History</a></li>
-                    </ul>
-                </li>`
+            menu = `
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Kelola Pengumuman 
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="/announcementmenu.html">Lihat Daftar Pengumuman</a></li>
+                    <li><a class="dropdown-item" href="/createannouncement.html">Buat Pengumuman</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Kelola Kamar 
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="/roomlist.html">Lihat Daftar Kamar</a></li>
+                    <li><a class="dropdown-item" href="/createroom.html">Tambah Data Kamar</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/service.html" role="button">
+                    Kelola Layanan Kos 
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Kelola Penyewa 
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="/listuser.html">Lihat Daftar Penyewa</a></li>
+                    <li><a class="dropdown-item" href="/registeruser.html">Tambah Data Penyewa</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#!" role="button">
+                    Kelola Transaksi
+                </a>
+            </li>`
+        } else {
+            menu = `
+                <li class="nav-item">
+                    <a class="nav-link" href="/servicerequest.html">Pengajuan Layanan</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/requesthistory.html">Histori Pengajuan Layanan</a>
+                </li>
+            `;
         }
 
         navBar.innerHTML = `<div class="container-fluid">
@@ -104,17 +138,7 @@ if (currentPath !== "/login.html" && currentPath !== "/forgotpassword.html")
                     <li class="nav-item">
                         <a class="nav-link fw-bolder" aria-current="page" href="/home.html">Home</a>
                     </li>
-                    ${forAdmin}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Tenant
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="/servicerequest.html">Request Service</a></li>
-                            <li><a class="dropdown-item" href="/requesthistory.html">Request Service History</a></li>
-                        </ul>
-                    </li>
+                    ${menu}
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#" data-bs-toggle="dropdown">
                             <i class="fa-solid fa-circle-user fs-4"></i>
@@ -133,7 +157,7 @@ if (currentPath !== "/login.html" && currentPath !== "/forgotpassword.html")
                                 Settings
                             </a>
                             <hr class="dropdown-divider">
-                            <a type="button" class="dropdown-item">
+                            <a type="button" class="dropdown-item" onclick="logout()">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
                                 Logout
                             </a>
@@ -144,6 +168,42 @@ if (currentPath !== "/login.html" && currentPath !== "/forgotpassword.html")
         </div>`;
         document.body.insertBefore(navBar, document.body.firstChild);
     })
+
+// Perlu disempurnakan lagi:
+// 1. harusnya ada panggil endpoint logout
+// 2. gimana caranya biar bisa import dari yang sudah ada
+function logout() {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i];
+        const eqPos = cookie.indexOf("=");
+        const cookieName = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+        document.cookie = cookieName + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-bottom-right",
+        "preventDuplicates": false,
+        // "onCloseClick": function() { console.log('close button clicked'); },
+        "showDuration": "300",
+        "hideDuration": "10",
+        "timeOut": "2000",
+        "extendedTimeOut": "500",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+        "rtl": false
+      }
+    toastr["success"]("Berhasil logout", "SUCCESS");
+    setTimeout(function() {
+        window.location.href = "/login.html";
+    }, 500);
+}
+
 {/* <script src="https://kit-pro.fontawesome.com/releases/v5.10.1/js/pro.min.js" data-auto-fetch-svg></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
