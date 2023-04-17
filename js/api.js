@@ -17,11 +17,11 @@ function headers(aditionalConfig){
         }
     }
 
-    return Object.assign(defaultConfig.headers, aditionalConfig);
+    return Object.assign(defaultConfig, { "headers": aditionalConfig });
 }
 
 export function APIPut(resource, requestBody, requestHeader) {
-    requestBody.requesterId = getCookie("id");
+    if (requestBody != null || requestBody != undefined) requestBody.requesterId = getCookie("id");
     return new Promise((resolve, reject) => {
         axios.put(END_POINT + resource, requestBody, headers(requestHeader)).then(result => {
             resolve(result)
@@ -32,7 +32,7 @@ export function APIPut(resource, requestBody, requestHeader) {
 }
 
 export function APIPost(resource, requestBody, requestHeader) {
-    requestBody.requesterId = getCookie("id");
+    if (requestBody != null || requestBody != undefined) requestBody.requesterId = getCookie("id");
     return new Promise((resolve, reject) => {
         axios.post(END_POINT + resource, requestBody, headers(requestHeader)).then(result => {
             resolve(result)
