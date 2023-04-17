@@ -281,6 +281,11 @@ export function isOwnerOrAdmin() {
     else return false;
 }
 
+export function getURLParam(paramId) {
+    let params = new URLSearchParams(location.search);
+    return params.get(paramId);
+}
+
 // ====================================== DATE ======================================
 
 export const dayInMillis = 86400000;
