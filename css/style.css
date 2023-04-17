@@ -21,7 +21,7 @@
     --paragraph: #5f6c7b;
     --button-highlight: #3da9fc;
 
-    --font-size: 13px;
+    --font-size: 14px;
 }
 
 * {
@@ -189,6 +189,11 @@ ul {
 
 .hover-text:hover .tooltip-text {
     visibility: visible;
+}
+
+.tooltip-top-icon {
+    top: -20px;
+    left: 10%;
 }
 
 .tooltip-top {

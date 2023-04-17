@@ -10,6 +10,11 @@
     font-weight: 1000;
 }
 
+.carousel-item img {
+    object-fit: contain;
+    /* background-color: var(--primary-color); */
+}
+
 footer {
     display: flex;
     align-items: center;
