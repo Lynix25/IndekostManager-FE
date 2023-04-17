@@ -1,5 +1,6 @@
+import { APIGet } from "./api.js";
 import { ServiceURL } from "./config.js";
-import { APIGet, goTo } from "./utils.js";
+import { goBack, goTo } from "./utils.js";
 
 const searchBox = document.getElementById("search");
 let announcementList = []
@@ -62,7 +63,7 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
 });
 
 document.getElementById("back").addEventListener("click", e => {
-    goTo("./home.html");
+    goBack();
 })
 
 document.getElementById("add-new").addEventListener("click", e => {

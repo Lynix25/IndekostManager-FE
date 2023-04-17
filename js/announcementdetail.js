@@ -1,5 +1,6 @@
+import { APIGet } from "./api.js";
 import { ServiceURL } from "./config.js";
-import { APIDelete, APIGet, getURLParam, isOwnerOrAdmin } from "./utils.js";
+import { getURLParam, isOwnerOrAdmin } from "./utils.js";
 
 APIGet(ServiceURL.Announcement.getById.replace("$1", getURLParam("id"))).then(res => {
     let data = res.data.data;
@@ -10,7 +11,13 @@ APIGet(ServiceURL.Announcement.getById.replace("$1", getURLParam("id"))).then(re
     
     let announcement = document.createElement("div");
     announcement.innerHTML = `
-            <h3 class="text-center">${data.title}</h3>
+            <div class="page-title my-4">
+                <div class="hover-text">
+                    <span class="tooltip-text tooltip-top-title">Kembali</span>
+                    <span id="back"><a onClick="goBack()"><i class="fa fa-chevron-left"></i></a></span>
+                </div>
+                <h3 class="text-center m-0 w-100">${data.title}</h3>
+            </div>
             <div class="d-flex row align-items-center justify-content-center my-4">
                 <img src="${src}" width="75%">
             </div>
@@ -37,7 +44,10 @@ APIGet(ServiceURL.Announcement.getById.replace("$1", getURLParam("id"))).then(re
 let js = document.createElement("script");
 js.innerHTML = `
     function goToHome() {
-        window.location.href='./home.html'
+        window.location.href='./home.html';
+    }
+    function goBack() {
+        history.back();
     }
 `;
 document.body.appendChild(js);
