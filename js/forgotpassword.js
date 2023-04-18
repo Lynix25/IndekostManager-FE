@@ -44,7 +44,8 @@ function resetPassword(e) {
                     setTimeout(function() { goTo('./login.html') }, 500);
                 }
             }).catch(err => {
-                Toast(Constant.httpStatus.ERROR, err.data.message);
+                if(err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+                else Toast(Constant.httpStatus.ERROR, err.data.message);
             })
         }
     });

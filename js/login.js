@@ -51,7 +51,7 @@ function login(e) {
                     }
                 }).catch(err => {
                     if(err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
-                else Toast(Constant.httpStatus.ERROR, err.data.message);
+                    else Toast(Constant.httpStatus.ERROR, err.data.message);
                 });
             }
         }
