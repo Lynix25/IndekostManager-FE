@@ -15,15 +15,16 @@ bootstrapCss.setAttribute("rel", "stylesheet");
 bootstrapCss.setAttribute("href", "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css");
 document.head.appendChild(bootstrapCss);
 
-let toastCss = document.createElement("link");
-toastCss.setAttribute("rel", "stylesheet");
-toastCss.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css");
-document.head.appendChild(toastCss);
-
 let styleCSS = document.createElement("link");
 styleCSS.setAttribute("rel", "stylesheet");
 styleCSS.setAttribute("href", "css/style.css");
 document.head.appendChild(styleCSS);
+
+let toastCss = document.createElement("link");
+toastCss.setAttribute("rel", "stylesheet");
+// toastCss.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css");
+toastCss.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.2/toastr.min.css");
+document.head.appendChild(toastCss);
 
 // General JS
 let bootstrapJs = document.createElement("script");
@@ -43,15 +44,15 @@ let jQueryJs = document.createElement("script");
 jQueryJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js")
 document.head.appendChild(jQueryJs);
 
-let toastJs = document.createElement("script");
-toastJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js");
-toastJs.setAttribute("data-auto-fetch-svg", "");
-document.head.appendChild(toastJs);
-
 let mainJs = document.createElement("script");
 mainJs.setAttribute("type", "module");
 mainJs.setAttribute("src", "js/main.js");
 document.head.appendChild(mainJs);
+
+let toastJs = document.createElement("script");
+// toastJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js");
+toastJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.2/toastr.min.js");
+document.head.appendChild(toastJs);
 
 /* Get Role
     [0]: tokens
