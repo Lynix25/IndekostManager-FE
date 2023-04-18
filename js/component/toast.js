@@ -16,6 +16,19 @@ export function Toast(status, message) {
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut",
         "rtl": false
-      }
-    return toastr[status](message, status.toUpperCase());
+    }
+    
+    switch (status) {
+      case "error":
+        return toastr.error(message, status.toUpperCase());
+      
+      case "success":
+        return toastr.success(message, status.toUpperCase());
+    
+      case "warning":
+        return toastr.warning(message, status.toUpperCase());
+
+      default:
+        return toastr.info(message, status.toUpperCase());
+    }
 }

@@ -198,7 +198,7 @@ function logout() {
         "hideMethod": "fadeOut",
         "rtl": false
       }
-    toastr["success"]("Berhasil logout", "SUCCESS");
+    toastr.success("Berhasil logout", "SUCCESS");
     setTimeout(function() {
         window.location.href = "/login.html";
     }, 500);
