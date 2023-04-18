@@ -11,14 +11,23 @@ const navLinks = document.querySelectorAll('.nav-link').forEach(link => {
     }
 })
 
+export function clearCookiesAndLogout() {
+    APIPut(ServiceURL.User.logout(getCookie('id'))).then(res => {
+        deleteCookie();
+    }).catch(err => {
+        console.log(err.data.message)
+    });
+}
+
 export function logout(element) {
     element.addEventListener("click", e => {
         APIPut(ServiceURL.User.logout(getCookie('id'))).then(res => {
-            deleteCookie();
             Toast(Constant.httpStatus.SUCCESS, res.data.message);
+            deleteCookie();
             setTimeout(function() { goTo('./login.html') }, 500);
         }).catch(err => {
-            Toast(Constant.httpStatus.ERROR, err.data.message);
+            if(err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+            else Toast(Constant.httpStatus.ERROR, err.data.message);
         })
     })
 }
