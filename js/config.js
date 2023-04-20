@@ -56,7 +56,7 @@ export const ServiceURL = {
 
         // Contactable Person
         getContactable: (id) => `/user/${id}/contactable?person=`,
-        addContactable: (id) => `/user/${id}/contactable?person=`,
+        addContactable: (id) => `/user/${id}/contactable`,
         editContactable: (id) => `/user/${id}/contactable?person=`,
         deleteContactable: (id) => `/user/${id}/contactable?person=`
     },

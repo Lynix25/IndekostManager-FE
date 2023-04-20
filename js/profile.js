@@ -52,12 +52,6 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
             });
         }
     });
-
-    // let alternateContactUser = user.contactAblePeople[0]
-    // document.querySelector("#alterName").innerText = alternateContactUser.name;
-    // document.querySelector("#alterPhone").innerText = alternateContactUser.phone;
-    // document.querySelector("#alterAddress").innerText = alternateContactUser.address;
-    // document.querySelector("#alterRelation").innerText = alternateContactUser.relation;
 }) 
 
 addCustomEventListener("show-room-info", e => {
@@ -69,6 +63,10 @@ addCustomEventListener("show-tenant-info", e => {
     document.getElementById("room-information").setAttribute("hidden", "");
     document.getElementById("tenant-information").removeAttribute("hidden");
 });
+
+addCustomEventListener("add-alternatif-contact", e => {
+    goTo("./createcontactable.html");
+})
 
 let eLogout = document.getElementById("logout");
 logout(eLogout);
