@@ -55,10 +55,10 @@ export const ServiceURL = {
         updateUserSetting: (id) => `/user/${id}/settings`,
 
         // Contactable Person
-        getAllContactable: (id) => `/user/${id}/contactable`,
-        addContactable: (id) => `/user/${id}/contactable`,
-        editContactable: (id) => `/user/${id}/contactable`,
-        deleteContactable: (id) => `/user/${id}/contactable`
+        getContactable: (id) => `/user/${id}/contactable?person=`,
+        addContactable: (id) => `/user/${id}/contactable?person=`,
+        editContactable: (id) => `/user/${id}/contactable?person=`,
+        deleteContactable: (id) => `/user/${id}/contactable?person=`
     },
     Room: {
         getAll: "/room",

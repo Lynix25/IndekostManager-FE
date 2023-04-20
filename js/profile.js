@@ -2,7 +2,7 @@ import { APIGet } from "./api.js";
 import { ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 import { logout } from "./main.js";
-import { addCustomEventListener, UNIXtimeConverter } from "./utils.js";
+import { addCustomEventListener, goTo, UNIXtimeConverter } from "./utils.js";
 
 APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     let user = res.data.data.user;
@@ -25,7 +25,7 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     `;
     document.querySelector("#identity-image").appendChild(identityImage);
 
-    APIGet(ServiceURL.User.getAllContactable(user.id)).then(res => {
+    APIGet(ServiceURL.User.getContactable(user.id)).then(res => {
         let contactables = res.data.data;
         if(contactables.length == 0) {
             document.querySelector("#list-not-empty").remove();
@@ -33,16 +33,22 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
             document.querySelector("#list-empty").remove();
 
             let count = 0;
-            let tableBody = document.getElementById("list-data");
             contactables.forEach(data => {
                 count++;
-                tableBody.innerHTML += `
-                    <tr onclick="viewContactableDetail(this)">
+                let item = document.createElement("tr");
+                item.innerHTML = `
+                    <tr>
                         <th scope="row">${count}</th>
                         <td>${data.name}</td>
                         <td>${data.relation}</td>
                     </tr>
                 `;
+
+                item.addEventListener("click", e => {
+                    goTo("./editcontactable.html?id=" + data.id);
+                });
+
+                document.querySelector("#list-data").appendChild(item);
             });
         }
     });
