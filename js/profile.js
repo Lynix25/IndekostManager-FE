@@ -1,23 +1,57 @@
 import { APIGet } from "./api.js";
 import { ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { addCustomEventListener } from "./utils.js";
+import { logout } from "./main.js";
+import { addCustomEventListener, UNIXtimeConverter } from "./utils.js";
 
 APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     let user = res.data.data.user;
-
+    
     document.querySelector("#name").innerText = user.name;
     document.querySelector("#alias").innerText = `(${user.alias})`;
     document.querySelector("#email").innerText = user.email;
     document.querySelector("#phone").innerText = user.phone;
-    document.querySelector("#domicile").innerText = user.city;
-    document.querySelector("#alias").innerText = `(${user.alias})`;
+    document.querySelector("#job").innerText = user.job;
+    document.querySelector("#gender").innerText = user.gender;
+    document.querySelector("#status").innerText = user.married ? 'Sudah Menikah' : 'Belum Menikah';
+    document.querySelector("#joinedOn").innerText = UNIXtimeConverter(user.joinedOn, 'DD MMMM YYYY');
+    document.querySelector("#description").innerText = user.description;
 
-    let alternateContactUser = user.contactAblePeople[0]
-    document.querySelector("#alterName").innerText = alternateContactUser.name;
-    document.querySelector("#alterPhone").innerText = alternateContactUser.phone;
-    document.querySelector("#alterAddress").innerText = alternateContactUser.address;
-    document.querySelector("#alterRelation").innerText = alternateContactUser.relation;
+    let identityImage = document.createElement("div");
+    identityImage.innerHTML = `
+        <a href="#" onclick="openImageInNewWindow(this)">
+            <img src="data:image/png;base64,${user.identityCardImage}" alt="KTP">
+        </a>
+    `;
+    document.querySelector("#identity-image").appendChild(identityImage);
+
+    APIGet(ServiceURL.User.getAllContactable(user.id)).then(res => {
+        let contactables = res.data.data;
+        if(contactables.length == 0) {
+            document.querySelector("#list-not-empty").remove();
+        } else {
+            document.querySelector("#list-empty").remove();
+
+            let count = 0;
+            let tableBody = document.getElementById("list-data");
+            contactables.forEach(data => {
+                count++;
+                tableBody.innerHTML += `
+                    <tr onclick="viewContactableDetail(this)">
+                        <th scope="row">${count}</th>
+                        <td>${data.name}</td>
+                        <td>${data.relation}</td>
+                    </tr>
+                `;
+            });
+        }
+    });
+
+    // let alternateContactUser = user.contactAblePeople[0]
+    // document.querySelector("#alterName").innerText = alternateContactUser.name;
+    // document.querySelector("#alterPhone").innerText = alternateContactUser.phone;
+    // document.querySelector("#alterAddress").innerText = alternateContactUser.address;
+    // document.querySelector("#alterRelation").innerText = alternateContactUser.relation;
 }) 
 
 addCustomEventListener("show-room-info", e => {
@@ -29,3 +63,20 @@ addCustomEventListener("show-tenant-info", e => {
     document.getElementById("room-information").setAttribute("hidden", "");
     document.getElementById("tenant-information").removeAttribute("hidden");
 });
+
+let eLogout = document.getElementById("logout");
+logout(eLogout);
+
+let js = document.createElement("script");
+js.innerHTML = `
+function openImageInNewWindow(e) {
+    var newTab = window.open();
+    setTimeout(function() {
+        newTab.document.body.innerHTML = e.innerHTML;
+    }, 500);
+    return false;
+}
+function viewContactableDetail(e) {
+    console.log(e);
+}`;
+document.body.appendChild(js);

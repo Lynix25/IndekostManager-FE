@@ -1,7 +1,7 @@
 import { APIGet } from "./api.js";
 import { ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { UNIXtimeConverter, numberWithThousandsSeparators } from "./utils.js";
+import { UNIXtimeConverter, numberWithThousandsSeparators, isOwnerOrAdmin, goTo } from "./utils.js";
 
 APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
     let data = res.data;
@@ -85,30 +85,30 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
     }
 })
 
-if(isOwnerOrAdmin()) {
-    let adminMenu = document.createElement("div");
-    adminMenu.classList.add("row", "card", "rounded", "border-0", "my-4", "mx-3");
-    adminMenu.innerHTML = `
-        <a href="./announcementmenu.html" class="menu hover-text">
-            <span class="tooltip-text tooltip-top">Kelola Pengumuman</span>
-            <i class="fa-solid fa-newspaper"></i>
-        </a>
-        <a href="./roomlist.html" class="menu hover-text">
-            <span class="tooltip-text tooltip-top">Kelola Kamar</span>
-            <i class="fa-solid fa-door-open"></i>
-        </a>
-        <a href="./service.html" class="menu hover-text">
-            <span class="tooltip-text tooltip-top">Kelola Layanan Kos</span>
-            <i class="fa-solid fa-tasks"></i>
-        </a>
-        <a href="./listuser.html" class="menu hover-text">
-            <span class="tooltip-text tooltip-top">Kelola Penyewa</span>
-            <i class="fa-solid fa-users"></i>
-        </a>
-        <a href="#!" class="menu hover-text">
-            <span class="tooltip-text tooltip-top">Kelola Transaksi</span>
-            <i class="fa-solid fa-money-bill-transfer"></i>
-        </a>
-    `;
-    document.body.appendChild(adminMenu);
-}
+// if(isOwnerOrAdmin()) {
+//     let adminMenu = document.createElement("div");
+//     adminMenu.classList.add("row", "card", "rounded", "border-0", "my-4", "mx-3");
+//     adminMenu.innerHTML = `
+//         <a href="./announcementmenu.html" class="menu hover-text">
+//             <span class="tooltip-text tooltip-top">Kelola Pengumuman</span>
+//             <i class="fa-solid fa-newspaper"></i>
+//         </a>
+//         <a href="./roomlist.html" class="menu hover-text">
+//             <span class="tooltip-text tooltip-top">Kelola Kamar</span>
+//             <i class="fa-solid fa-door-open"></i>
+//         </a>
+//         <a href="./service.html" class="menu hover-text">
+//             <span class="tooltip-text tooltip-top">Kelola Layanan Kos</span>
+//             <i class="fa-solid fa-tasks"></i>
+//         </a>
+//         <a href="./listuser.html" class="menu hover-text">
+//             <span class="tooltip-text tooltip-top">Kelola Penyewa</span>
+//             <i class="fa-solid fa-users"></i>
+//         </a>
+//         <a href="#!" class="menu hover-text">
+//             <span class="tooltip-text tooltip-top">Kelola Transaksi</span>
+//             <i class="fa-solid fa-money-bill-transfer"></i>
+//         </a>
+//     `;
+//     document.body.appendChild(adminMenu);
+// }

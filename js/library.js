@@ -22,8 +22,7 @@ document.head.appendChild(styleCSS);
 
 let toastCss = document.createElement("link");
 toastCss.setAttribute("rel", "stylesheet");
-// toastCss.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css");
-toastCss.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.2/toastr.min.css");
+toastCss.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css");
 document.head.appendChild(toastCss);
 
 // General JS
@@ -40,27 +39,30 @@ let axiosJs = document.createElement("script");
 axiosJs.setAttribute("src", "https://cdn.jsdelivr.net/npm/axios@1.2.0/dist/axios.min.js")
 document.head.appendChild(axiosJs);
 
-let jQueryJs = document.createElement("script");
-jQueryJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js")
-document.head.appendChild(jQueryJs);
+// let jQueryJs = document.createElement("script");
+// jQueryJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js")
+// document.head.appendChild(jQueryJs);
 
 let mainJs = document.createElement("script");
 mainJs.setAttribute("type", "module");
 mainJs.setAttribute("src", "js/main.js");
 document.head.appendChild(mainJs);
 
-let toastJs = document.createElement("script");
+// let toastJs = document.createElement("script");
 // toastJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js");
-toastJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.2/toastr.min.js");
-document.head.appendChild(toastJs);
+// document.head.appendChild(toastJs);
 
 /* Get Role
     [0]: tokens
-    [1]: 26da19e0-c540-11ed-821e-00059a3c7a00
-    [2]: role
-    [3]: Manager
+    [1]: indekossecret{userId}
+    [2]: id
+    [3]: {userId}
+    [4]: role
+    [5]: {userRoleName}
 */
-let role = ((document.cookie).split(/[\|\=]+/))[3];
+
+let splittedCookies = ((document.cookie).split(/[\;\=]+/));
+let role = ((document.cookie).split(/[\;\=]+/))[splittedCookies.length-1];
 
 // NavBar Component
 let currentPath = window.location.pathname;

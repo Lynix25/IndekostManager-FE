@@ -22,8 +22,8 @@ export function clearCookiesAndLogout() {
 export function logout(element) {
     element.addEventListener("click", e => {
         APIPut(ServiceURL.User.logout(getCookie('id'))).then(res => {
-            Toast(Constant.httpStatus.SUCCESS, res.data.message);
             deleteCookie();
+            Toast(Constant.httpStatus.SUCCESS, res.data.message);
             setTimeout(function() { goTo('./login.html') }, 500);
         }).catch(err => {
             if(err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
