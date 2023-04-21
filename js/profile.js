@@ -35,18 +35,41 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
             let count = 0;
             contactables.forEach(data => {
                 count++;
+
+                let toggleEdit = document.createElement("td");
+                toggleEdit.classList.add("text-center");
+                toggleEdit.innerHTML = `
+                    <div class="hover-text">
+                        <span class="tooltip-text tooltip-top-title">Ubah</span>
+                        <span id="back"><a href="#"><i class="fa-solid fa-pencil"></i></a></span>
+                    </div>`;
+                    
+                let toggleDelete = document.createElement("td");
+                toggleDelete.classList.add("text-center");
+                toggleDelete.innerHTML = `
+                    <div class="hover-text">
+                        <span class="tooltip-text tooltip-top-title">Hapus</span>
+                        <span id="back"><a href="#"><i class="fa-solid fa-trash"></i></a></span>
+                    </div>`;
+                
                 let item = document.createElement("tr");
                 item.innerHTML = `
-                    <tr>
-                        <th scope="row">${count}</th>
-                        <td>${data.name}</td>
-                        <td>${data.relation}</td>
-                    </tr>
+                    <th scope="row">${count}</th>
+                    <td><a href="/editcontactable.html?id=${data.id}">${data.name}</a></td>
+                    <td><a href="/editcontactable.html?id=${data.id}">${data.relation}</a></td>
+                    <td><a href="/editcontactable.html?id=${data.id}">${data.phone}</a></td>
+                    <td class="text-truncate"><a href="/editcontactable.html?id=${data.id}">${data.address}</a></td>
                 `;
 
-                item.addEventListener("click", e => {
+                toggleEdit.addEventListener("click", e => {
                     goTo("./editcontactable.html?id=" + data.id);
                 });
+                item.appendChild(toggleEdit);
+
+                toggleDelete.addEventListener("click", e => {
+                    alert('delete');
+                });
+                item.appendChild(toggleDelete);
 
                 document.querySelector("#list-data").appendChild(item);
             });
@@ -79,8 +102,5 @@ function openImageInNewWindow(e) {
         newTab.document.body.innerHTML = e.innerHTML;
     }, 500);
     return false;
-}
-function viewContactableDetail(e) {
-    console.log(e);
 }`;
 document.body.appendChild(js);

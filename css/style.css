@@ -181,7 +181,7 @@ ul {
     z-index: 1;
     width: max-content;
     color: var(--secondary-color);
-    font-size: 10px;
+    font-size: 12px;
     background-color: var(--black-color);
     border-radius: 4px;
     padding: 0.5rem;
@@ -202,7 +202,7 @@ ul {
 }
 
 .tooltip-top-title {
-    top: -40px;
+    top: -45px;
     left: -50%;
 }
 
