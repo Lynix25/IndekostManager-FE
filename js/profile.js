@@ -1,8 +1,11 @@
-import { APIGet } from "./api.js";
-import { ServiceURL } from "./config.js";
+import { APIDelete, APIGet, APIPost } from "./api.js";
+import { showModalConfirmation } from "./component/modal.js";
+import { Toast } from "./component/toast.js";
+import { Constant, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
+import { showModalForm } from "./createcontactable.js";
 import { logout } from "./main.js";
-import { addCustomEventListener, goTo, UNIXtimeConverter } from "./utils.js";
+import { addCustomEventListener, getFormValue, goTo, handleFormSubmited, UNIXtimeConverter } from "./utils.js";
 
 APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     let user = res.data.data.user;
@@ -40,7 +43,7 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
                 toggleEdit.classList.add("text-center");
                 toggleEdit.innerHTML = `
                     <div class="hover-text">
-                        <span class="tooltip-text tooltip-top-title">Ubah</span>
+                        <span class="tooltip-text tooltip-top-toggle">Ubah</span>
                         <span id="back"><a href="#"><i class="fa-solid fa-pencil"></i></a></span>
                     </div>`;
                     
@@ -48,7 +51,7 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
                 toggleDelete.classList.add("text-center");
                 toggleDelete.innerHTML = `
                     <div class="hover-text">
-                        <span class="tooltip-text tooltip-top-title">Hapus</span>
+                        <span class="tooltip-text tooltip-top-toggle">Hapus</span>
                         <span id="back"><a href="#"><i class="fa-solid fa-trash"></i></a></span>
                     </div>`;
                 
@@ -67,7 +70,19 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
                 item.appendChild(toggleEdit);
 
                 toggleDelete.addEventListener("click", e => {
-                    alert('delete');
+                    showModalConfirmation(
+                        Constant.modalType.DELETECONFIRMATION, 
+                        'Hapus Kontak Alternatif', 
+                        'Anda yakin ingin menghapus kontak alternatif?', 
+                        'Hapus', 'Batal', () => {
+                            APIDelete(ServiceURL.User.deleteContactable(getCookie('id')) + data.id).then(response => {
+                                Toast(Constant.httpStatus.SUCCESS, response.data.message);
+                                setTimeout(function() { goTo('./profile.html') }, 500);
+                            }).catch(err => {
+                                Toast(Constant.httpStatus.ERROR, err?.message);
+                            })
+                        }
+                    );
                 });
                 item.appendChild(toggleDelete);
 
@@ -88,7 +103,7 @@ addCustomEventListener("show-tenant-info", e => {
 });
 
 addCustomEventListener("add-alternatif-contact", e => {
-    goTo("./createcontactable.html");
+    showModalForm(Constant.modalType.FORM, 'Tambah Kontak Alternatif', 'Simpan');
 })
 
 let eLogout = document.getElementById("logout");

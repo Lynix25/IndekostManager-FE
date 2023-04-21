@@ -3,6 +3,10 @@ export const SECRET = "indekossecret";
 
 // ====================================== CONSTANT =======================================
 export const Constant = {
+    modalType: {
+        FORM: "form",
+        DELETECONFIRMATION: "delete"
+    },
     httpStatus: {
         ERROR: "error",
         SUCCESS: "success",
