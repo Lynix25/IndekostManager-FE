@@ -191,6 +191,11 @@ ul {
     visibility: visible;
 }
 
+.tooltip-top-toggle {
+    top: -30px;
+    right: -120%;
+}
+
 .tooltip-top-icon {
     top: -20px;
     left: 10%;
