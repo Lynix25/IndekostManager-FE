@@ -13,3 +13,8 @@
 #identity-image img {
     width: 100%;
 }
+
+.contactable-table-data {
+    max-width: 5rem;
+    min-width: 3rem;
+}

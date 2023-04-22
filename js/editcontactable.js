@@ -2,7 +2,7 @@ import { APIGet, APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { getFormValue, getUpdateFormValue, getURLParam, handleFormSubmited } from "./utils.js";
+import { getFormValue, getUpdateFormValue, getURLParam, goTo, handleFormSubmited } from "./utils.js";
 
 APIGet(ServiceURL.User.getContactable(getCookie('id')) + getURLParam('id')).then(res => {
     let contactablePerson = res.data.data[0];
@@ -29,6 +29,7 @@ handleFormSubmited(e => {
     APIPut(ServiceURL.User.editContactable(getCookie('id')) + getURLParam("id"), data).then(response => {
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
+        setTimeout(function() { goTo('./profile.html') }, 500);
     }).catch(err => {
         Toast(Constant.httpStatus.ERROR, err?.message);
     });

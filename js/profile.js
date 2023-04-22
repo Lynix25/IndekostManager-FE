@@ -40,28 +40,44 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
                 count++;
 
                 let toggleEdit = document.createElement("td");
-                toggleEdit.classList.add("text-center");
+                toggleEdit.classList.add("text-center", "hover");
                 toggleEdit.innerHTML = `
                     <div class="hover-text">
                         <span class="tooltip-text tooltip-top-toggle">Ubah</span>
-                        <span id="back"><a href="#"><i class="fa-solid fa-pencil"></i></a></span>
+                        <span id="edit"><a href="#"><i class="fa-solid fa-pencil"></i></a></span>
                     </div>`;
                     
                 let toggleDelete = document.createElement("td");
-                toggleDelete.classList.add("text-center");
+                toggleDelete.classList.add("text-center", "hover");
                 toggleDelete.innerHTML = `
                     <div class="hover-text">
                         <span class="tooltip-text tooltip-top-toggle">Hapus</span>
-                        <span id="back"><a href="#"><i class="fa-solid fa-trash"></i></a></span>
+                        <span id="delete"><a href="#"><i class="fa-solid fa-trash"></i></a></span>
                     </div>`;
                 
                 let item = document.createElement("tr");
                 item.innerHTML = `
                     <th scope="row">${count}</th>
-                    <td><a href="/editcontactable.html?id=${data.id}">${data.name}</a></td>
-                    <td><a href="/editcontactable.html?id=${data.id}">${data.relation}</a></td>
-                    <td><a href="/editcontactable.html?id=${data.id}">${data.phone}</a></td>
-                    <td class="text-truncate"><a href="/editcontactable.html?id=${data.id}">${data.address}</a></td>
+                    <td class="contactable-table-data text-truncate">
+                        <a href="/editcontactable.html?id=${data.id}">
+                            ${data.name}
+                        </a>
+                    </td>
+                    <td class="contactable-table-data text-truncate">
+                        <a href="/editcontactable.html?id=${data.id}">
+                            ${data.relation}
+                        </a>
+                    </td>
+                    <td class="text-truncate" style="max-width: 8rem; min-width: 8rem;">
+                        <a href="/editcontactable.html?id=${data.id}">
+                            ${data.phone}
+                        </a>
+                    </td>
+                    <td class="text-truncate" style="max-width: 18rem; min-width: 8rem;">
+                        <a href="/editcontactable.html?id=${data.id}">
+                            ${data.address}
+                        </a>
+                    </td>
                 `;
 
                 toggleEdit.addEventListener("click", e => {
@@ -90,7 +106,7 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
             });
         }
     });
-}) 
+});
 
 addCustomEventListener("show-room-info", e => {
     document.getElementById("tenant-information").setAttribute("hidden", "");
@@ -104,7 +120,7 @@ addCustomEventListener("show-tenant-info", e => {
 
 addCustomEventListener("add-alternatif-contact", e => {
     showModalForm(Constant.modalType.FORM, 'Tambah Kontak Alternatif', 'Simpan');
-})
+});
 
 let eLogout = document.getElementById("logout");
 logout(eLogout);
