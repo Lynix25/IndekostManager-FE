@@ -3,6 +3,16 @@ export const SECRET = "indekossecret";
 
 // ====================================== CONSTANT =======================================
 export const Constant = {
+    userAttribute: {
+        maritalStatus: {
+            MARRIED: "Menikah",
+            SINGLE: "Lajang"
+        },
+        gender: {
+            LAKILAKI: "Laki-laki",
+            PEREMPUAN: "Perempuan"
+        }
+    },
     modalType: {
         FORM: "form",
         DELETECONFIRMATION: "delete"

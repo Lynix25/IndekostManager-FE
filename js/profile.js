@@ -96,7 +96,7 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
                                 setTimeout(function() { goTo('./profile.html') }, 500);
                             }).catch(err => {
                                 Toast(Constant.httpStatus.ERROR, err?.message);
-                            })
+                            });
                         }
                     );
                 });
