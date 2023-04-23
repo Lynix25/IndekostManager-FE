@@ -48,7 +48,7 @@ export const showModalForm = (type, title, actionBtnLabel = 'Simpan') => {
                                     </div>
                                     <div class="col p-0 pb-2">
                                         <label class="form-label" for="phone">No. Telepon</label>
-                                        <input class="form-control" type="number" name="phone" id="phone" required>
+                                        <input class="form-control" type="number" name="phone" id="phone" minlength="10" required>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -69,7 +69,6 @@ export const showModalForm = (type, title, actionBtnLabel = 'Simpan') => {
     modalWrap.querySelector('.modal-action-btn').addEventListener('click', e => {
         let form = document.querySelector("form");
         let data = getFormValue(form);
-        console.log(data);
 
         if(data.name.length == 0 || data.relation.length == 0 || data.phone.length == 0 || data.address.length == 0) 
             Toast(Constant.httpStatus.ERROR, "Semua kolom harus diisi");

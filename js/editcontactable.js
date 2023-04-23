@@ -2,7 +2,7 @@ import { APIGet, APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { getFormValue, getUpdateFormValue, getURLParam, goTo, handleFormSubmited } from "./utils.js";
+import { getFormValue, getURLParam, goTo, handleFormSubmited } from "./utils.js";
 
 APIGet(ServiceURL.User.getContactable(getCookie('id')) + getURLParam('id')).then(res => {
     let contactablePerson = res.data.data[0];
