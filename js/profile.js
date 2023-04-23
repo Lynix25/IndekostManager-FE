@@ -1,7 +1,7 @@
 import { APIDelete, APIGet, APIPost } from "./api.js";
 import { showModalConfirmation } from "./component/modal.js";
 import { Toast } from "./component/toast.js";
-import { Constant, ServiceURL } from "./config.js";
+import { Constant, Event, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 import { showModalForm } from "./createcontactable.js";
 import { logout } from "./main.js";
@@ -93,7 +93,7 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
                         'Hapus', 'Batal', () => {
                             APIDelete(ServiceURL.User.deleteContactable(getCookie('id')) + data.id).then(response => {
                                 Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                                setTimeout(function() { goTo('./profile.html') }, 500);
+                                setTimeout(function() { goTo('./profile.html') }, Event.timeout);
                             }).catch(err => {
                                 Toast(Constant.httpStatus.ERROR, err?.message);
                             });

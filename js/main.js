@@ -1,6 +1,6 @@
 import { APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { Constant, ServiceURL } from "./config.js";
+import { Constant, Event, ServiceURL } from "./config.js";
 import { deleteCookie, getCookie } from "./cookiemanagement.js";
 import { goTo } from "./utils.js";
 
@@ -24,7 +24,7 @@ export function logout(element) {
         APIPut(ServiceURL.User.logout(getCookie('id'))).then(res => {
             deleteCookie();
             Toast(Constant.httpStatus.SUCCESS, res.data.message);
-            setTimeout(function() { goTo('./login.html') }, 500);
+            setTimeout(function() { goTo('./login.html') }, Event.timeout);
         }).catch(err => {
             if(err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
             else Toast(Constant.httpStatus.ERROR, err.data.message);

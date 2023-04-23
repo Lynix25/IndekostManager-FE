@@ -1,6 +1,6 @@
 import { APIGet, APIPost } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { Constant, ServiceURL } from "./config.js";
+import { Constant, Event, ServiceURL } from "./config.js";
 import { getFormValue, goTo, handleFormSubmited } from "./utils.js";
 import { getCookie, setCookie } from "./cookiemanagement.js";
 
@@ -38,7 +38,7 @@ function login(e) {
             let currLoginId = currLoginAccount.user.id
             if(document.cookie.length > 0 && currLoginId === getCookie('id')) {
                 Toast(Constant.httpStatus.WARNING, "User sudah login");
-                setTimeout(function() { goTo('./home.html') }, 500);
+                setTimeout(function() { goTo('./home.html') }, Event.timeout);
             } else {
                 APIPost(ServiceURL.User.login, data).then(response => {
                     if (response.status == 200) {
@@ -47,7 +47,7 @@ function login(e) {
                         setCookie("role", response.data.data.user.role.name, response.data.data.token.expiresIn);
             
                         Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                        setTimeout(function() { goTo('./home.html') }, 500);
+                        setTimeout(function() { goTo('./home.html') }, Event.timeout);
                     }
                 }).catch(err => {
                     if(err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);

@@ -2,6 +2,10 @@ export const END_POINT = "http://localhost:8123";
 export const SECRET = "indekossecret";
 
 // ====================================== CONSTANT =======================================
+export const Event = {
+    timeout: 1500
+}
+
 export const Constant = {
     userAttribute: {
         maritalStatus: {
