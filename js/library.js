@@ -70,7 +70,6 @@ if (currentPath !== "/login.html" && currentPath !== "/forgotpassword.html")
     document.addEventListener('DOMContentLoaded', e => {
         let navBar = document.createElement("nav");
         navBar.classList.add("navbar", "navbar-expand-lg", "sticky-top");
-        // nav class="navbar navbar-expand-lg sticky-top"
 
         // Menus Only For Admin
         let menu = "";
@@ -204,7 +203,7 @@ function logout() {
     toastr.success("Berhasil logout", "SUCCESS");
     setTimeout(function() {
         window.location.href = "/login.html";
-    }, 500);
+    }, 1500);
 }
 
 {/* <script src="https://kit-pro.fontawesome.com/releases/v5.10.1/js/pro.min.js" data-auto-fetch-svg></script>
