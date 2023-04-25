@@ -22,6 +22,10 @@ export const Constant = {
     }
 }
 
+export const PAGE = {
+    HOME : "./home.html"
+}
+
 export const CONTENT_TYPE = {
     FORM: "multipart/form-data"
 }

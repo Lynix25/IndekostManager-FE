@@ -1,5 +1,6 @@
+import { APIGet } from "./api.js";
 import { ServiceURL } from "./config.js";
-import { APIGet, goTo } from "./utils.js";
+import { goTo } from "./utils.js";
 
 const searchBox = document.getElementById("search");
 let announcementList = []
@@ -8,12 +9,6 @@ searchBox.addEventListener("input", e => {
     const search = e.target.value.toLowerCase();
     for(let i=0; i < announcementList.length; i++) {
         const isVisible = announcementList[i].title.toLowerCase().includes(search);
-        
-        // console.log("=========================");
-        // console.log(isVisible);
-        // console.log(search);
-        // console.log(announcementList[i].title.toLowerCase());
-        // console.log("=========================");
 
         if(isVisible) announcementList[i].element.style.display = "";
         else announcementList[i].element.style.display = "none";

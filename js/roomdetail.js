@@ -1,14 +1,15 @@
+import { APIGet } from "./api.js";
 import { Constant, ServiceURL } from "./config.js";
-import { APIGet, getURLParam, goTo } from "./utils.js";
+import { getParamOnURL, goTo } from "./utils.js";
 
-APIGet(ServiceURL.Room.getById.replace("$1", getURLParam("id"))).then(res => {
-    let room = res.data.data;
-    document.querySelector(".name").innerHTML = room.room.name;
-    document.querySelector(".allotment").innerHTML = room.room.allotment;
-    document.querySelector(".floor").innerHTML = 'Lantai ' + room.room.floor;
-    document.querySelector(".description").innerHTML = room.room.description;
+APIGet(ServiceURL.Room.getById(getParamOnURL("id"))).then(res => {
+    let room = res.data.data.room;
+    document.querySelector(".name").innerHTML = room.name;
+    document.querySelector(".allotment").innerHTML = room.allotment;
+    document.querySelector(".floor").innerHTML = 'Lantai ' + room.floor;
+    document.querySelector(".description").innerHTML = room.description;
 
-    let status = room.tenant >= room.room.quota ? 'Kamar penuh' : 'Tersedia';
+    let status = room.tenant >= room.quota ? 'Kamar penuh' : 'Tersedia';
     document.querySelector(".status").classList.add(status === 'Kamar penuh' ? "text-danger" : "text-success");
     document.querySelector(".status").innerHTML = status;
 

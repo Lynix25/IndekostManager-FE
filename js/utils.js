@@ -144,6 +144,24 @@ function isObjectEmpty(object) {
     return Object.keys(object).length <= 0 ? true : false;
 }
 
+export function map(array, callback) {
+    let temp = array.map(callback);
+    let result = "";
+    for (let i = 0; i < temp.length; i++) {
+        result += temp[i];
+    }
+
+    return result;
+}
+
+export function range(stop, start = 0, step = 1) {
+    stop--;
+    return Array.from(
+        { length: (stop - start) / step + 1 },
+        (value, index) => start + index * step
+    );
+}
+
 /**
  * 
  * @param {*} * 
@@ -159,20 +177,34 @@ export function handleFormSubmited(callback, formSelector = "form", preventDefau
     })
 }
 
-export function addCustomEventListener(eventName, callback, element, triggerElement, eventConfig = {}, triggerEvent = "click", preventDefault = true) {
-    element = element || document.querySelector(`[type=${eventName}]`);
-    triggerElement = triggerElement || element;
+function getElementUntilElementAvailable(selectors) {
+    return new Promise((resolve, reject) => {
+        let intervalId = setInterval(() => {
+            let searchElement = document.querySelector(selectors);
+            if (searchElement) {
+                clearInterval(intervalId);
+                resolve(searchElement);
+            }
+        }, 50);
+    })
+}
+
+export async function addCustomEventListener(eventName, callback, element, triggerElement, triggerEvent = "click", preventDefault = false, stopBubbling = false) {
+    element = element || document;
     element.addEventListener(eventName, e => {
         callback(e);
     });
+
+    triggerElement = triggerElement || await getElementUntilElementAvailable(`[type=${eventName}]`);
     triggerElement.addEventListener(triggerEvent, e => {
         const event = new CustomEvent(eventName, {
             detail: {
                 target: triggerElement
             }
         });
-        element.dispatchEvent(event);
         if (preventDefault) e.preventDefault();
+        if (stopBubbling) e.stopPropagation();
+        element.dispatchEvent(event);
     });
 }
 
@@ -280,8 +312,15 @@ export function getRoleOfUser() {
 }
 
 export function isOwnerOrAdmin() {
-    if(getRoleOfUser() === Constant.role.OWNER || getRoleOfUser() === Constant.role.ADMIN) return true;
+    if (getRoleOfUser() === Constant.role.OWNER || getRoleOfUser() === Constant.role.ADMIN) return true;
     else return false;
+}
+
+export function createElementFromString(htmlString) {
+    var div = document.createElement('div');
+    div.innerHTML = htmlString.trim();
+
+    return div.firstChild;
 }
 
 // ====================================== DATE ======================================

@@ -39,6 +39,7 @@ function login(e) {
             setTimeout(function() { goTo('./home.html') }, 300);
         }
     }).catch(err => {
+        console.log(err);
         let message = "Unknown Error";
         if (err.data.message.toLowerCase() === "invalid username or password") message = err.data.message;
         else message = "User not registered";
