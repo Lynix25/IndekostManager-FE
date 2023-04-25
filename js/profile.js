@@ -248,5 +248,9 @@ function openImageInNewWindow(e) {
         newTab.document.body.innerHTML = e.innerHTML;
     }, 500);
     return false;
-}`;
+}
+function requestChangeRoom() {
+    window.location.href = "/servicerequest.html"
+}
+`;
 document.body.appendChild(js);

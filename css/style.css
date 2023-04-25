@@ -251,3 +251,7 @@ input::-webkit-inner-spin-button {
 .hover {
     cursor: pointer;
 }
+
+.input-group-text-lable {
+    width: 115px;
+}
