@@ -11,6 +11,18 @@
 
     <link rel="stylesheet" href="css/profile.css">
     <script defer type="module" src="js/profile.js"></script>
+    <style>
+        .input-group-text {
+            min-width: 100px;
+        }
+        .font-italic{
+            font-style: italic;
+            font-size: smaller;
+        }
+        h7 {
+            font-weight: bolder;
+        }
+    </style>
 </head>
 
 <body>
@@ -125,26 +137,6 @@
                             <tbody id="list-data"></tbody>
                         </table>
                     </div>
-                    <!-- <div class="col">
-                        <div>
-                            <div class="title">Nama</div>
-                            <div id="alterName">name</div>
-                        </div>
-                        <div>
-                            <div class="title">Nomor Telfon</div>
-                            <div id="alterPhone">phone</div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div>
-                            <div class="title">Alamat</div>
-                            <div id="alterAddress">address</div>
-                        </div>
-                        <div>
-                            <div class="title">Hubungan</div>
-                            <div id="alterRelation">relation</div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
             <div id="room-information" class="row border rounded mb-3 pb-3" hidden>
@@ -152,25 +144,80 @@
                     style="background-color: var(--primary-color);">
                     Informasi Kamar
                 </div>
-                <div class="col">
-                    <div>
-                        <div class="title">Nama Kamar</div>
-                        <div id="roomName">name</div>
+                <div class="p-4 mx-auto">
+                    <div class="d-flex gap-3">
+                        <div class="w-50 mb-1">
+                            <div class="input-group mb-1">
+                                <lable class="input-group-text">Nama Kamar</lable>
+                                <div class="name form-control"></div>
+                            </div>
+                            <div class="input-group">
+                                <lable class="input-group-text">Kategori</lable>
+                                <div class="allotment form-control"></div>
+                            </div>
+                        </div>
+                        <div class="w-50 mb-1">
+                            <div class="input-group mb-1">
+                                <lable class="input-group-text">Lokasi</lable>
+                                <div class="floor form-control"></div>
+                            </div>
+                            <div class="input-group">
+                                <lable class="input-group-text">Status</lable>
+                                <div class="status form-control fw-bold"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="title">Lantai</div>
-                        <div id="roomFloor">floor</div>
+                    <div class="input-group">
+                        <lable class="input-group-text">Deskripsi</lable>
+                        <div class="description form-control"></div>
                     </div>
-                </div>
-                <div class="col">
-                    <div>
-                        <div class="title">Kapasitas</div>
-                        <div id="roomCapacity">capacity</div>
+                    <hr>
+                    <h7 class="m-0 mt-2">Spesifikasi dan Fasilitas Kamar</h7>
+                    <div class="d-flex flex-wrap row align-items-start my-2 gap-3" id="category-group1">
+                        <div class="col p-0 py-1">
+                            <div class="input-group-text">
+                                <h6 class="m-0" id="category1"></h6>
+                            </div>
+                            <ul class="p-1" id="kamar-tidur"></ul>
+                        </div>
+                        <div class="col p-0 py-1">
+                            <div class="input-group-text">
+                                <h6 class="m-0" id="category2"></h6>
+                            </div>
+                            <ul class="p-1" id="kamar-mandi"></ul>
+                        </div>
+                        <div class="col p-0 py-1">
+                            <div class="input-group-text">
+                                <h6 class="m-0" id="category3"></h6>
+                            </div>
+                            <ul class="p-1" id="furniture"></ul>
+                        </div>
                     </div>
-                    <div>
-                        <div class="title">Harga</div>
-                        <div id="roomPrice">price</div>
+                    <div class="d-flex flex-wrap row align-items-start my-2 gap-3" id="category-group2">
+                        <div class="col p-0 py-1">
+                            <div class="input-group-text">
+                                <h6 class="m-0" id="category4"></h6>
+                            </div>
+                            <ul class="p-1" id="alat-elektronik"></ul>
+                        </div>
+                        <div class="col p-0 py-1">
+                            <div class="input-group-text">
+                                <h6 class="m-0" id="category5"></h6>
+                            </div>
+                            <ul class="p-1" id="fasilitas-lain"></ul>
+                        </div>
                     </div>
+                    <hr>
+                    <h7 class="mt-2">Harga Sewa Kamar</h7>
+                    <table class="table table-striped text-center mt-2">
+                        <thead>
+                            <tr>
+                                <th scope="col">Kapasitas</th>
+                                <th scope="col">Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody id="price-data"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
