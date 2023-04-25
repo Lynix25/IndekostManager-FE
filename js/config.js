@@ -44,7 +44,7 @@ export const Constant = {
 // ====================================== END POINT ======================================
 export const ServiceURL = {
     MasterData: {
-        getRole: "/room",
+        getRole: "/role",
         getRoomDetailCategory: "/room/category"
     },
     Account: {
