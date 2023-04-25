@@ -29,7 +29,6 @@ handleFormSubmited(e => {
     APIPut(ServiceURL.User.editContactable(getCookie('id')) + getURLParam("id"), data).then(response => {
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
-        setTimeout(function() { goTo('./profile.html') }, Event.timeout);
     }).catch(err => {
         Toast(Constant.httpStatus.ERROR, err?.message);
     });
