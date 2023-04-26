@@ -7,6 +7,13 @@ export const Event = {
 }
 
 export const Constant = {
+    serviceRequestStatus: {
+        REJECTED: "Ditolak", 
+        SUBMITTED: "Menunggu Konfirmasi", 
+        ACCEPTED: "Diterima", 
+        ON_PROCESS: "Dalam Pengerjaan", 
+        COMPLETED: "Selesai"
+    },
     userAttribute: {
         maritalStatus: {
             MARRIED: "Menikah",
@@ -105,8 +112,13 @@ export const ServiceURL = {
         editPrice: (id) => `/room/${id}/prices`,
         removePrice: (id) => `/room/${id}/prices`
     },
-    Service:{
-        getAll: "/service"
+    Service: {
+        getAll: "/service",
+        getById: (id) => `/service/${id}`
+    },
+    Task: {
+        create: "/task",
+        getAll: (status) => `/task?status=${status}`
     },
     Announcement: {
         getAll: "/announcement",

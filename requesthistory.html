@@ -7,22 +7,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>In D'Kos</title>
 
-    <script src="js/library.js"></script>
+    <style>
+        .item-card {
+            background-color: rgba(222, 242, 255, 0.685);
+        }
+    </style>
 
+    <script src="js/library.js"></script>
     <script defer type="module" src="js/requesthistory.js"></script>
 </head>
 
 <body>
     <div class="frame card p-4 mx-auto my-4">
-        <h5 class="text-center">History Pembayaran</h5>
-        <hr/>
-        <form class="input-group mb-4" role="search">
-            <input type="text" name="text" id="text" class="form-control border-end-0" placeholder="Search" />
-            <button type="button" id="search" class="input-group-text bg-transparent">
+        <div class="page-title my-4">
+            <div class="hover-text">
+                <span class="tooltip-text tooltip-top-title">Kembali</span>
+                <span id="back"><a href="#"><i class="fa fa-chevron-left"></i></a></span>
+            </div>
+            <h5 class="text-center m-0 w-100">History Pengajuan Layanan</h5>
+            <br/><br/>
+        </div>
+        <form class="card-body input-group" role="search">
+            <input type="text" id="search" name="text" id="text" class="form-control border-end-0" placeholder="Cari ..." />
+            <button type="button" class="input-group-text bg-transparent">
                 <i class="fas fa-search text-center"></i>
             </button>
         </form>
-        <ul id="request-list">
+        <ul id="request-list" class="card-body">
             <!-- <li class="border rounded px-3 py-1 m-auto" onclick="e => {
                 toTaskDetail(e)}">
                 <div class="d-flex justify-content-between align-items-center">
@@ -50,6 +61,7 @@
             </li> -->
         </ul>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
-
 </html>

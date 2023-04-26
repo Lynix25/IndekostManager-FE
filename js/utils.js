@@ -238,29 +238,20 @@ export function getTempID() {
 }
 
 export function statusToString(statusCode) {
-    /**
-     * Status state
-     *
-     * -1 rejected
-     * 0 submited
-      * 1 approved
-     * 2 on prosses
-     * 3 completed
-     */
-    if (statusCode === -1) {
-        return ["badge-red", "Dibatalkan"];
+    if (statusCode === Constant.serviceRequestStatus.REJECTED) {
+        return ["badge-red", Constant.serviceRequestStatus.REJECTED];
     }
-    if (statusCode === 0) {
-        return ["badge-yellow", "Menunggu Konfirmasi"];
+    if (statusCode === Constant.serviceRequestStatus.SUBMITTED) {
+        return ["badge-yellow", Constant.serviceRequestStatus.SUBMITTED];
     }
-    if (statusCode === 2) {
-        return ["badge-blue", "Diterima"];
+    if (statusCode === Constant.serviceRequestStatus.ACCEPTED) {
+        return ["badge-blue", Constant.serviceRequestStatus.ACCEPTED];
     }
-    if (statusCode === 1) {
-        return ["badge-blue", "Dalam Pengerjaan"];
+    if (statusCode === Constant.serviceRequestStatus.ON_PROCESS) {
+        return ["badge-blue", Constant.serviceRequestStatus.ON_PROCESS];
     }
-    if (statusCode === 3) {
-        return ["badge-color", "Selesai"];
+    if (statusCode === Constant.serviceRequestStatus.COMPLETED) {
+        return ["badge-color", Constant.serviceRequestStatus.COMPLETED];
     }
 }
 

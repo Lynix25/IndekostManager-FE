@@ -1,10 +1,10 @@
 import { APIGet } from "./api.js";
-import { goTo, statusToString, UNIXtimeConverter } from "./utils.js";
+import { ServiceURL } from "./config.js";
+import { goBack, goTo, statusToString, UNIXtimeConverter } from "./utils.js";
 
-
-APIGet("/task").then(res => {
+APIGet(ServiceURL.Task.getAll('')).then(res => {
     res.data.data.forEach(service => {
-        console.log(service);
+        // console.log(service);
         addRequest(service);
     });
 })
@@ -13,35 +13,49 @@ function addRequest(taskObject) {
     let requestList = document.querySelector("#request-list");
     let task = document.createElement("li");
     task.setAttribute("data", taskObject.id);
-    // task.classList.add("border", "rounded", "px-3", "py-1", "m-auto")
-    task.classList.add("item")
+    task.classList.add("item-card", "p-3");
+    task.classList.add("item");
     let [color, status] = statusToString(taskObject.status);
-    APIGet("/service/" + taskObject.serviceId).then(res => {
-        task.innerHTML = `<div class="d-flex justify-content-between align-items-center">
-    <div>
-        <div class="order-room">${res.data.serviceName}</div>
-        <div class="order-date">${UNIXtimeConverter(taskObject.createdDate, "D/MMM/YYYY hh:mm")}</div>
-    </div>
-    <div class="badge ${color}">${status}</div>
-</div>
-<hr style="margin: .5rem 0px;">
-<div class="d-flex justify-content-between">
-    <div class="d-flex">
-        <div class="text-center">
-            <i class="fa-solid ${"fa-task"}"></i>
+    APIGet(ServiceURL.Service.getById(taskObject.serviceId)).then(res => {
+        task.innerHTML = `
+        <div class="row d-flex justify-content-between align-items-center">
+            <div class="col-sm-6 p-0">
+                <div class="fw-bold mb-2">${res.data.serviceName}: ${res.data.variant}</div>
+                <div class="row">
+                    <div class="small col-sm-6 p-0">Diajukan pada</div>
+                    <div class="small fw-bold col-sm-6 p-0 text-success">${UNIXtimeConverter(taskObject.createdDate, "DD MMMM YYYY hh:mm")}</div>
+                </div>
+                <div class="row">
+                    <div class="small col-sm-6 p-0">Harap selesai sebelum</div>
+                    <div class="small fw-bold col-sm-6 p-0 text-danger">${UNIXtimeConverter(taskObject.taskDate, "DD MMMM YYYY hh:mm")}</div>
+                </div>
+            </div>
+            <div class="col-sm-6 text-end p-0">
+                <div class="badge ${color} my-2">${status}</div>
+            </div>
         </div>
-        <div class="">
-            <div>${taskObject.summary}</div>
-            <div>Permintaan pengerjaan: ${UNIXtimeConverter(taskObject.taskDate, "D/M/YYYY hh:mm")}</div>
-        </div>
-    </div>
-    </div>`
+        <hr style="margin: .5rem 0px;">
+        <div class="d-flex justify-content-between">
+            <div class="d-flex">
+                <div class="text-center">
+                    <i class="fa fa-list-alt" style="font-size: var(--font-style)"></i>
+                </div>
+                <div class="mx-2">
+                    <div style="font-style: italic">${taskObject.summary}</div>
+                </div>
+            </div>
+        </div>`
         // <div class="">
         //     <button class="btn bg-primary">Komplain</button>
         // </div>
     })
     task.addEventListener("click", e => {
         goTo('./taskdetail.html?id=' + e.currentTarget.getAttribute("data"));
-    })
+    });
+    
     requestList.appendChild(task);
 }
+
+document.querySelector("#back").addEventListener("click", e => {
+    goBack();
+});
