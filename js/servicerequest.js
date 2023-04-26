@@ -43,6 +43,8 @@ import { Toast } from "./component/toast.js";
 handleFormSubmited((e) => {
     let data = getFormValue(e.target);
     data["taskDate"] = new Date(data.taskDate).getTime();
+    data["priceAdjustment"] = document.querySelector("#priceAdjustment").value;
+    // console.log(data);
     delete data.category;
     APIPost(ServiceURL.Task.create, data).then(response => {
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
@@ -126,6 +128,7 @@ function updatePrice(price) {
     else {
         document.querySelector("#price").parentNode.style.display = "none";
     }
+    document.querySelector("#priceAdjustment").setAttribute("value", price);
 }
 
 document.querySelector("#back").addEventListener("click", e => {

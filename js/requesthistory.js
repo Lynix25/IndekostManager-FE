@@ -15,6 +15,7 @@ function addRequest(taskObject) {
     task.setAttribute("data", taskObject.id);
     task.classList.add("item-card", "p-3");
     task.classList.add("item");
+    task.setAttribute("style", "cursor: pointer")
     let [color, status] = statusToString(taskObject.status);
     APIGet(ServiceURL.Service.getById(taskObject.serviceId)).then(res => {
         task.innerHTML = `

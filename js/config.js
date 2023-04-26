@@ -118,7 +118,9 @@ export const ServiceURL = {
     },
     Task: {
         create: "/task",
-        getAll: (status) => `/task?status=${status}`
+        update: (id) => `/task/${id}`,
+        getAll: (status) => `/task?status=${status}`,
+        getById: (id) => `/task/${id}`,
     },
     Announcement: {
         getAll: "/announcement",

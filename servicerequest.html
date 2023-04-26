@@ -45,6 +45,7 @@
         <div class="card-body price-tag mb-2 alert alert-warning">
             <label for="price">Layanan ini dikenakan biaya sebesar:</label>
             <div id="price" name="price" class="fw-bold">Rp -</div>
+            <input id="priceAdjustment" hidden>
         </div>
         <div class="mb-2">
             <label for="taskDate" class="form-label">Waktu Pengerjaan</label>
@@ -63,11 +64,7 @@
         </div>
         <div class="mb-2">
             <label for="summary" class="form-label">Penjelasan Pengajuan</label>
-            <input type="text" class="form-control" name="summary" id="summary" placeholder="Alasan atau tujuan pengajuan" required>
-        </div>
-        <div class="mb-2">
-            <label for="notes" class="form-label">Catatan Lain</label>
-            <input type="text" class="form-control" name="notes" id="notes" placeholder="Informasi lain yang ingin ditambahkan">
+            <textarea type="text" class="form-control" name="summary" id="summary" placeholder="Alasan atau tujuan pengajuan" required></textarea>
         </div>
         <div class="card-footer text-center mt-4">
             <button class="btn btn-primary" type="submit">Buat</button>

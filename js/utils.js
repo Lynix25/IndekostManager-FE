@@ -251,7 +251,7 @@ export function statusToString(statusCode) {
         return ["badge-blue", Constant.serviceRequestStatus.ON_PROCESS];
     }
     if (statusCode === Constant.serviceRequestStatus.COMPLETED) {
-        return ["badge-color", Constant.serviceRequestStatus.COMPLETED];
+        return ["badge-green", Constant.serviceRequestStatus.COMPLETED];
     }
 }
 
