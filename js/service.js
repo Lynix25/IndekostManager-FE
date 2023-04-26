@@ -1,6 +1,6 @@
 import { APIGet, APIPost } from "./api.js";
 import { Constant, Event, ServiceURL } from "./config.js";
-import { getFormValue, goTo, handleFormSubmited } from "./utils.js";
+import { getFormValue, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 import { MasterService } from "./masterdata/masterservice.js"
 import { Toast } from "./component/toast.js";
 
@@ -37,7 +37,7 @@ APIGet(ServiceURL.Service.getAll).then(res => {
             let categoryItem = document.createElement("tr");
             categoryItem.innerHTML = `
                 <td class="text-truncate">${service.variant}</td>
-                <td class="text-center w-25">${service.price}</td>
+                <td style="width: 120px">Rp ${numberWithThousandsSeparators(service.price)}</td>
             `;
             document.querySelector("#service-list-category1").appendChild(categoryItem);
         }
@@ -46,7 +46,7 @@ APIGet(ServiceURL.Service.getAll).then(res => {
             let categoryItem = document.createElement("tr");
             categoryItem.innerHTML = `
                 <td class="text-truncate">${service.variant}</td>
-                <td class="text-center w-25">${service.price}</td>
+                <td style="width: 120px">Rp ${numberWithThousandsSeparators(service.price)}</td>
             `;
             document.querySelector("#service-list-category2").appendChild(categoryItem);
         }
@@ -55,7 +55,7 @@ APIGet(ServiceURL.Service.getAll).then(res => {
             let categoryItem = document.createElement("tr");
             categoryItem.innerHTML = `
                 <td class="text-truncate">${service.variant}</td>
-                <td class="text-center w-25">${service.price}</td>
+                <td style="width: 120px">Rp ${numberWithThousandsSeparators(service.price)}</td>
             `;
             document.querySelector("#service-list-category3").appendChild(categoryItem);
         }
@@ -64,7 +64,7 @@ APIGet(ServiceURL.Service.getAll).then(res => {
             let categoryItem = document.createElement("tr");
             categoryItem.innerHTML = `
                 <td class="text-truncate">${service.variant}</td>
-                <td class="text-center w-25">${service.price}</td>
+                <td style="width: 120px">Rp ${numberWithThousandsSeparators(service.price)}</td>
             `;
             document.querySelector("#service-list-category4").appendChild(categoryItem);
         }
