@@ -1,7 +1,8 @@
 import { getCurrentPath, goTo } from "./utils.js";
 import { getCookie } from "./cookiemanagement.js"
+import { PAGE } from "./config.js";
 
-const whiteListPage = ["login", "initialdata", "forgotpassword"].map(item => `/${item}.html`)
+const whiteListPage = ["initialdata", "forgotpassword"].map(item => `/${item}.html`)
 
 checkIsUserLogIn();
 
@@ -12,4 +13,8 @@ function checkIsUserLogIn() {
     }
     let userToken = getCookie("tokens");
     if (userToken === undefined) goTo('./login.html');
+
+    if (currentPath === PAGE.LOGIN){ 
+        goTo(PAGE.HOME);
+    }
 }

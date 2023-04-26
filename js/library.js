@@ -44,7 +44,6 @@ document.head.appendChild(axiosJs);
 // document.head.appendChild(jQueryJs);
 
 let navbarJs = document.createElement("script");
-navbarJs.setAttribute("defer","");
 navbarJs.setAttribute("type", "module");
 navbarJs.setAttribute("src", "js/component/navbar.js");
 document.head.appendChild(navbarJs);
@@ -53,38 +52,3 @@ let mainJs = document.createElement("script");
 mainJs.setAttribute("type", "module");
 mainJs.setAttribute("src", "js/main.js");
 document.head.appendChild(mainJs);
-
-// Perlu disempurnakan lagi:
-// 1. harusnya ada panggil endpoint logout
-// 2. gimana caranya biar bisa import dari yang sudah ada
-function logout() {
-    const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i];
-        const eqPos = cookie.indexOf("=");
-        const cookieName = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
-        document.cookie = cookieName + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    }
-    toastr.options = {
-        "closeButton": false,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": true,
-        "positionClass": "toast-bottom-right",
-        "preventDuplicates": false,
-        // "onCloseClick": function() { console.log('close button clicked'); },
-        "showDuration": "300",
-        "hideDuration": "10",
-        "timeOut": "2000",
-        "extendedTimeOut": "500",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut",
-        "rtl": false
-      }
-    toastr.success("Berhasil logout", "SUCCESS");
-    setTimeout(function() {
-        window.location.href = "/login.html";
-    }, 1500);
-}

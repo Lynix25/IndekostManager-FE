@@ -1,46 +1,16 @@
-import { PAGE } from "../config.js";
-import { deleteCookie } from "../cookiemanagement.js";
-import { addCustomEventListener, createElementFromString, goTo, isMobileDevice } from "../utils.js";
-import { getCurrentPath, isOwnerOrAdmin } from "../utils.js"
+import { logout } from "../main.js";
+import { addCustomEventListener, createElementFromString, getCurrentPath, getElementUntilElementAvailable, isMobileDevice, isOwnerOrAdmin } from "../utils.js";
 
 const noNavbarPage = ["login", "forgotpassword", "initialdata"].map(item => `/${item}.html`);
-// const adminMenu = [
-//     {
-//         href: "agenda",
-//         name: "Agenda"
-//     },
-//     {
-//         href: "createroom",
-//         name: "Add Room"
-//     },
-//     {
-//         href: "roomlist",
-//         name: "Room List"
-//     },
-//     {
-//         href: "service",
-//         name: "Add Service"
-//     },
-//     {
-//         href: "registeruser",
-//         name: "Register User"
-//     },
-//     {
-//         href: "listuser",
-//         name: "List User"
-//     }
-// ]
 
-addCustomEventListener("logout", e => {
-    deleteCookie("tokens");
-    goTo(PAGE.HOME);
-})
+let currentPath = getCurrentPath();
+if (!noNavbarPage.includes(currentPath)) {
+    
+    addCustomEventListener("logout", e => {
+        logout();
+    })
 
-document.addEventListener("DOMContentLoaded", e => {
-    let currentPath = getCurrentPath();
-    if (!noNavbarPage.includes(currentPath)) {
-        // Menus Only For Admin
-        const adminMenu = `
+    const adminMenu = `
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
@@ -82,7 +52,7 @@ document.addEventListener("DOMContentLoaded", e => {
             </a>
         </li>`;
 
-        const tenantMenu = `
+    const tenantMenu = `
         <li class="nav-item">
             <a class="nav-link" href="/servicerequest.html">Pengajuan Layanan</a>
         </li>
@@ -91,7 +61,7 @@ document.addEventListener("DOMContentLoaded", e => {
         </li>
         `;
 
-        const navBar = !isMobileDevice() ? `
+    const navBar = !isMobileDevice() ? `
         <nav class="navbar navbar-expand-lg sticky-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="./home.html">
@@ -107,7 +77,7 @@ document.addEventListener("DOMContentLoaded", e => {
                         <li class="nav-item">
                             <a class="nav-link fw-bolder" aria-current="page" href="/home.html">Home</a>
                         </li>
-                        ${isOwnerOrAdmin() ? adminMenu : ""}
+                        ${isOwnerOrAdmin() ? adminMenu : tenantMenu}
                         <li class="nav-item dropdown">
                             <a class="nav-link" href="#" data-bs-toggle="dropdown">
                                 <i class="fa-solid fa-circle-user fs-4"></i>
@@ -115,20 +85,20 @@ document.addEventListener("DOMContentLoaded", e => {
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item" href="/profile.html">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
+                                    Profil
                                 </a>
                                 <a class="dropdown-item" href="/notification.html">
                                     <i class="fas fa-bell fa-sm fa-fw mr-2"></i>
-                                    Notifications
+                                    Notifikasi
                                 </a>
                                 <a class="dropdown-item" href="/settings.html">
                                     <i class="fad fa-cogs fa-sm fa-fw mr-2"></i>
-                                    Settings
+                                    Pengaturan
                                 </a>
                                 <hr class="dropdown-divider">
                                 <a type="logout" class="dropdown-item">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
-                                    Logout
+                                    Keluar
                                 </a>
                             </div>
                         </li>
@@ -158,7 +128,8 @@ document.addEventListener("DOMContentLoaded", e => {
                 <i class="fa-solid fa-money-bill-transfer"></i>
             </a>
         </nav>`
-        document.body.insertBefore(createElementFromString(navBar), document.body.firstChild);
-    }
-})
+    
+    let body = await getElementUntilElementAvailable("body");
+    body.insertBefore(createElementFromString(navBar), document.body.firstChild);
+}
 

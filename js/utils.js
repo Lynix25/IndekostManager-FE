@@ -177,14 +177,40 @@ export function handleFormSubmited(callback, formSelector = "form", preventDefau
     })
 }
 
-function getElementUntilElementAvailable(selectors) {
+export function getElementUntilElementAvailable(selectors) {
+    const TIME_OUT = 300;
     return new Promise((resolve, reject) => {
+        let time = 0;
         let intervalId = setInterval(() => {
             let searchElement = document.querySelector(selectors);
             if (searchElement) {
                 clearInterval(intervalId);
                 resolve(searchElement);
             }
+            if (time >= TIME_OUT) {
+                clearInterval(intervalId);
+                reject(`No Such Element ${selectors}`);
+            }
+            time += 50;
+        }, 50);
+    })
+}
+
+function getAllElementUntilElementAvailable(selectors) {
+    const TIME_OUT = 300;
+    return new Promise((resolve, reject) => {
+        let time = 0;
+        let intervalId = setInterval(() => {
+            let searchElement = document.querySelectorAll(selectors);
+            if (searchElement) {
+                clearInterval(intervalId);
+                resolve(searchElement);
+            }
+            if (time >= TIME_OUT) {
+                clearInterval(intervalId);
+                reject(`No Such Element ${selectors}`);
+            }
+            time += 50;
         }, 50);
     })
 }
@@ -195,17 +221,19 @@ export async function addCustomEventListener(eventName, callback, element, trigg
         callback(e);
     });
 
-    triggerElement = triggerElement || await getElementUntilElementAvailable(`[type=${eventName}]`);
-    triggerElement.addEventListener(triggerEvent, e => {
-        const event = new CustomEvent(eventName, {
-            detail: {
-                target: triggerElement
-            }
+    triggerElement = triggerElement || await getAllElementUntilElementAvailable(`[type=${eventName}]`);
+    forEach(triggerElement, (key, el) => {
+        el.addEventListener(triggerEvent, e => {
+            const event = new CustomEvent(eventName, {
+                detail: {
+                    target: el
+                }
+            });
+            if (preventDefault) e.preventDefault();
+            if (stopBubbling) e.stopPropagation();
+            element.dispatchEvent(event);
         });
-        if (preventDefault) e.preventDefault();
-        if (stopBubbling) e.stopPropagation();
-        element.dispatchEvent(event);
-    });
+    })
 }
 
 export function setAttributes(element, attribute) {
@@ -216,14 +244,12 @@ export function setAttributes(element, attribute) {
 
 export function forEach(objectOrArray, callback, keySort = "none") {
     if (Array.isArray(objectOrArray)) {
-        objectOrArray.forEach(value => {
+        let keys = keySort == "ASC" ? objectOrArray.sort() : objectOrArray;
+        keys.forEach(value => {
             callback(value);
         })
     }
     else if (isObject(objectOrArray)) {
-        // Object.keys(objectOrArray).forEach(key => {
-        //     callback(key, objectOrArray[key])
-        // })
         let keys = keySort == "ASC" ? Object.keys(objectOrArray).sort() : Object.keys(objectOrArray);
         keys.forEach(key => {
             callback(key, objectOrArray[key])
@@ -239,7 +265,6 @@ export function goTo(path) {
     // ./ relative
     if (getCurrentPath() == path) return;
     window.location.href = path;
-    // window.location.assign(path);
 }
 
 export function goBack() {
