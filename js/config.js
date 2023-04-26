@@ -38,6 +38,12 @@ export const Constant = {
         FURNITURE: "Furniture", 
         ALAT_ELEKTRONIK: "Alat Elektronik", 
         FASILITAS_KAMAR_LAINNYA: "Fasilitas Kamar Lainnya"
+    }, 
+    serviceCategory: {
+        LAUNDRY: "Laundry",
+        PEMBERSIHAN_KAMAR: "Pembersihan Kamar",
+        PERBAIKAN_FASILITAS: "Perbaikan Fasilitas", 
+        LAYANAN_LAINNYA: "Layanan Lainnya"
     }
 }
 
@@ -45,7 +51,8 @@ export const Constant = {
 export const ServiceURL = {
     MasterData: {
         getRole: "/role",
-        getRoomDetailCategory: "/room/category"
+        getRoomDetailCategory: "/room/category",
+        getServiceCategory: "/service/category"
     },
     Account: {
         getAll: "/account/all",

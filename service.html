@@ -22,43 +22,113 @@
                 </div>
                 <h4 class="m-0">Kelola Layanan</h4>
             </div>
-            <div class="d-flex gap-3">
-                <div class="w-50">
+            <div class="row d-flex">
+                <div class="col-md-6">
                     <div class="input-group-text mb-1 my-4">
                         <h5 class="mt-2">Buat Layanan Baru</h5>
                     </div>
                     <form id="form" class="frame card p-4 m-0" action="" method="post">
-                        <div class="">
-                            <label for="serviceName" class="form-label">Category Service</label>
-                            <input type="text" class="form-control" name="serviceName" id="serviceName" placeholder="Kategori Service">
-                            <!-- <select id="serviceName" name="serviceName" class="form-select">
-                                <option>Laundry</option>
+                        <div class="my-1">
+                            <label for="serviceName" class="form-label">Jenis Layanan</label>
+                            <!-- <input type="text" class="form-control" name="serviceName" id="serviceName" required> -->
+                            <select id="serviceName" name="serviceName" class="form-select">
+                                <!-- <option>Laundry</option>
                                 <option>Cleaning Room Service</option>
-                                <option>Other</option>
-                            </select> -->
+                                <option>Other</option> -->
+                            </select>
                         </div>
-                        <div class="">
-                            <label for="variant" class="form-label">Variant</label>
-                            <input type="text" class="form-control" name="variant" id="variant" placeholder="Nama Variant">
+                        <div class="my-1">
+                            <label for="variant" class="form-label">Varian</label>
+                            <input type="text" class="form-control" name="variant" id="variant" required>
                         </div>
-                        <div class="">
-                            <label for="price" class="form-label">Price</label>
-                            <input type="text" class="form-control" name="price" id="price" placeholder="Harga">
+                        <div class="my-1">
+                            <label for="price" class="form-label">Harga</label>
+                            <input type="number" class="form-control" name="price" id="price" required>
                         </div>
                         <div class="card-footer text-end mt-2">
                             <button class="btn btn-primary" type="submit">Buat</button>
                         </div>
                     </form>
                 </div>
-                <div class="vr"></div>
-                <div class="frame w-50 m-0 my-4">
+                <div class="col-md-6 frame m-0 my-4">
                     <div class="input-group-text mb-1">
-                        <h5 class="mt-2">Service Tersedia</h5>
+                        <h5 class="mt-2">Layanan Tersedia</h5>
                     </div>
-                    <ul id="service-list"></ul>
+                    <ul>
+                        <table class="table table-primary table-striped" id="table1">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" id="category1"></th>
+                                </tr>
+                                <tr class="text-center">
+                                    <th>Varian</th>
+                                    <th>Harga</th>
+                                </tr>
+                            </thead>
+                            <tbody id="service-list-category1">
+                                <!-- <tr>
+                                    <td>${service.variant}</td>
+                                    <td class="text-center">${service.price}</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                        <table class="table table-info table-striped" id="table2">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" id="category2"></th>
+                                </tr>
+                                <tr class="text-center">
+                                    <th>Varian</th>
+                                    <th>Harga</th>
+                                </tr>
+                            </thead>
+                            <tbody id="service-list-category2">
+                                <!-- <tr>
+                                    <td>${service.variant}</td>
+                                    <td class="text-center">${service.price}</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                        <table class="table table-success table-striped" id="table3">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" id="category3"></th>
+                                </tr>
+                                <tr class="text-center">
+                                    <th>Varian</th>
+                                    <th>Harga</th>
+                                </tr>
+                            </thead>
+                            <tbody id="service-list-category3">
+                                <!-- <tr>
+                                    <td>${service.variant}</td>
+                                    <td class="text-center">${service.price}</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                        <table class="table table-secondary table-striped" id="table4">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" id="category4"></th>
+                                </tr>
+                                <tr class="text-center">
+                                    <th>Varian</th>
+                                    <th>Harga</th>
+                                </tr>
+                            </thead>
+                            <tbody id="service-list-category4">
+                                <!-- <tr>
+                                    <td>${service.variant}</td>
+                                    <td class="text-center">${service.price}</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
 </html>
