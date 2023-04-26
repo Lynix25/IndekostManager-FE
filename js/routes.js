@@ -12,9 +12,13 @@ function checkIsUserLogIn() {
         return;
     }
     let userToken = getCookie("tokens");
-    if (userToken === undefined) goTo('./login.html');
+    if (userToken === undefined) {
+        goTo(PAGE.LOGIN);
+        return;
+    }
 
-    if (currentPath === PAGE.LOGIN){ 
+    if (currentPath === PAGE.LOGIN) {
         goTo(PAGE.HOME);
+        return;
     }
 }

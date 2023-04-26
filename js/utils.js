@@ -263,7 +263,7 @@ export function forEach(objectOrArray, callback, keySort = "none") {
 export function goTo(path) {
     // / Absolute
     // ./ relative
-    if (getCurrentPath() == path) return;
+    if (getCurrentPath() === path) return;
     window.location.href = path;
 }
 
