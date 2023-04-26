@@ -1,6 +1,8 @@
 import { APIGet, APIPost } from "./api.js";
-import { ServiceURL } from "./config.js";
-import { getFormValue, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
+import { Constant, Event, ServiceURL } from "./config.js";
+import { getFormValue, goBack, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
+import { Toast } from "./component/toast.js";
+
 // $(document).ready(() => {
 // $('.date')
 // // document.getElementsByClassName('date')
@@ -42,12 +44,13 @@ handleFormSubmited((e) => {
     let data = getFormValue(e.target);
     data["taskDate"] = new Date(data.taskDate).getTime();
     delete data.category;
-    APIPost("/task", data).then(res => {
-        console.log(res);
-    }).catch(res => {
-        console.log(res);
-    })
-})
+    APIPost(ServiceURL.Task.create, data).then(response => {
+        Toast(Constant.httpStatus.SUCCESS, response.data.message);
+        setTimeout(function() { goTo('./requesthistory.html') }, Event.timeout);
+    }).catch(err => {
+        Toast(Constant.httpStatus.ERROR, err?.message);
+    });
+});
 
 let serviceList;
 let filteredServiceList = {};
@@ -79,7 +82,7 @@ document.querySelector("#serviceId").addEventListener("change", e => {
     let selected = e.target.value;
     let selectedCategory = document.querySelector("#category").value;
     filteredServiceList[selectedCategory].forEach(service => {
-        console.log(service);
+        // console.log(service);
         if (service.id === selected) {
             updatePrice(service.price);
         }
@@ -125,3 +128,6 @@ function updatePrice(price) {
     }
 }
 
+document.querySelector("#back").addEventListener("click", e => {
+    goBack();
+})

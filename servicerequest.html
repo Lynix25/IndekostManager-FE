@@ -14,9 +14,17 @@
 
 
 <body>
-    <form id="form" class="frame m-auto" action="" method="post">
-        <div class="">
-            <label for="category" class="form-label">Category</label>
+    <form class="frame card p-4 mx-auto my-4" action="" method="put">
+        <div class="page-title my-4">
+            <div class="hover-text">
+                <span class="tooltip-text tooltip-top-title">Kembali</span>
+                <span id="back"><a href="#"><i class="fa fa-chevron-left"></i></a></span>
+            </div>
+            <h5 class="text-center m-0 w-100">Pengajuan Layanan</h5>
+            <br/><br/>
+        </div>
+        <div class="mb-2">
+            <label for="category" class="form-label">Jenis Layanan</label>
             <select id="category" name="category" class="form-select">
                 <!-- <option>Laundry</option>
                 <option>Laundry</option>
@@ -24,9 +32,23 @@
                 <option>Laundry</option> -->
             </select>
         </div>
-        <div class="">
+        <div class="mb-2">
+            <label for="serviceId" class="form-label">Varian</label>
+            <select id="serviceId" name="serviceId" class="form-select">
+                <!-- <option>Selimut</option>
+                <option>Selimut</option>
+                <option>Selimut</option>
+                <option>Selimut</option>
+                <option>Selimut</option> -->
+            </select>
+        </div>
+        <div class="card-body price-tag mb-2 alert alert-warning">
+            <label for="price">Layanan ini dikenakan biaya sebesar:</label>
+            <div id="price" name="price" class="fw-bold">Rp -</div>
+        </div>
+        <div class="mb-2">
             <label for="taskDate" class="form-label">Waktu Pengerjaan</label>
-            <input type="datetime-local" id="taskDate" name="taskDate" class="form-control">
+            <input type="datetime-local" id="taskDate" name="taskDate" class="form-control" required>
             <!-- <div class="row"> -->
             <!-- <div class="input-group date col" data-provide="datepicker">
                     <input type="text" name="waktu pengerjaan" class="form-control">
@@ -39,30 +61,19 @@
                 </div> -->
             <!-- </div> -->
         </div>
-        <div class="">
-            <label for="serviceId" class="form-label">Service</label>
-            <select id="serviceId" name="serviceId" class="form-select">
-                <!-- <option>Selimut</option>
-                <option>Selimut</option>
-                <option>Selimut</option>
-                <option>Selimut</option>
-                <option>Selimut</option> -->
-            </select>
+        <div class="mb-2">
+            <label for="summary" class="form-label">Penjelasan Pengajuan</label>
+            <input type="text" class="form-control" name="summary" id="summary" placeholder="Alasan atau tujuan pengajuan" required>
         </div>
-        <div class="price-tag">
-            <label for="price">Biaya</label>
-            <div id="price" name="price" class="fw-bold">Rp -</div>
+        <div class="mb-2">
+            <label for="notes" class="form-label">Catatan Lain</label>
+            <input type="text" class="form-control" name="notes" id="notes" placeholder="Informasi lain yang ingin ditambahkan">
         </div>
-        <div class="">
-            <label for="summary" class="form-label">Ringkasan</label>
-            <input type="text" class="form-control" name="summary" id="summary" placeholder="Ringkasan">
+        <div class="card-footer text-center mt-4">
+            <button class="btn btn-primary" type="submit">Buat</button>
         </div>
-        <div class="">
-            <label for="notes" class="form-label">Catatan</label>
-            <input type="text" class="form-control" name="notes" id="notes" placeholder="Catatan">
-        </div>
-        <button class="btn btn-primary" type="submit">Buat</button>
     </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
-
 </html>
