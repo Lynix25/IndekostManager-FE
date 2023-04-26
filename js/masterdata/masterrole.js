@@ -2,7 +2,7 @@ import { APIGet } from "../api.js";
 import { ServiceURL } from "../config.js";
 
 
-let filteredData = {};
+let filteredData = [];
 APIGet(ServiceURL.MasterData.getRole).then(res => {
     let rawData = res.data.data;
     let keysToAdd = ['id', 'name'];
