@@ -12,34 +12,62 @@
 </head>
 
 <body>
-    <form action="" method="post" class="frame">
-        <div class="title">Room Settings</div>
-        <div class="row">
-            <div class="col-8">
-                <div class="title">Private room</div>
-                <div class="description">Make your room not shared with other.</div>
+    <div class="frame card w-100 p-4 my-4">
+        <div class="page-title my-4">
+            <div class="hover-text">
+                <span class="tooltip-text tooltip-top-title">Kembali</span>
+                <span id="back"><a href="./profile.html"><i class="fa fa-chevron-left"></i></a></span>
             </div>
-            <div class="col d-flex justify-content-center">
-                <div class="form-check form-switch my-auto">
-                    <input class="form-check-input" type="checkbox" role="switch" name="shareRoom" id="privateRoomSwitch">
-                    <label class="form-check-label" for="privateRoomSwitch"></label>
-                </div>
-            </div>
+            <h3 class="text-center m-0 w-100">Pengaturan</h3>
+            <br /><br />
         </div>
-        <div class="title">Account Settings</div>
-        <div class="row">
-            <div class="col-8">
-                <div class="title">Notificatoin</div>
-                <div class="description"></div>
-            </div>
-            <div class="col d-flex justify-content-center">
-                <div class="form-check form-switch my-auto">
-                    <input class="form-check-input" type="checkbox" role="switch" name="enableNotification" id="notificationSwitch">
-                    <label class="form-check-label" for="notificationSwitch"></label>
+        <div class="m-4">
+            <form method="put" action="">
+                <div class="p-0 py-2">
+                    <div class="input-group-text">
+                        <h6 class="m-0 title">Pengaturan Kamar</h6>
+                    </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="col-7">
+                        <div class="title">Kamar Pribadi</div>
+                        <div class="description">
+                            <small>Atur kamar untuk pribadi, sehingga tidak disewakan untuk penyewa lain</small>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-end p-0">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input hover" type="checkbox" role="switch" name="shareRoom"
+                                id="privateRoomSwitch">
+                            <label class="form-check-label" for="privateRoomSwitch"></label>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="p-0 py-2">
+                    <div class="input-group-text">
+                        <h6 class="m-0 title">Pengaturan Akun</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-7">
+                        <div class="title">Notifikasi</div>
+                        <div class="description"><small>Nyalakan notifikasi untuk mendapatkan pesan terkini dari
+                                aplikasi</small></div>
+                    </div>
+                    <div class="col d-flex justify-content-end p-0">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input hover" type="checkbox" role="switch"
+                                name="enableNotification" id="notificationSwitch">
+                            <label class="form-check-label" for="notificationSwitch"></label>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
 
 </html>

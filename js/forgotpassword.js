@@ -1,6 +1,8 @@
+import { APIGet, APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { Constant, ServiceURL } from "./config.js";
-import { APIPut, getFormValue, goTo, handleFormSubmited } from "./utils.js";
+import { Constant, Event, ServiceURL } from "./config.js";
+import { clearCookiesAndLogout } from "./main.js";
+import { getFormValue, goTo, handleFormSubmited } from "./utils.js";
 
 window.addEventListener('load', e => {
     document.querySelector("#password-show-hide").addEventListener("click", e => {
@@ -30,12 +32,21 @@ function passwordShowHide(inputTarget, inputTarget2, showIcon, hideIcon) {
 
 function resetPassword(e) {
     let data = getFormValue(e.target);
-    APIPut(ServiceURL.User.forgotPassword, data).then(response => {
-        if (response.status == 200) {
-            Toast(Constant.httpStatus.SUCCESS, response.data.message);
-            setTimeout(function() { goTo('./login.html') }, 300);
+    APIGet(ServiceURL.Account.getByUsername(data.username)).then(res => {
+        let requestedUser = res.data.data;
+        if(requestedUser == null) {
+            Toast(Constant.httpStatus.ERROR, "User tidak terdaftar");
+        } else {
+            APIPut(ServiceURL.User.forgotPassword, data).then(response => {
+                if (response.status == 200) {
+                    Toast(Constant.httpStatus.SUCCESS, response.data.message);
+                    if(document.cookie.length > 0) clearCookiesAndLogout();
+                    setTimeout(function() { goTo('./login.html') }, Event.timeout);
+                }
+            }).catch(err => {
+                if(err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+                else Toast(Constant.httpStatus.ERROR, err.data.message);
+            })
         }
-    }).catch(err => {
-        Toast(Constant.httpStatus.ERROR, err.data.message);
-    })
+    });
 }

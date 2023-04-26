@@ -21,7 +21,7 @@
     --paragraph: #5f6c7b;
     --button-highlight: #3da9fc;
 
-    --font-size: 13px;
+    --font-size: 16px;
 }
 
 * {
@@ -98,7 +98,7 @@ ul {
 }
 
 .frame {
-    max-width: 100vmin;
+    max-width: 90vmin;
     box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
@@ -181,7 +181,7 @@ ul {
     z-index: 1;
     width: max-content;
     color: var(--secondary-color);
-    font-size: 10px;
+    font-size: 12px;
     background-color: var(--black-color);
     border-radius: 4px;
     padding: 0.5rem;
@@ -191,13 +191,23 @@ ul {
     visibility: visible;
 }
 
+.tooltip-top-toggle {
+    top: -30px;
+    right: -120%;
+}
+
+.tooltip-top-icon {
+    top: -20px;
+    left: 10%;
+}
+
 .tooltip-top {
     top: -28px;
     left: -50%;
 }
 
 .tooltip-top-title {
-    top: -40px;
+    top: -45px;
     left: -50%;
 }
 
@@ -230,4 +240,18 @@ ul {
 
 .has-content:has(*){
     visibility: visible;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.hover {
+    cursor: pointer;
+}
+
+.input-group-text-lable {
+    width: 115px;
 }

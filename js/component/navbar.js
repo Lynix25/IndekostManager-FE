@@ -42,30 +42,52 @@ document.addEventListener("DOMContentLoaded", e => {
         // Menus Only For Admin
         const adminMenu = `
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Admin
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Kelola Pengumuman 
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="/agenda.html">Agenda</a></li>
-                <li><a class="dropdown-item" href="/createroom.html">Add Room</a></li>
-                <li><a class="dropdown-item" href="/roomlist.html">Room List</a></li>
-                <li><a class="dropdown-item" href="/service.html">Add Service</a></li>
-                <li><a class="dropdown-item" href="/registeruser.html">Register User</a></li>
-                <li><a class="dropdown-item" href="/listuser.html">List User</a></li>
-                <li><a class="dropdown-item" href="#">History</a></li>
+                <li><a class="dropdown-item" href="/announcementmenu.html">Lihat Daftar Pengumuman</a></li>
+                <li><a class="dropdown-item" href="/createannouncement.html">Buat Pengumuman</a></li>
             </ul>
-        </li>`;
-
-        const tenantMenu = `
+        </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                Tenant
+                Kelola Kamar 
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="/servicerequest.html">Request Service</a></li>
-                <li><a class="dropdown-item" href="/requesthistory.html">Request Service History</a></li>
+                <li><a class="dropdown-item" href="/roomlist.html">Lihat Daftar Kamar</a></li>
+                <li><a class="dropdown-item" href="/createroom.html">Tambah Data Kamar</a></li>
             </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/service.html" role="button">
+                Kelola Layanan Kos 
+            </a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Kelola Penyewa 
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="/listuser.html">Lihat Daftar Penyewa</a></li>
+                <li><a class="dropdown-item" href="/registeruser.html">Tambah Data Penyewa</a></li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#!" role="button">
+                Kelola Transaksi
+            </a>
+        </li>`;
+
+        const tenantMenu = `
+        <li class="nav-item">
+            <a class="nav-link" href="/servicerequest.html">Pengajuan Layanan</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/requesthistory.html">Histori Pengajuan Layanan</a>
         </li>
         `;
 
@@ -86,7 +108,6 @@ document.addEventListener("DOMContentLoaded", e => {
                             <a class="nav-link fw-bolder" aria-current="page" href="/home.html">Home</a>
                         </li>
                         ${isOwnerOrAdmin() ? adminMenu : ""}
-                        ${tenantMenu}
                         <li class="nav-item dropdown">
                             <a class="nav-link" href="#" data-bs-toggle="dropdown">
                                 <i class="fa-solid fa-circle-user fs-4"></i>
@@ -115,7 +136,7 @@ document.addEventListener("DOMContentLoaded", e => {
                 </div>
             </div>
         </nav>` :
-            `<nav class="row card fixed-bottom rounded border-0 mt-4">
+        `<nav class="row card fixed-bottom rounded border-0 mt-4">
             <a href="./announcementmenu.html" class="menu hover-text">
                 <span class="tooltip-text tooltip-top">Kelola Pengumuman</span>
                 <i class="fa-solid fa-newspaper"></i>

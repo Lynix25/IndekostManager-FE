@@ -11,6 +11,18 @@
 
     <link rel="stylesheet" href="css/profile.css">
     <script defer type="module" src="js/profile.js"></script>
+    <style>
+        .input-group-text {
+            min-width: 100px;
+        }
+        .font-italic{
+            font-style: italic;
+            font-size: smaller;
+        }
+        h7 {
+            font-weight: bolder;
+        }
+    </style>
 </head>
 
 <body>
@@ -29,14 +41,13 @@
                     <div id="name"></div>
                     <div id="alias"></div>
                 </div>
-                <a class="mx-auto" href="/editprofile.html">Edit profile</a>
+                <a class="mx-auto my-2" href="/editprofile.html">Ubah Profil</a>
                 <div>
                     <hr class="my-2">
-                    <a href="/changepassword.html" class="d-flex justify-content-between align-items-center">Ubah Kata
-                        Sandi
+                    <a href="/changepassword.html" class="d-flex justify-content-between align-items-center">Ubah Password
                         <i class="fa-solid fa-angle-right"></i></a>
                     <hr class="my-2">
-                    <a href="/settings.html" class="d-flex justify-content-between align-items-center">Setting <i
+                    <a href="/settings.html" class="d-flex justify-content-between align-items-center">Pengaturan <i
                             class="fa-solid fa-angle-right"></i></a>
                     <hr class="my-2">
                     <a class="d-flex justify-content-between align-items-center">Bantuan <i
@@ -45,7 +56,7 @@
                     <a class="d-flex justify-content-between align-items-center">Laporan <i
                             class="fa-solid fa-angle-right"></i></a>
                     <hr class="my-2">
-                    <a href="/login.html" class="d-flex justify-content-between align-items-center">Keluar <i
+                    <a href="#" class="d-flex justify-content-between align-items-center" id="logout">Keluar <i
                             class="fa-solid fa-angle-right"></i></a>
                     <hr class="my-2">
                 </div>
@@ -57,72 +68,159 @@
                 <button type="show-room-info" class="btn col text-center">Info Kamar</button>
             </div>
             <div id="tenant-information">
-                <div class="border rounded mb-3 pb-3">
-                    <div class="p-3 mb-2 rounded-top title" style="background-color: var(--primary-color);">Kontak
-                        Pribadi</div>
-                    <div class="row">
-                        <div class="col">
-                            <div>
-                                <div class="title">Email</div>
-                                <div id="email">email</div>
-                            </div>
-                            <div>
-                                <div class="title">Nomor Telfon</div>
-                                <div id="phone">phone</div>
-                            </div>
+                <div class="row border rounded mb-3 pb-3">
+                    <div class="p-3 rounded-top title" style="background-color: var(--primary-color);">
+                        Data Diri
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="m-1">
+                            <div class="title">Email</div>
+                            <div id="email">email</div>
                         </div>
-                        <div class="col">
-                            <div>
-                                <div class="title">Domisili</div>
-                                <div id="domicile">domicile</div>
-                            </div>
-                            <div>
-                                <div class="title">Kartu Identitas</div>
-                                <div>
-                                    <button type="view-identity-card" class="btn border">Lihat Gambar</button>
-                                    <button type="upload-identity-card" class="btn border">Unggah Gambar</button>
-                                </div>
-                            </div>
+                        <div class="m-1">
+                            <div class="title">Nomor Telepon</div>
+                            <div id="phone">phone</div>
+                        </div>
+                        <div class="m-1">
+                            <div class="title">Profesi</div>
+                            <div id="job">job</div>
+                        </div>
+                        <div class="m-1">
+                            <div class="title">Gender</div>
+                            <div id="gender">gender</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="m-1">
+                            <div class="title">Status</div>
+                            <div id="status">status</div>
+                        </div>
+                        <div class="m-1">
+                            <div class="title">Begabung Sejak</div>
+                            <div id="joinedOn">joinedOn</div>
+                        </div>
+                        <div class="m-1">
+                            <div class="title">Keterangan Lain</div>
+                            <div id="description">description</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="m-1" id="identity-image">
+                            <div class="title">Kartu Identitas</div>
                         </div>
                     </div>
                 </div>
-                <div class="row border rounded mb-3 pb-3">
-                    <div class="d-flex justify-content-between align-items-center p-3 mb-2 rounded-top title"
+                <div class="row border rounded mb-3" id="contactable-information">
+                    <div class="d-flex justify-content-between align-items-center p-3 rounded-top title"
                         style="background-color: var(--primary-color);">
                         <div>Kontak Alternatif</div>
-                        <button type="add-alternatif-contact" class="btn p-0"><i class="fas fa-plus"></i></button>
+                        <div class="hover-text">
+                            <span class="tooltip-text tooltip-top-title">Tambah</span>
+                            <button type="add-alternatif-contact" class="btn p-0"><i class="fas fa-plus"></i></button>
+                        </div>
                     </div>
-                    <div id="contactAblePersonList">
-                        <h4 class="text-center">Tidak ada kontak alternatif tersedia</h4>
+                    <div class="col p-1 m-2 text-center text-muted" id="list-empty">
+                        Tidak ada data
+                    </div>
+                    <div class="col p-1 mx-2 mb-2 table-responsive-xl" id="list-not-empty">
+                        <table class="table table-striped table-hover m-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Relasi</th>
+                                    <th scope="col">No. Telepon</th>
+                                    <th scope="col">Alamat</th>
+                                    <th scope="col" colspan="2" class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="list-data"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div id="room-information" class="border rounded mb-3 pb-3" hidden>
-                <div class="d-flex justify-content-between align-items-center p-3 mb-2 rounded-top title"
+            <div id="room-information" class="row border rounded mb-3" hidden>
+                <div class="d-flex justify-content-between align-items-center p-3 rounded-top title"
                     style="background-color: var(--primary-color);">
                     Informasi Kamar
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <div>
-                            <div class="title">Nama Kamar</div>
-                            <div id="roomName">name</div>
+                <div class="p-4 mx-auto">
+                    <div class="row">
+                        <div class="col-md-6 mb-1 p-0 px-1">
+                            <div class="input-group mb-1">
+                                <lable class="input-group-text input-group-text-lable">Nama Kamar</lable>
+                                <div class="name form-control"></div>
+                            </div>
+                            <div class="input-group">
+                                <lable class="input-group-text input-group-text-lable">Kategori</lable>
+                                <div class="allotment form-control"></div>
+                            </div>
                         </div>
-                        <div>
-                            <div class="title">Lantai</div>
-                            <div id="roomFloor">floor</div>
+                        <div class="col-md-6 mb-1 p-0 px-1">
+                            <div class="input-group mb-1">
+                                <lable class="input-group-text input-group-text-lable">Lokasi</lable>
+                                <div class="floor form-control"></div>
+                            </div>
+                            <div class="input-group">
+                                <lable class="input-group-text input-group-text-lable">Status</lable>
+                                <div class="status form-control fw-bold"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div>
-                            <div class="title">Kapasitas</div>
-                            <div id="roomCapacity">capacity</div>
+                    <div class="input-group px-1">
+                        <lable class="input-group-text input-group-text-lable">Deskripsi</lable>
+                        <div class="description form-control"></div>
+                    </div>
+                    <hr>
+                    <h7 class="m-0 mt-2">Spesifikasi dan Fasilitas Kamar</h7>
+                    <div class="d-flex flex-wrap row align-items-start my-2 gap-3" id="category-group1">
+                        <div class="col p-0 py-1">
+                            <div class="input-group-text">
+                                <h6 class="m-0" id="category1"></h6>
+                            </div>
+                            <ul class="p-1" id="kamar-tidur"></ul>
                         </div>
-                        <div>
-                            <div class="title">Harga</div>
-                            <div id="roomPrice">price</div>
+                        <div class="col p-0 py-1">
+                            <div class="input-group-text">
+                                <h6 class="m-0" id="category2"></h6>
+                            </div>
+                            <ul class="p-1" id="kamar-mandi"></ul>
                         </div>
                     </div>
+                    <div class="d-flex flex-wrap row align-items-start my-2 gap-3" id="category-group2">
+                        <div class="col p-0 py-1">
+                            <div class="input-group-text">
+                                <h6 class="m-0" id="category3"></h6>
+                            </div>
+                            <ul class="p-1" id="furniture"></ul>
+                        </div>
+                        <div class="col p-0 py-1">
+                            <div class="input-group-text">
+                                <h6 class="m-0" id="category4"></h6>
+                            </div>
+                            <ul class="p-1" id="alat-elektronik"></ul>
+                        </div>
+                        <div class="col p-0 py-1">
+                            <div class="input-group-text">
+                                <h6 class="m-0" id="category5"></h6>
+                            </div>
+                            <ul class="p-1" id="fasilitas-lain"></ul>
+                        </div>
+                    </div>
+                    <hr>
+                    <h7 class="mt-2">Harga Sewa Kamar</h7>
+                    <table class="table table-striped text-center mt-2">
+                        <thead>
+                            <tr>
+                                <th scope="col">Kapasitas</th>
+                                <th scope="col">Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody id="price-data"></tbody>
+                    </table>
+                </div>
+                <div class="mb-4 text-center">
+                    <button class="btn btn-primary" onclick="requestChangeRoom()">Request Pindah Kamar</button>
                 </div>
             </div>
         </div>
@@ -181,6 +279,7 @@
             </div>
         </div>
     </div> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
-
 </html>

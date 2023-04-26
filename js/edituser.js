@@ -1,7 +1,7 @@
 import { APIGet, APIPut } from "./api.js";
-import { getUpdateFormValue, getURLParam, handleFormSubmited } from "./utils.js";
+import { getUpdateFormValue, getParamOnURL, handleFormSubmited } from "./utils.js";
 
-APIGet("/user/" + getURLParam("id")).then(res => {
+APIGet("/user/" + getParamOnURL("id")).then(res => {
     let user = res.data;
     reloadData(user)
     // console.log(user);
@@ -59,7 +59,7 @@ function reloadData(user){
 handleFormSubmited(e => {
     let data = getUpdateFormValue(e.target);
     console.log(data);
-    // APIPut("/user/" + getURLParam("id"), data,  {"Requester-ID" : getCookie("tokens"), "Content-Type": "multipart/form-data"}).then(res => {
+    // APIPut("/user/" + getParamOnURL("id"), data,  {"Requester-ID" : getCookie("tokens"), "Content-Type": "multipart/form-data"}).then(res => {
     //     console.log(res);
     //     reloadData(res.data.data);
     // })

@@ -1,8 +1,7 @@
 import { APIGet, APIPut } from "./api.js";
-import { ServiceURL } from "./config.js";
+import { Toast } from "./component/toast.js";
+import { Constant, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { getFormValueV2 } from "./utils.js";
-
 
 APIGet(ServiceURL.User.getUserSetting(getCookie("id"))).then(res => {
     let userSettings = res.data.data;
@@ -17,12 +16,26 @@ APIGet(ServiceURL.User.getUserSetting(getCookie("id"))).then(res => {
 })
 
 document.querySelector("form").addEventListener("change", e => {
-    let updatedData = getFormValueV2(e.target);
+    changeSwitchLabel(e.target.parentElement);
+    let formData = getFormValue(e.currentTarget);
     
-    APIPut(ServiceURL.User.updateUserSetting(getCookie("id")), updatedData).then(res => {
-        changeSwitchLabel(e.target.parentElement);
+    let shareRoom = false;
+    let enableNotification = false;
+
+    if(formData != null) {
+        shareRoom = formData.shareRoom != undefined && (formData.shareRoom).toLowerCase() === "on" ? true : false;
+        enableNotification = formData.enableNotification != undefined &&  (formData.enableNotification).toLowerCase() === "on" ? true : false;
+    }
+
+    let data = {
+        "shareRoom": shareRoom, 
+        "enableNotification": enableNotification
+    }
+
+    APIPut(ServiceURL.User.updateUserSetting(getCookie('id')), data).then(response => {
+        Toast(Constant.httpStatus.SUCCESS, response.data.message);
     }).catch(err => {
-        console.log(err);
+        Toast(Constant.httpStatus.ERROR, err?.message);
     })
 })
 

@@ -83,11 +83,12 @@ footer :where(li, li a) {
     border-top-right-radius: 0.5rem;
     background-color: var(--primary-color);
     font-weight: 500;
+    font-size: large;
 }
 
 .carousel-item img {
     display: block;
-    height: 50vmin;
+    height: 46.35vmin;
     background-size: cover;
     width: 100%;
     margin-left: auto;
@@ -95,6 +96,7 @@ footer :where(li, li a) {
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
     cursor: pointer;
+    object-fit: contain;
 }
 
 .img-no-text {

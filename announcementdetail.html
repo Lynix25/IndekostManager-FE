@@ -47,11 +47,11 @@
 
 <!-- <script type="module" id="sc">
     import { ServiceURL } from "./js/config.js";
-    import { APIDelete, APIGet, getURLParam, isOwnerOrAdmin } from "./js/utils.js";
+    import { APIDelete, APIGet, getParamOnURL, isOwnerOrAdmin } from "./js/utils.js";
 </script>
 <script type="text/javascript">
     // import { ServiceURL } from "./js/config.js";
-    // import { APIDelete, APIGet, getURLParam, isOwnerOrAdmin } from "./js/utils.js";
+    // import { APIDelete, APIGet, getParamOnURL, isOwnerOrAdmin } from "./js/utils.js";
     
     import * as module from "module";
     let edit = document.getElementById("editAnnouncement");
@@ -59,22 +59,22 @@
         window.location.href='./home.html'
     }
     // function editAnnouncement() {
-        console.log(module.APIDelete(module.ServiceURL.Announcement.delete).replace("$1", getURLParam("id")))
+        console.log(module.APIDelete(module.ServiceURL.Announcement.delete).replace("$1", getParamOnURL("id")))
     console.log(edit)
         // .addEventListener("click", e => {
         //     console.log("???")
-        //     // console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getURLParam("id")))
+        //     // console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getParamOnURL("id")))
         // })
     // }
     // function deleteAnnouncement() {
-    //     console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getURLParam("id")))
+    //     console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getParamOnURL("id")))
     // }
     // console.log(document.getElementById("#editAnnouncement"))
     // .addEventListener("click", e => {
     //     alert(e)
     // });
     // function deleteAnnouncement() {
-    //     APIDelete(ServiceURL.Announcement.delete.replace("$1", getURLParam("id"))).then(res => {
+    //     APIDelete(ServiceURL.Announcement.delete.replace("$1", getParamOnURL("id"))).then(res => {
     //         console.log(res);
     //         // goTo("./home.html");
     //     });

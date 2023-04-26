@@ -1,9 +1,36 @@
+import { APIPut } from "./api.js";
+import { Toast } from "./component/toast.js";
+import { Constant, Event, ServiceURL } from "./config.js";
+import { deleteCookie, getCookie } from "./cookiemanagement.js";
+import { goTo } from "./utils.js";
+
 const activePage = window.location.pathname;
 const navLinks = document.querySelectorAll('.nav-link').forEach(link => {
     if (link.href.includes(`${activePage}`)) {
         link.classList.add('active');
     }
 })
+
+export function clearCookiesAndLogout() {
+    APIPut(ServiceURL.User.logout(getCookie('id'))).then(res => {
+        deleteCookie();
+    }).catch(err => {
+        console.log(err.data.message)
+    });
+}
+
+export function logout(element) {
+    element.addEventListener("click", e => {
+        APIPut(ServiceURL.User.logout(getCookie('id'))).then(res => {
+            deleteCookie();
+            Toast(Constant.httpStatus.SUCCESS, res.data.message);
+            setTimeout(function() { goTo('./login.html') }, Event.timeout);
+        }).catch(err => {
+            if(err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+            else Toast(Constant.httpStatus.ERROR, err.data.message);
+        })
+    })
+}
 
 // window.addEventListener('load', (e) => {
     // console.log(form.elementes[0]);

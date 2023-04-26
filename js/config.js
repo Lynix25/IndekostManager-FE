@@ -2,10 +2,29 @@ export const END_POINT = "http://localhost:8123";
 export const SECRET = "indekossecret";
 
 // ====================================== CONSTANT =======================================
+export const Event = {
+    timeout: 1500
+}
+
 export const Constant = {
+    userAttribute: {
+        maritalStatus: {
+            MARRIED: "Menikah",
+            SINGLE: "Lajang"
+        },
+        gender: {
+            LAKILAKI: "Laki-laki",
+            PEREMPUAN: "Perempuan"
+        }
+    },
+    modalType: {
+        FORM: "form",
+        DELETECONFIRMATION: "delete"
+    },
     httpStatus: {
         ERROR: "error",
         SUCCESS: "success",
+        WARNING: "warning",
         UNKNOWN: "unknown"
     },
     role: {
@@ -33,15 +52,16 @@ export const CONTENT_TYPE = {
 // ====================================== END POINT ======================================
 export const ServiceURL = {
     MasterData: {
-        getRole: "/room",
-        getRoomDetailCategory: "/room/category",
+        getRole: "/role",
+        getRoomDetailCategory: "/room/category"
     },
     Account: {
-        getAll: "/account",
-        getById: (id) => `/account/${id}`
+        getAll: "/account/all",
+        getById: (id) => `/account/${id}`,
+        getByUsername: (username) => `/account?username=${username}`
     },
     User: {
-        getAll: "/user",
+        getAll: "/user?room=",
         getById: (id) => `/user/${id}`,
         register: "/user",
         update: (id) => `/user/${id}`,
@@ -51,7 +71,7 @@ export const ServiceURL = {
         login: "/user/login",
         changePassword: `/user/changepassword`,
         forgotPassword: "/user/resetpassword",
-        logout: "/user/logout",
+        logout: (id) => `/user/logout?user=${id}`,
 
         // User Document
         removeUserDocument: (id) => `/user/${id}/document`,
@@ -61,10 +81,10 @@ export const ServiceURL = {
         updateUserSetting: (id) => `/user/${id}/settings`,
 
         // Contactable Person
-        getAllContactable: (id) => `/user/${id}/contactable`,
+        getContactable: (id) => `/user/${id}/contactable?person=`,
         addContactable: (id) => `/user/${id}/contactable`,
-        editContactable: (id) => `/user/${id}/contactable`,
-        deleteContactable: (id) => `/user/${id}/contactable`
+        editContactable: (id) => `/user/${id}/contactable?person=`,
+        deleteContactable: (id) => `/user/${id}/contactable?person=`
     },
     Room: {
         getAll: "/room",
@@ -94,7 +114,7 @@ export const ServiceURL = {
         getById: (id) => `/announcement/${id}`,
         create: "/announcement",
         update: (id) => `/announcement/${id}`,
-        delete: (id) => `/announcement/${id}`,
+        delete: (id) => `/announcement/${id}`
     },
     Transaction: {
         unpaid: (id) => `/transaction/unpaid/${id}`,

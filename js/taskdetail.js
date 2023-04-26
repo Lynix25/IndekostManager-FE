@@ -1,7 +1,7 @@
 import { APIGet, APIPut } from "./api.js";
-import { addCustomEventListener, getURLParam, statusToString, UNIXtimeConverter } from "./utils.js";
+import { addCustomEventListener, getParamOnURL, statusToString, UNIXtimeConverter } from "./utils.js";
 
-APIGet("/task/" + getURLParam("id")).then(res => {
+APIGet("/task/" + getParamOnURL("id")).then(res => {
     console.log(res);
     document.querySelector(".status").innerHTML = statusToString(res.data.data.status)[1];
     document.querySelector(".id").innerHTML = res.data.data.id;
@@ -20,13 +20,13 @@ APIGet("/task/" + getURLParam("id")).then(res => {
 
 
 addCustomEventListener("process", e => {
-    APIPut("/task/" + getURLParam('id'), { "status": 1 })
+    APIPut("/task/" + getParamOnURL('id'), { "status": 1 })
 }, document.querySelector("[type='process']"))
 
 addCustomEventListener("cancel", e => {
-    APIPut("/task/" + getURLParam('id'), { "status": -1 })
+    APIPut("/task/" + getParamOnURL('id'), { "status": -1 })
 }, document.querySelector("[type='cancel']"))
 
 addCustomEventListener("finish", e => {
-    APIPut("/task/" + getURLParam('id'), { "status": 3 })
+    APIPut("/task/" + getParamOnURL('id'), { "status": 3 })
 }, document.querySelector("[type='finish']"))
