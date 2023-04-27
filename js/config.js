@@ -119,7 +119,7 @@ export const ServiceURL = {
     Task: {
         create: "/task",
         update: (id) => `/task/${id}`,
-        getAll: (status) => `/task?status=${status}`,
+        getAll: (status) => `/task?requestor=${status}`,
         getById: (id) => `/task/${id}`,
     },
     Announcement: {

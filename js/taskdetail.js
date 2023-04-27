@@ -22,8 +22,8 @@ function reloadData(data) {
     document.querySelector(".taskDate").innerHTML = UNIXtimeConverter(data.taskDate, "DD MMMM YYYY hh:mm");
     // console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
     
-    document.querySelector("#price").setAttribute("value", data.priceAdjustment);
-    document.querySelector("#price").innerHTML = data.priceAdjustment;
+    document.querySelector("#price").setAttribute("value", data.charge);
+    document.querySelector("#price").innerHTML = data.charge;
     document.querySelector("#notes").innerHTML = data.notes;
     document.querySelector("#notes").setAttribute("value", data.notes);
     document.querySelector("#summary").innerHTML = data.summary;
@@ -93,7 +93,7 @@ addCustomEventListener("reject", e => {
     APIPut(ServiceURL.Task.update(getURLParam('id')), { 
         "status": Constant.serviceRequestStatus.REJECTED,
         "notes": notes.value, 
-        "priceAdjustment": price.value
+        "charge": price.value
     }).then(response => {
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
         reloadData(response.data.data);
@@ -106,7 +106,7 @@ addCustomEventListener("accept", e => {
     APIPut(ServiceURL.Task.update(getURLParam('id')), { 
         "status": Constant.serviceRequestStatus.ACCEPTED,
         "notes": notes.value,
-        "priceAdjustment": price.value
+        "charge": price.value
     }).then(response => {
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
         reloadData(response.data.data);
@@ -119,7 +119,7 @@ addCustomEventListener("process", e => {
     APIPut(ServiceURL.Task.update(getURLParam('id')), { 
         "status": Constant.serviceRequestStatus.ON_PROCESS,
         "notes": notes.value,
-        "priceAdjustment": price.value
+        "charge": price.value
     }).then(response => {
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
         reloadData(response.data.data);
@@ -132,7 +132,7 @@ addCustomEventListener("update", e => {
     APIPut(ServiceURL.Task.update(getURLParam('id')), { 
         "status": Constant.serviceRequestStatus.ON_PROCESS,
         "notes": notes.value,
-        "priceAdjustment": price.value
+        "charge": price.value
     }).then(response => {
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
         reloadData(response.data.data);
@@ -145,7 +145,7 @@ addCustomEventListener("finish", e => {
     APIPut(ServiceURL.Task.update(getURLParam('id')), { 
         "status": Constant.serviceRequestStatus.COMPLETED,
         "notes": notes.value, 
-        "priceAdjustment": price.value
+        "charge": price.value
     }).then(response => {
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
         reloadData(response.data.data);

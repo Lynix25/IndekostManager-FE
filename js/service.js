@@ -1,7 +1,6 @@
 import { APIGet, APIPost } from "./api.js";
 import { Constant, Event, ServiceURL } from "./config.js";
 import { getFormValue, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
-import { MasterService } from "./masterdata/masterservice.js"
 import { Toast } from "./component/toast.js";
 
 handleFormSubmited((e) => {
@@ -15,14 +14,17 @@ handleFormSubmited((e) => {
 })
 
 APIGet(ServiceURL.Service.getAll).then(res => {
-
-    let count = 0;
-    MasterService.forEach(masterService => {
-        count++;
-        let option = document.createElement("option");
-        option.innerHTML = masterService.name;
-        document.querySelector("#serviceName").appendChild(option);
-        document.querySelector(`#category${count}`).innerHTML = masterService.name.toUpperCase();
+    
+    APIGet(ServiceURL.MasterData.getServiceCategory).then(resService => {
+        let data = resService.data.data;
+        for(let i=0; i < data.length; i++) {
+            let option = document.createElement("option");
+            option.innerHTML = data[i].name;
+            document.querySelector("#serviceName").appendChild(option);
+            document.querySelector(`#category${i+1}`).innerHTML = data[i].name.toUpperCase();
+        }
+    }).catch(errService => {
+        console.log(errService)
     });
 
     let services = res.data.data;
@@ -70,8 +72,8 @@ APIGet(ServiceURL.Service.getAll).then(res => {
         }
     });
 
-    if(count1 == 0) document.querySelector("#table1").classList.add("invisible");
-    if(count2 == 0) document.querySelector("#table2").classList.add("invisible");
-    if(count3 == 0) document.querySelector("#table3").classList.add("invisible");
-    if(count4 == 0) document.querySelector("#table4").classList.add("invisible");
+    if(count1 == 0) document.querySelector("#table1").setAttribute("hidden", "");
+    if(count2 == 0) document.querySelector("#table2").setAttribute("hidden", "");
+    if(count3 == 0) document.querySelector("#table3").setAttribute("hidden", "");
+    if(count4 == 0) document.querySelector("#table4").setAttribute("hidden", "");
 });
