@@ -21,7 +21,7 @@
     --paragraph: #5f6c7b;
     --button-highlight: #3da9fc;
 
-    --font-size: 16px;
+    --font-size: 18px;
 }
 
 * {
@@ -47,6 +47,8 @@
 
 .toast {
     opacity: 90% !important;
+    min-width: 25vmax !important;
+    width: 25vmax !important;
 }
 
 .toast-title, .toast-message {
@@ -181,7 +183,7 @@ ul {
     z-index: 1;
     width: max-content;
     color: var(--secondary-color);
-    font-size: 12px;
+    font-size: 14px;
     background-color: var(--black-color);
     border-radius: 4px;
     padding: 0.5rem;
@@ -207,7 +209,7 @@ ul {
 }
 
 .tooltip-top-title {
-    top: -45px;
+    top: -50px;
     left: -50%;
 }
 
