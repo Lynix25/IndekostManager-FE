@@ -14,9 +14,10 @@ const navLinks = document.querySelectorAll('.nav-link').forEach(link => {
 
 export function logout() {
     APIPut(ServiceURL.User.logout(getCookie('id'))).then(res => {
-        deleteCookie("id", "tokens", "role");
+        let deletedCache = res.data.data.deletedCache;
+        deleteCookie(...deletedCache);
         Toast(Constant.httpStatus.SUCCESS, res.data.message);
-        setTimeout(() => goTo(PAGE.LOGIN), 1500);
+        setTimeout(() => goTo(PAGE.LOGIN), Event.timeout);
     }).catch(err => {
         if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
         else Toast(Constant.httpStatus.ERROR, err.data.message);

@@ -8,10 +8,10 @@ export const Event = {
 
 export const Constant = {
     serviceRequestStatus: {
-        REJECTED: "Ditolak", 
-        SUBMITTED: "Menunggu Konfirmasi", 
-        ACCEPTED: "Diterima", 
-        ON_PROCESS: "Dalam Pengerjaan", 
+        REJECTED: "Ditolak",
+        SUBMITTED: "Menunggu Konfirmasi",
+        ACCEPTED: "Diterima",
+        ON_PROCESS: "Dalam Pengerjaan",
         COMPLETED: "Selesai"
     },
     userAttribute: {
@@ -40,27 +40,32 @@ export const Constant = {
         TENANT: "Tenant"
     },
     roomDetailsCategory: {
-        KAMAR_TIDUR: "Kamar Tidur", 
-        KAMAR_MANDI: "Kamar Mandi", 
-        FURNITURE: "Furniture", 
-        ALAT_ELEKTRONIK: "Alat Elektronik", 
+        KAMAR_TIDUR: "Kamar Tidur",
+        KAMAR_MANDI: "Kamar Mandi",
+        FURNITURE: "Furniture",
+        ALAT_ELEKTRONIK: "Alat Elektronik",
         FASILITAS_KAMAR_LAINNYA: "Fasilitas Kamar Lainnya"
-    }, 
+    },
     serviceCategory: {
         LAUNDRY: "Laundry",
         PEMBERSIHAN_KAMAR: "Pembersihan Kamar",
-        PERBAIKAN_FASILITAS: "Perbaikan Fasilitas", 
+        PERBAIKAN_FASILITAS: "Perbaikan Fasilitas",
         LAYANAN_LAINNYA: "Layanan Lainnya"
     }
 }
 
 export const PAGE = {
-    HOME : "/home.html",
-    LOGIN : "/login.html"
+    HOME: "/home.html",
+    LOGIN: "/login.html"
 };
 
 export const CONTENT_TYPE = {
     FORM: "multipart/form-data"
+}
+
+export const TOKENS = {
+    REMEMBERME: "token",
+    USERID : "id"
 }
 
 // ====================================== END POINT ======================================

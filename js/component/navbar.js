@@ -5,11 +5,6 @@ const noNavbarPage = ["login", "forgotpassword", "initialdata"].map(item => `/${
 
 let currentPath = getCurrentPath();
 if (!noNavbarPage.includes(currentPath)) {
-    
-    addCustomEventListener("logout", e => {
-        logout();
-    })
-
     const adminMenu = `
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -131,5 +126,9 @@ if (!noNavbarPage.includes(currentPath)) {
     
     let body = await getElementUntilElementAvailable("body");
     body.insertBefore(createElementFromString(navBar), document.body.firstChild);
+        
+    addCustomEventListener("logout", e => {
+        logout();
+    });
 }
 

@@ -1,24 +1,28 @@
-import { getCurrentPath, goTo } from "./utils.js";
-import { getCookie } from "./cookiemanagement.js"
-import { PAGE } from "./config.js";
+import { forEach, getCurrentPath, goTo } from "./utils.js";
+import { getCookie, setCookie } from "./cookiemanagement.js"
+import { Constant, PAGE, ServiceURL, TOKENS } from "./config.js";
+import { APIPost } from "./api.js";
+import { Toast } from "./component/toast.js";
 
-const whiteListPage = ["initialdata", "forgotpassword"].map(item => `/${item}.html`)
+roustes();
 
-checkIsUserLogIn();
-
-function checkIsUserLogIn() {
+function roustes() {
     let currentPath = getCurrentPath();
-    if (whiteListPage.includes(currentPath)) {
-        return;
-    }
-    let userToken = getCookie("tokens");
-    if (userToken === undefined) {
-        goTo(PAGE.LOGIN);
-        return;
-    }
 
-    if (currentPath === PAGE.LOGIN) {
-        goTo(PAGE.HOME);
-        return;
-    }
+    if (isUserAlreadyLogin()) return;
+
+    if (!allowedPageNoLogin(currentPath)) { goTo(PAGE.LOGIN); return; }
+}
+
+function isUserAlreadyLogin() {
+    if (getCookie(TOKENS.USERID)) return true;
+
+    return false;
+}
+
+function allowedPageNoLogin(page) {
+    const whiteListPage = ["initialdata", "forgotpassword"].map(item => `/${item}.html`)
+    if (whiteListPage.includes(page)) return true;
+
+    return false;
 }
