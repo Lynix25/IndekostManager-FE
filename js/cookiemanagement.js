@@ -19,20 +19,20 @@ export function getCookie(cookieName) {
     return undefined;
 }
 
-export function setCookie(cookieName, cookieValue, expiresIn) {
+export function setCookie(key, value, expiresInHour) {
     const d = new Date();
     // d.setTime(d.getTime() + (expireDays * 24 * 60 * 60 * 1000));
-    d.setTime(d.getTime() + (1 * expiresIn * 60 * 60 * 1000));
+    d.setTime(d.getTime() + (1 * expiresInHour * 60 * 60 * 1000));
     let expires = "expires=" + d.toUTCString();
-    document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
+    document.cookie = key + "=" + value + ";" + expires + ";path=/";
 }
 
-export function deleteCookie(...tokens) {
+export function deleteCookie(...keys) {
     const cookies = document.cookie.split(";");
     cookies.forEach(cookie => {
         const eqPos = cookie.indexOf("=");
         const cookieName = eqPos > -1 ? cookie.substring(0, eqPos).trim() : cookie;
-        if (tokens.includes(cookieName))
+        if (keys.includes(cookieName))
             document.cookie = cookieName + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
 
     });

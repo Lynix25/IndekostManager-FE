@@ -1,14 +1,34 @@
 import { APIGet, APIPost } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { Constant, Event, ServiceURL } from "./config.js";
-import { getFormValue, goTo, handleFormSubmited } from "./utils.js";
+import { Constant, Event, PAGE, ServiceURL, TOKENS } from "./config.js";
+import { forEach, getFormValue, goBack, goTo, handleFormSubmited } from "./utils.js";
 import { getCookie, setCookie } from "./cookiemanagement.js";
-
-
 
 document.querySelector("#password-show-hide").addEventListener("click", e => {
     passwordShowHide("#password", ".fa-eye", ".fa-eye-slash")
 })
+
+if (getCookie(TOKENS.REMEMBERME)) {
+    let data = {
+        username : "rememberme",
+        password : "rememberme",
+        token : getCookie(TOKENS.REMEMBERME)
+    }
+    APIPost(ServiceURL.User.login, data).then(response => {
+        if (response.status == 200) {
+            let cachedItem = response.data.data.cached;
+            forEach(cachedItem, (k, v) => {
+                setCookie(k, v, k === TOKENS.REMEMBERME ? 24 * 365 : undefined);
+            });
+
+            Toast(Constant.httpStatus.SUCCESS, response.data.message);
+            setTimeout(function () { goTo(PAGE.HOME) }, Event.timeout);
+        }
+    }).catch(err => {
+        if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+        else Toast(Constant.httpStatus.ERROR, err.data.message);
+    });
+}
 
 handleFormSubmited(login);
 
@@ -43,13 +63,13 @@ function login(e) {
             } else {
                 APIPost(ServiceURL.User.login, data).then(response => {
                     if (response.status == 200) {
-                        console.log(response);
-                        setCookie("tokens", response.data.data.token.tokenId, response.data.data.token.expiresIn);
-                        setCookie("id", response.data.data.user.id, response.data.data.token.expiresIn);
-                        setCookie("role", response.data.data.user.role.name, response.data.data.token.expiresIn);
+                        let cachedItem = response.data.data.cached;
+                        forEach(cachedItem, (k, v) => {
+                            setCookie(k, v, k === TOKENS.REMEMBERME ? 24 * 365 : undefined);
+                        });
 
                         Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                        setTimeout(function () { goTo('./home.html') }, Event.timeout);
+                        setTimeout(function () { goTo(PAGE.HOME) }, Event.timeout);
                     }
                 }).catch(err => {
                     if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
@@ -58,4 +78,5 @@ function login(e) {
             }
         }
     });
+
 }

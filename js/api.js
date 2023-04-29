@@ -23,21 +23,22 @@ function headers(aditionalConfig) {
 export function APIPut(resource, requestBody, requestHeader) {
     if (requestBody != null || requestBody != undefined) requestBody.requesterId = getCookie("id");
     return new Promise((resolve, reject) => {
-        axios.put(END_POINT + resource, requestBody, headers(requestHeader)).then(result => {
-            resolve(result);
-        }).catch(result => {
-            reject(result.response);
-        })
+
     })
 }
 
 export function APIPost(resource, requestBody, requestHeader) {
     if (requestBody != null || requestBody != undefined) requestBody.requesterId = getCookie("id");
     return new Promise((resolve, reject) => {
-        axios.post(END_POINT + resource, requestBody, headers(requestHeader)).then(result => {
-            resolve(result)
-        }).catch(result => {
-            reject(result.response)
+        let intervalId = setInterval(() => {
+            if (axios) {
+                clearInterval(intervalId);
+                axios.post(END_POINT + resource, requestBody, headers(requestHeader)).then(result => {
+                    resolve(result)
+                }).catch(result => {
+                    reject(result.response)
+                })
+            }
         })
     })
 }

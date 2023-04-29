@@ -242,21 +242,21 @@ export function setAttributes(element, attribute) {
     })
 };
 
-export function forEach(objectOrArray, callback, keySort = "none") {
-    if (Array.isArray(objectOrArray)) {
-        let keys = keySort == "ASC" ? objectOrArray.sort() : objectOrArray;
+export function forEach(data, callback, keySort = "none") {
+    if (Array.isArray(data)) {
+        let keys = keySort == "ASC" ? data.sort() : data;
         keys.forEach(value => {
             callback(value);
-        })
+        });
     }
-    else if (isObject(objectOrArray)) {
-        let keys = keySort == "ASC" ? Object.keys(objectOrArray).sort() : Object.keys(objectOrArray);
+    else if (isObject(data)) {
+        let keys = keySort == "ASC" ? Object.keys(data).sort() : Object.keys(data);
         keys.forEach(key => {
-            callback(key, objectOrArray[key])
-        })
+            callback(key, data[key]);
+        });
     }
     else {
-        console.log("no object / array given, but given " + typeof (objectOrArray))
+        callback(data);
     }
 }
 
