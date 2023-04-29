@@ -27,13 +27,13 @@ export function setCookie(cookieName, cookieValue, expiresIn) {
     document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
 }
 
-export function deleteCookie() {
-    // document.cookie = cookieName + '=; Max-Age=-99999999;';
+export function deleteCookie(...tokens) {
     const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i];
+    cookies.forEach(cookie => {
         const eqPos = cookie.indexOf("=");
-        const cookieName = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
-        document.cookie = cookieName + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    }
+        const cookieName = eqPos > -1 ? cookie.substring(0, eqPos).trim() : cookie;
+        if (tokens.includes(cookieName))
+            document.cookie = cookieName + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+    });
 }

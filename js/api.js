@@ -9,7 +9,7 @@ import { getCookie } from "./cookiemanagement.js";
  * @returns 
  */
 
-function headers(aditionalConfig){
+function headers(aditionalConfig) {
     let defaultConfig = {
         headers: {
             "Access-Control-Allow-Origin": "*",
@@ -24,9 +24,9 @@ export function APIPut(resource, requestBody, requestHeader) {
     if (requestBody != null || requestBody != undefined) requestBody.requesterId = getCookie("id");
     return new Promise((resolve, reject) => {
         axios.put(END_POINT + resource, requestBody, headers(requestHeader)).then(result => {
-            resolve(result)
+            resolve(result);
         }).catch(result => {
-            reject(result.response)
+            reject(result.response);
         })
     })
 }

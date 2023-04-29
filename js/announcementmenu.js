@@ -9,12 +9,6 @@ searchBox.addEventListener("input", e => {
     const search = e.target.value.toLowerCase();
     for(let i=0; i < announcementList.length; i++) {
         const isVisible = announcementList[i].title.toLowerCase().includes(search);
-        
-        // console.log("=========================");
-        // console.log(isVisible);
-        // console.log(search);
-        // console.log(announcementList[i].title.toLowerCase());
-        // console.log("=========================");
 
         if(isVisible) announcementList[i].element.style.display = "";
         else announcementList[i].element.style.display = "none";

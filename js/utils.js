@@ -38,6 +38,9 @@ export function getFormValueV2(element) {
         if (type == "checkbox")
             valueValue = element.checked;
 
+        if (type == "file")
+            valueValue = element.files[0];
+
         return [hasAttrValue, valueValue];
     }
 
@@ -141,6 +144,24 @@ function isObjectEmpty(object) {
     return Object.keys(object).length <= 0 ? true : false;
 }
 
+export function map(array, callback) {
+    let temp = array.map(callback);
+    let result = "";
+    for (let i = 0; i < temp.length; i++) {
+        result += temp[i];
+    }
+
+    return result;
+}
+
+export function range(stop, start = 0, step = 1) {
+    stop--;
+    return Array.from(
+        { length: (stop - start) / step + 1 },
+        (value, index) => start + index * step
+    );
+}
+
 /**
  * 
  * @param {*} * 
@@ -156,21 +177,63 @@ export function handleFormSubmited(callback, formSelector = "form", preventDefau
     })
 }
 
-export function addCustomEventListener(eventName, callback, element, triggerElement, eventConfig = {}, triggerEvent = "click", preventDefault = true) {
-    element = element || document.querySelector(`[type=${eventName}]`);
-    triggerElement = triggerElement || element;
+export function getElementUntilElementAvailable(selectors) {
+    const TIME_OUT = 300;
+    return new Promise((resolve, reject) => {
+        let time = 0;
+        let intervalId = setInterval(() => {
+            let searchElement = document.querySelector(selectors);
+            if (searchElement) {
+                clearInterval(intervalId);
+                resolve(searchElement);
+            }
+            if (time >= TIME_OUT) {
+                clearInterval(intervalId);
+                reject(`No Such Element ${selectors}`);
+            }
+            time += 50;
+        }, 50);
+    })
+}
+
+function getAllElementUntilElementAvailable(selectors) {
+    const TIME_OUT = 300;
+    return new Promise((resolve, reject) => {
+        let time = 0;
+        let intervalId = setInterval(() => {
+            let searchElement = document.querySelectorAll(selectors);
+            if (searchElement) {
+                clearInterval(intervalId);
+                resolve(searchElement);
+            }
+            if (time >= TIME_OUT) {
+                clearInterval(intervalId);
+                reject(`No Such Element ${selectors}`);
+            }
+            time += 50;
+        }, 50);
+    })
+}
+
+export async function addCustomEventListener(eventName, callback, element, triggerElement, triggerEvent = "click", preventDefault = false, stopBubbling = false) {
+    element = element || document;
     element.addEventListener(eventName, e => {
         callback(e);
     });
-    triggerElement.addEventListener(triggerEvent, e => {
-        const event = new CustomEvent(eventName, {
-            detail: {
-                target: triggerElement
-            }
+
+    triggerElement = triggerElement || await getAllElementUntilElementAvailable(`[type=${eventName}]`);
+    forEach(triggerElement, (key, el) => {
+        el.addEventListener(triggerEvent, e => {
+            const event = new CustomEvent(eventName, {
+                detail: {
+                    target: el
+                }
+            });
+            if (preventDefault) e.preventDefault();
+            if (stopBubbling) e.stopPropagation();
+            element.dispatchEvent(event);
         });
-        element.dispatchEvent(event);
-        if (preventDefault) e.preventDefault();
-    });
+    })
 }
 
 export function setAttributes(element, attribute) {
@@ -181,14 +244,12 @@ export function setAttributes(element, attribute) {
 
 export function forEach(objectOrArray, callback, keySort = "none") {
     if (Array.isArray(objectOrArray)) {
-        objectOrArray.forEach(value => {
+        let keys = keySort == "ASC" ? objectOrArray.sort() : objectOrArray;
+        keys.forEach(value => {
             callback(value);
         })
     }
     else if (isObject(objectOrArray)) {
-        // Object.keys(objectOrArray).forEach(key => {
-        //     callback(key, objectOrArray[key])
-        // })
         let keys = keySort == "ASC" ? Object.keys(objectOrArray).sort() : Object.keys(objectOrArray);
         keys.forEach(key => {
             callback(key, objectOrArray[key])
@@ -202,9 +263,8 @@ export function forEach(objectOrArray, callback, keySort = "none") {
 export function goTo(path) {
     // / Absolute
     // ./ relative
-    if (getCurrentPath() == path) return;
+    if (getCurrentPath() === path) return;
     window.location.href = path;
-    // window.location.assign(path);
 }
 
 export function goBack() {
@@ -268,13 +328,15 @@ export function getRoleOfUser() {
 }
 
 export function isOwnerOrAdmin() {
-    if(getRoleOfUser() === Constant.role.OWNER || getRoleOfUser() === Constant.role.ADMIN) return true;
+    if (getRoleOfUser() === Constant.role.OWNER || getRoleOfUser() === Constant.role.ADMIN) return true;
     else return false;
 }
 
-export function getURLParam(paramId) {
-    let params = new URLSearchParams(location.search);
-    return params.get(paramId);
+export function createElementFromString(htmlString) {
+    var div = document.createElement('div');
+    div.innerHTML = htmlString.trim();
+
+    return div.firstChild;
 }
 
 // ====================================== DATE ======================================

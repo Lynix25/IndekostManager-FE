@@ -1,16 +1,15 @@
 import { APIDelete, APIGet } from "./api.js";
-import { showModalConfirmation } from "./component/modal.js";
-import { Toast } from "./component/toast.js";
-import { Constant, Event, ServiceURL } from "./config.js";
+import { Constant, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 import { showModalForm } from "./createcontactable.js";
-import { logout } from "./main.js";
-import { addCustomEventListener, goTo, UNIXtimeConverter } from "./utils.js";
+import { showModalConfirmation } from "./component/modal.js";
+import { UNIXtimeConverter, addCustomEventListener, goTo, map, numberWithThousandsSeparators, range } from "./utils.js";
+import { Toast } from "./component/toast.js";
 
 APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     let user = res.data.data.user;
     let room = res.data.data.room;
-    
+
     document.querySelector("#name").innerText = user.name;
     document.querySelector("#alias").innerText = `(${user.alias})`;
     document.querySelector("#email").innerText = user.email;
@@ -29,84 +28,75 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     `;
     document.querySelector("#identity-image").appendChild(identityImage);
 
-    APIGet(ServiceURL.User.getContactable(user.id)).then(res => {
-        let contactables = res.data.data;
-        if(contactables.length == 0) {
-            document.querySelector("#list-not-empty").remove();
-        } else {
-            document.querySelector("#list-empty").remove();
+    if (user.contactAblePersons.length) {
+        const contactAblePersonList = document.querySelector("#contactAblePersonList");
+        contactAblePersonList.classList.add("carousel", "carousel-dark", "slide", "p-0");
 
-            let count = 0;
-            contactables.forEach(data => {
-                count++;
+        let list = `
+        <div class="carousel-inner">
+            ${map(user.contactAblePersons, contactAblePerson =>
+            `<div class="carousel-item">
+                <div class="row">
+                    <div class="col">
+                        <div>
+                            <div class="title">Nama</div>
+                            <div>${contactAblePerson.name}</div>
+                        </div>
+                        <div>
+                            <div class="title">Nomor Telfon</div>
+                            <div>${contactAblePerson.phone}</div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div>
+                            <div class="title">Alamat</div>
+                            <div>${contactAblePerson.address}</div>
+                        </div>
+                        <div>
+                            <div class="title">Hubungan</div>
+                            <div>${contactAblePerson.relation}</div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-primary me-3" type="delete-contactable" target="${contactAblePerson.id}">Delete</button>
+                        <button class="btn btn-primary" type="edit-contactable">Edit</button>
+                    </div>
+                </div>
+            </div>`).replace('carousel-item"', 'carousel-item active"')}
+        </div>
+        <div class="carousel-indicators align-items-end mb-0" style="position: relative;">
+            ${map(range(user.contactAblePersons.length), i =>
+                `<button type="button" data-bs-target="#contactAblePersonList" data-bs-slide-to="${i}" ${i ? "" :
+                    'class="active" aria-current="true"'}></button>
+                `
+            )}
+        </div>
+        `
+        contactAblePersonList.innerHTML = list;
+        
+        addCustomEventListener("delete-contactable", e => {
+            const target = e.detail.target.getAttribute("target");
+            showModalConfirmation(
+                Constant.modalType.DELETECONFIRMATION,
+                'Hapus Kontak Alternatif',
+                'Anda yakin ingin menghapus kontak alternatif?',
+                'Hapus', 'Batal',
+                () => {
+                    APIDelete(ServiceURL.User.deleteContactable(getCookie('id')) + target).then(response => {
+                        Toast(Constant.httpStatus.SUCCESS, response.data.message);
+                        setTimeout(function () { goTo('./profile.html') }, Event.timeout);
+                    }).catch(err => {
+                        Toast(Constant.httpStatus.ERROR, err?.message);
+                    });
+                }
+            );
+        })
 
-                let toggleEdit = document.createElement("td");
-                toggleEdit.classList.add("text-center", "hover");
-                toggleEdit.innerHTML = `
-                    <div class="hover-text">
-                        <span class="tooltip-text tooltip-top-toggle">Ubah</span>
-                        <span id="edit"><a href="#"><i class="fa-solid fa-pencil"></i></a></span>
-                    </div>`;
-                    
-                let toggleDelete = document.createElement("td");
-                toggleDelete.classList.add("text-center", "hover");
-                toggleDelete.innerHTML = `
-                    <div class="hover-text">
-                        <span class="tooltip-text tooltip-top-toggle">Hapus</span>
-                        <span id="delete"><a href="#"><i class="fa-solid fa-trash"></i></a></span>
-                    </div>`;
-                
-                let item = document.createElement("tr");
-                item.innerHTML = `
-                    <th scope="row">${count}</th>
-                    <td class="contactable-table-data text-truncate">
-                        <a href="/editcontactable.html?id=${data.id}">
-                            ${data.name}
-                        </a>
-                    </td>
-                    <td class="contactable-table-data text-truncate">
-                        <a href="/editcontactable.html?id=${data.id}">
-                            ${data.relation}
-                        </a>
-                    </td>
-                    <td class="text-truncate" style="max-width: 8rem; min-width: 8rem;">
-                        <a href="/editcontactable.html?id=${data.id}">
-                            ${data.phone}
-                        </a>
-                    </td>
-                    <td class="text-truncate" style="max-width: 18rem; min-width: 8rem;">
-                        <a href="/editcontactable.html?id=${data.id}">
-                            ${data.address}
-                        </a>
-                    </td>
-                `;
+        addCustomEventListener("edit-contactable", e => {
+            console.log(e.detail.target);
+        })
 
-                toggleEdit.addEventListener("click", e => {
-                    goTo("./editcontactable.html?id=" + data.id);
-                });
-                item.appendChild(toggleEdit);
-
-                toggleDelete.addEventListener("click", e => {
-                    showModalConfirmation(
-                        Constant.modalType.DELETECONFIRMATION, 
-                        'Hapus Kontak Alternatif', 
-                        'Anda yakin ingin menghapus kontak alternatif?', 
-                        'Hapus', 'Batal', () => {
-                            APIDelete(ServiceURL.User.deleteContactable(getCookie('id')) + data.id).then(response => {
-                                Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                                setTimeout(function() { goTo('./profile.html') }, Event.timeout);
-                            }).catch(err => {
-                                Toast(Constant.httpStatus.ERROR, err?.message);
-                            });
-                        }
-                    );
-                });
-                item.appendChild(toggleDelete);
-
-                document.querySelector("#list-data").appendChild(item);
-            });
-        }
-    });
+    }
 
     getRoomData(room.id)
 });
@@ -125,27 +115,25 @@ addCustomEventListener("add-alternatif-contact", e => {
     showModalForm(Constant.modalType.FORM, 'Tambah Kontak Alternatif', 'Simpan');
 });
 
-let eLogout = document.getElementById("logout");
-logout(eLogout);
-
 function getRoomData(roomId) {
     APIGet(ServiceURL.Room.getById(roomId)).then(res => {
-        let room = res.data.data;
-        document.querySelector(".name").innerHTML = room.room.name;
-        document.querySelector(".allotment").innerHTML = room.room.allotment;
-        document.querySelector(".floor").innerHTML = 'Lantai ' + room.room.floor;
-        document.querySelector(".description").innerHTML = room.room.description;
+        let room = res.data.data.room;
+        document.querySelector(".name").innerHTML = room.name;
+        document.querySelector(".price").innerHTML = `Rp${numberWithThousandsSeparators("1000000")}`;
+        document.querySelector(".floor").innerHTML = `Lantai ${room.floor}`;
+        // document.querySelector(".price").innerHTML = room.price;
+        // document.querySelector(".description").innerHTML = room.description;
 
-        let status = (room.totalTenants >= room.room.quota ? 'Kamar penuh' : 'Tersedia');
+        let status = (room.totalTenants >= room.quota ? 'Kamar penuh' : 'Tersedia');
         document.querySelector(".status").classList.add(status === 'Kamar penuh' ? "text-danger" : "text-success");
-        status += ` (${room.totalTenants}/${room.room.quota})`;
+        status += ` (${res.data.data.totalTenants}/${room.quota})`;
         document.querySelector(".status").innerHTML = status;
 
         // Room Details
-        let details = room.room.details;
+        let details = room.details;
         details.forEach(detail => {
             let icon = detail.enable ? "fa-check-circle" : "fa-times-circle";
-            if(detail.masterRoomDetailCategory.name === Constant.roomDetailsCategory.KAMAR_TIDUR) {
+            if (detail.masterRoomDetailCategory.name === Constant.roomDetailsCategory.KAMAR_TIDUR) {
                 let itemList = document.createElement("div");
                 itemList.classList.add("d-flex", "col", "align-items-center")
 
@@ -160,7 +148,7 @@ function getRoomData(roomId) {
                 `;
                 document.querySelector("#kamar-tidur").appendChild(itemList);
             }
-            else if(detail.masterRoomDetailCategory.name === Constant.roomDetailsCategory.KAMAR_MANDI) {
+            else if (detail.masterRoomDetailCategory.name === Constant.roomDetailsCategory.KAMAR_MANDI) {
                 let itemList = document.createElement("div");
                 itemList.classList.add("d-flex", "col", "align-items-center")
 
@@ -175,10 +163,10 @@ function getRoomData(roomId) {
                 `;
                 document.querySelector("#kamar-mandi").appendChild(itemList);
             }
-            else if(detail.masterRoomDetailCategory.name === Constant.roomDetailsCategory.FURNITURE) {
+            else if (detail.masterRoomDetailCategory.name === Constant.roomDetailsCategory.FURNITURE) {
                 let itemList = document.createElement("div");
                 itemList.classList.add("d-flex", "col", "align-items-center")
-                
+
                 itemList.innerHTML = `
                     <div class="w-100">
                         <div class="d-flex align-items-center">
@@ -190,10 +178,10 @@ function getRoomData(roomId) {
                 `;
                 document.querySelector("#furniture").appendChild(itemList);
             }
-            else if(detail.masterRoomDetailCategory.name === Constant.roomDetailsCategory.ALAT_ELEKTRONIK) {
+            else if (detail.masterRoomDetailCategory.name === Constant.roomDetailsCategory.ALAT_ELEKTRONIK) {
                 let itemList = document.createElement("div");
                 itemList.classList.add("d-flex", "col", "align-items-center")
-                
+
                 itemList.innerHTML = `
                     <div class="w-100">
                         <div class="d-flex align-items-center">
@@ -208,7 +196,7 @@ function getRoomData(roomId) {
             else {
                 let itemList = document.createElement("div");
                 itemList.classList.add("d-flex", "col", "align-items-center")
-                
+
                 itemList.innerHTML = `
                     <div class="w-100">
                         <div class="d-flex align-items-center">
@@ -222,15 +210,15 @@ function getRoomData(roomId) {
             }
         });
 
-        let prices = room.room.prices;
-        prices.forEach(price => {
-            let item = document.createElement("tr");
-            item.innerHTML = `
-                <td>${price.capacity} orang</td>
-                <td>Rp ${price.price},-</td>
-            `
-            document.querySelector("#price-data").appendChild(item);
-        });
+        // let prices = room.prices;
+        // prices.forEach(price => {
+        //     let item = document.createElement("tr");
+        //     item.innerHTML = `
+        //         <td>${price.capacity} orang</td>
+        //         <td>Rp ${price.price},-</td>
+        //     `
+        //     document.querySelector("#price-data").appendChild(item);
+        // });
 
         document.querySelector("#category1").innerHTML = Constant.roomDetailsCategory.KAMAR_TIDUR;
         document.querySelector("#category2").innerHTML = Constant.roomDetailsCategory.KAMAR_MANDI;

@@ -1,6 +1,6 @@
-import { APIGet, APIPut, convertImage64ToSrc, getCookie, getFormValue, getFormValueBeta, getUpdateFormValue, getURLParam, handleFormSubmited } from "./utils.js";
+import { APIGet, APIPut, convertImage64ToSrc, getCookie, getFormValue, getFormValueBeta, getUpdateFormValue, getParamOnURL, handleFormSubmited } from "./utils.js";
 
-APIGet("/announcement/" + getURLParam("id")).then(res => {
+APIGet("/announcement/" + getParamOnURL("id")).then(res => {
     let announcement = res.data;
     // console.log(announcement)
     reloadData(announcement)
@@ -20,7 +20,7 @@ function reloadData(announcement){
 // handleFormSubmited(e => {
 //     let data = getUpdateFormValue(e.target);
 
-//     APIPut("/announcement/" + getURLParam("id"), data).then(res => {
+//     APIPut("/announcement/" + getParamOnURL("id"), data).then(res => {
 //         console.log(res);
 //         // reloadData(res.data.data);
 //     })

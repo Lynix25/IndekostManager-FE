@@ -19,58 +19,43 @@ APIGet(ServiceURL.Room.getAll).then(res => {
                 <span id="back"><a href="#!"><i class="fad ${data.tenantsInRoom >= data.room.quota ? "fa-door-closed" : "fa-door-open"} me-3 my-auto" style="font-size: 2.2rem;"></i></a></span>
             </div>
             <div>
-                <div>${data.room.name}</div>
-                <div>${data.room.floor}</div>
+                <button type="edit" class="btn""><i class="fad fa-edit"></i></button>
+                <button type="delete" class="btn" data-bs-toggle="modal" data-bs-target="#confirmation"><i class="fad fa-trash"></i></button>
             </div>
-        </div>`;
-        room.addEventListener("click", e => {
-            goTo('./roomdetail.html?id=' + data.room.id);
-        })
-
-        let controlButton = document.createElement("div");
-        // controlButton.style.float = "right";
-
-        let editButton = document.createElement("button");
-        editButton.setAttribute("type", "edit");
-        editButton.innerHTML = `<i class="fad fa-edit"></i>`;
-        editButton.classList.add("btn");
-        controlButton.appendChild(editButton);
+        </li>
+        `;
+        const roomElement = createElementFromString(room);
+        addCustomEventListener("click", e => {
+            goTo('./roomdetail.html?id=' + data.id);
+        }, roomElement)
 
         addCustomEventListener("edit", e => {
-            goTo('./editroom.html?id=' + data.room.id);
-        }, editButton);
-
-        let deleteButton = document.createElement("button");
-        setAttributes(deleteButton, {
-            "type": "delete",
-            "data-bs-toggle": "modal",
-            "data-bs-target": "#confirmation",
-            "data": data.id
-        })
-        deleteButton.innerHTML = `<i class="fad fa-trash"></i>`;
-        deleteButton.classList.add("btn");
-        controlButton.appendChild(deleteButton);
+            goTo('./editroom.html?id=' + data.id);
+        }, roomElement, ...Array(3), true);
 
         addCustomEventListener("delete", e => {
-            document.querySelector("#room-name").innerHTML = data.room.name;
-            document.querySelector("[type='confirm-delete']").setAttribute("data", data.room.id);
-            document.querySelector("[type='confirm-delete']").setAttribute("data-room-name", data.room.name);
-        }, deleteButton);
+            document.querySelector("#room-name").innerHTML = data.name;
+            setAttributes(document.querySelector("[type='confirm-delete']"), { "data": data.id, "data-room-name": data.name });
+        }, roomElement, ...Array(3), true);
 
-        room.appendChild(controlButton);
-        document.querySelector("#room-list").appendChild(room);
-        count++;
+        document.querySelector("#room-list").appendChild(roomElement);
     });
 }).catch(e => {
     console.log(e);
 })
 
-const toastTrigger = document.getElementById('liveToastBtn')
-const toastLiveExample = document.getElementById('liveToast')
-if (toastTrigger) {
-    toastTrigger.addEventListener('click', () => {
-        const toast = new bootstrap.Toast(toastLiveExample)
+// const toastTrigger = document.getElementById('liveToastBtn')
 
-        toast.show()
-    })
-}
+// if (toastTrigger) {
+//     toastTrigger.addEventListener('click', () => {
+//         const toast = new bootstrap.Toast(toastLiveExample)
+//         toast.show()
+//     })
+// }
+
+addCustomEventListener("confirm-delete", e => {
+    console.log("Delete asd");
+    const toastLiveExample = document.getElementById('liveToast');
+    const toast = new bootstrap.Toast(toastLiveExample);
+    toast.show();
+})

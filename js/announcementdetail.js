@@ -1,6 +1,6 @@
 import { APIGet } from "./api.js";
 import { ServiceURL } from "./config.js";
-import { getURLParam, isOwnerOrAdmin } from "./utils.js";
+import { getParamOnURL, isOwnerOrAdmin } from "./utils.js";
 
 APIGet(ServiceURL.Announcement.getById(getURLParam("id"))).then(res => {
     let data = res.data.data;
@@ -55,16 +55,16 @@ document.body.appendChild(js);
 //     // function editAnnouncement() {
 //     //     document.getElementById("editAnnouncement").addEventListener("click", e => {
 //     //         // console.log("???")
-//     //         console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getURLParam("id")))
+//     //         console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getParamOnURL("id")))
 //     //     })
 //     //     // .onclick(e => {
 //     //     //     console.log("???")
-//     //     //     // console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getURLParam("id")))
+//     //     //     // console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getParamOnURL("id")))
 //     //     // })
 //     // }
 
 
-// APIDelete("/announcement/" + getURLParam("id")).then(res => {
+// APIDelete("/announcement/" + getParamOnURL("id")).then(res => {
 //     console.log(res.data);
 //     document.querySelector("#delete-announcement").addEventListener("click", e => {
 //         goTo("./home.html");

@@ -2,9 +2,9 @@ import { APIGet, APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { getFormValue, getURLParam, goTo, handleFormSubmited } from "./utils.js";
+import { getFormValue, getParamOnURL, goTo, handleFormSubmited } from "./utils.js";
 
-APIGet(ServiceURL.User.getContactable(getCookie('id')) + getURLParam('id')).then(res => {
+APIGet(ServiceURL.User.getContactable(getCookie('id')) + getParamOnURL('id')).then(res => {
     let contactablePerson = res.data.data[0];
     reloadData(contactablePerson)
 })
@@ -26,7 +26,7 @@ function reloadData(contactablePerson){
 
 handleFormSubmited(e => {
     let data = getFormValue(e.target);
-    APIPut(ServiceURL.User.editContactable(getCookie('id')) + getURLParam("id"), data).then(response => {
+    APIPut(ServiceURL.User.editContactable(getCookie('id')) + getParamOnURL("id"), data).then(response => {
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
     }).catch(err => {

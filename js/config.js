@@ -54,6 +54,15 @@ export const Constant = {
     }
 }
 
+export const PAGE = {
+    HOME : "/home.html",
+    LOGIN : "/login.html"
+};
+
+export const CONTENT_TYPE = {
+    FORM: "multipart/form-data"
+}
+
 // ====================================== END POINT ======================================
 export const ServiceURL = {
     MasterData: {

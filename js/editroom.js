@@ -1,7 +1,7 @@
 import { APIGet } from "./api.js";
-import { getURLParam, numberWithThousandsSeparators } from "./utils.js";
+import { getParamOnURL, numberWithThousandsSeparators } from "./utils.js";
 
-APIGet("/room/" + getURLParam("id")).then(res => {
+APIGet("/room/" + getParamOnURL("id")).then(res => {
     let room = res.data.data;
 
     reloadData(room);
@@ -88,7 +88,7 @@ document.addEventListener("change", e => {
 handleFormSubmited(e => {
     let data = getUpdateFormValue(e.target);
 
-    APIPut("/room/" + getURLParam("id"), data, getCookie("tokens")).then(res => {
+    APIPut("/room/" + getParamOnURL("id"), data, getCookie("tokens")).then(res => {
         console.log(res);
         reloadData(res.data);
     }).catch(err => {
