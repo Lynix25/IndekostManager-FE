@@ -1,5 +1,5 @@
 import { APIDelete, APIGet } from "./api.js";
-import { Constant, ServiceURL } from "./config.js";
+import { Constant, Event, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 import { showModalForm } from "./createcontactable.js";
 import { showModalConfirmation } from "./component/modal.js";

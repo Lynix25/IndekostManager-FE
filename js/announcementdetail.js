@@ -1,56 +1,58 @@
-import { APIGet } from "./api.js";
-import { ServiceURL } from "./config.js";
-import { getParamOnURL, isOwnerOrAdmin } from "./utils.js";
+import { APIDelete, APIGet } from "./api.js";
+import { Constant, Event, ServiceURL } from "./config.js";
+import { showModalConfirmation } from "./component/modal.js";
+import { getParamOnURL, goBack, goTo, isOwnerOrAdmin } from "./utils.js";
+import { Toast } from "./component/toast.js";
 
-APIGet(ServiceURL.Announcement.getById(getURLParam("id"))).then(res => {
+APIGet(ServiceURL.Announcement.getById(getParamOnURL("id"))).then(res => {
     let data = res.data.data;
     let image = data.image;
     let src;
     if(image == null || image.trim() === "") src = "asset/no_image.png"
     else src = `data:image/png;base64,${image}`;
     
-    let announcement = document.createElement("div");
-    announcement.innerHTML = `
-            <div class="page-title my-4">
-                <div class="hover-text">
-                    <span class="tooltip-text tooltip-top-title">Kembali</span>
-                    <span id="back"><a onClick="goBack()"><i class="fa fa-chevron-left"></i></a></span>
-                </div>
-                <h3 class="text-center m-0 w-100">${data.title}</h3>
-            </div>
-            <div class="d-flex row align-items-center justify-content-center my-4">
-                <img src="${src}" width="75%">
-            </div>
-            <div class="text-center"><i>Berlaku pada : ${data.period}</i></div>
-            <hr/>
-            <p class="text-align-justify">${data.description}</p>
-        </div>
-    `;
-    document.querySelector("#announcement-detail").appendChild(announcement);
+    document.querySelector(".title").innerHTML = data.title;
+    document.querySelector(".period").innerHTML = `Berlaku pada: ${data.period}`;
+    document.querySelector(".description").innerHTML = data.description;
+    document.querySelector(".image").setAttribute("src", src)
 
-    let actionButton = document.createElement("div");
-    actionButton.classList.add("d-flex", "justify-content-end", "mt-4");
     if(isOwnerOrAdmin()) {
-        actionButton.innerHTML = `
-            <button class="btn btn-primary mx-2" id="editAnnouncement">Ubah</button>
-            <button class="btn btn-danger" id="deleteAnnouncement">Hapus</button>`
+        document.querySelector(".btn-secondary").setAttribute("hidden", "");
     } else {
-        actionButton.innerHTML = `
-            <button class="btn btn-secondary" onClick="goToHome()">Kembali</button>`;
+        document.querySelector(".btn-primary").setAttribute("hidden", "");
+        document.querySelector(".btn-danger").setAttribute("hidden", "");
     }
-    document.querySelector("#announcement-detail").appendChild(actionButton);
-})
+});
 
-let js = document.createElement("script");
-js.innerHTML = `
-    function goToHome() {
-        window.location.href='./home.html';
-    }
-    function goBack() {
-        history.back();
-    }
-`;
-document.body.appendChild(js);
+document.querySelector("#back").addEventListener("click", e => {
+    goBack();
+});
+
+document.querySelector("#editAnnouncement").addEventListener("click", e => {
+    goTo("/editannouncement.html?id=" + getParamOnURL("id"))
+});
+
+document.querySelector("#deleteAnnouncement").addEventListener("click", e => {
+    console.log(e.target)
+    showModalConfirmation(
+        Constant.modalType.DELETECONFIRMATION,
+        'Hapus Pengumuman',
+        'Anda yakin ingin menghapus pemgumuman?',
+        'Hapus', 'Batal',
+        () => {
+            APIDelete(ServiceURL.Announcement.delete(getParamOnURL('id'))).then(response => {
+                Toast(Constant.httpStatus.SUCCESS, response.data.message);
+                setTimeout(function () { goTo('./announcementmenu.html') }, Event.timeout);
+            }).catch(err => {
+                Toast(Constant.httpStatus.ERROR, err?.message);
+            });
+        }
+    );
+});
+
+document.querySelector("#exitAnnouncement").addEventListener("click", e => {
+    goTo('./announcementmenu.html')
+});
 
 //     // function editAnnouncement() {
 //     //     document.getElementById("editAnnouncement").addEventListener("click", e => {

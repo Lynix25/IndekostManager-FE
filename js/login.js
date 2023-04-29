@@ -43,7 +43,6 @@ function login(e) {
             } else {
                 APIPost(ServiceURL.User.login, data).then(response => {
                     if (response.status == 200) {
-                        console.log(response);
                         setCookie("tokens", response.data.data.token.tokenId, response.data.data.token.expiresIn);
                         setCookie("id", response.data.data.user.id, response.data.data.token.expiresIn);
                         setCookie("role", response.data.data.user.role.name, response.data.data.token.expiresIn);
