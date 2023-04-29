@@ -1,5 +1,6 @@
+import { APIGet } from "./api.js";
 import { ServiceURL } from "./config.js";
-import { addCustomEventListener, APIGet, goTo, setAttributes } from "./utils.js";
+import { addCustomEventListener, goTo, setAttributes } from "./utils.js";
 
 APIGet(ServiceURL.Room.getAll).then(res => {
     let roomList = res.data.data;
@@ -14,8 +15,8 @@ APIGet(ServiceURL.Room.getAll).then(res => {
         room.innerHTML += `
         <div class="d-flex">
             <div class="hover-text">
-                <span class="tooltip-text tooltip-top-title">${data.tenant >= data.room.quota ? "Kamar penuh" : "Kamar tersedia"}</span>
-                <span id="back"><a href="#!"><i class="fad ${data.tenant >= data.room.quota ? "fa-door-closed" : "fa-door-open"} me-3 my-auto" style="font-size: 2.2rem;"></i></a></span>
+                <span class="tooltip-text tooltip-top-title">${data.tenantsInRoom >= data.room.quota ? `Kamar penuh (${data.tenantsInRoom}/${data.room.quota})` : `Kamar tersedia (${data.tenantsInRoom}/${data.room.quota})`}</span>
+                <span id="back"><a href="#!"><i class="fad ${data.tenantsInRoom >= data.room.quota ? "fa-door-closed" : "fa-door-open"} me-3 my-auto" style="font-size: 2.2rem;"></i></a></span>
             </div>
             <div>
                 <div>${data.room.name}</div>

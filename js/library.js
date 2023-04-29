@@ -129,7 +129,7 @@ if (currentPath !== "/login.html" && currentPath !== "/forgotpassword.html")
         navBar.innerHTML = `
         <div class="container-fluid">
             <a class="navbar-brand" href="./home.html">
-                <img src="./asset/image/Logo.png" alt="In D'Kos" style="width: 10vmax">
+                <img src="./asset/image/Logo.png" alt="In D'Kos" style="width: 80px">
             </a>
             <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

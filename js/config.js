@@ -57,6 +57,7 @@ export const Constant = {
 // ====================================== END POINT ======================================
 export const ServiceURL = {
     MasterData: {
+        getIndekos: "/main",
         getRole: "/role",
         getRoomDetailCategory: "/room/category",
         getServiceCategory: "/service/category"

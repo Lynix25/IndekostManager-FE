@@ -12,7 +12,9 @@
     --badge-text-green-color: #1DA42C;
     --badge-text-red-color: #C62852;
     
-    --main-background-buttontext: #90b4ce;
+    --body-color: #f7f7f7;
+
+    --main-background-buttontext: #515151;
     --primary-color: #d8eefe;
     --secondary-color: #fffffe;
     --tertiary-color: #ef4565;
@@ -21,7 +23,7 @@
     --paragraph: #5f6c7b;
     --button-highlight: #3da9fc;
 
-    --font-size: 18px;
+    --font-size: 16px;
 }
 
 * {
@@ -68,6 +70,7 @@ input {
 body {
     font-weight: 400;
     line-height: 1.5;
+    background-color: var(--body-color);
 }
 
 p, .divider {
@@ -183,7 +186,7 @@ ul {
     z-index: 1;
     width: max-content;
     color: var(--secondary-color);
-    font-size: 14px;
+    font-size: 12px;
     background-color: var(--black-color);
     border-radius: 4px;
     padding: 0.5rem;
@@ -194,7 +197,7 @@ ul {
 }
 
 .tooltip-top-toggle {
-    top: -30px;
+    top: -35px;
     right: -120%;
 }
 
@@ -256,4 +259,73 @@ input::-webkit-inner-spin-button {
 
 .input-group-text-lable {
     width: 115px;
+}
+
+.card-as-container-static {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 8px #00000033;
+}
+
+.card-as-container {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 8px #00000033;
+}
+
+.card-as-container:hover {
+    box-shadow: 0 0 10px var(--button-highlight);
+    transition-duration: 0.5s;
+    transform: scale(1.025, 1.025);
+}
+
+.text-on-hover:hover {
+    box-shadow: 0 0 10px var(--button-highlight);
+    transition-duration: 0.1s;
+    transform: scale(1.2);
+    border-radius: 50%;
+}
+
+.small-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow: hidden;
+    overflow-x: scroll;
+    margin: 4px 0 4px 0;
+    border-radius: 0.5rem;
+}
+
+.image-container {
+    height: 180px;
+    width: 250px;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background-color: var(--primary-color);
+}
+
+.image-container img {
+    display: flex;
+    background-size: cover;
+    height: 140px;
+    margin-left: auto;
+    margin-right: auto;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    object-fit: contain;
+    background-color: var(--secondary-color);
+}
+
+.image-container figcaption {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 8px;
+    height: 40px;
+    width: 100%;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    font-weight: 500;
+    font-size: small;
 }

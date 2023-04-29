@@ -36,9 +36,9 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
             else src = `data:image/png;base64,${image}`;
             
             let title = data.title;
-            let content;
-            if(data.description.length < 80) content = data.description;
-            else content = data.description.substring(0, 80) + '...';
+            let content = data.description;
+            if(data.description.length < 55) content = data.description;
+            else content = data.description.substring(0, 55) + '...';
             let announcement = document.createElement("div");
             announcement.classList.add("card");
             announcement.innerHTML = `

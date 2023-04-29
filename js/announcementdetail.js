@@ -2,7 +2,7 @@ import { APIGet } from "./api.js";
 import { ServiceURL } from "./config.js";
 import { getURLParam, isOwnerOrAdmin } from "./utils.js";
 
-APIGet(ServiceURL.Announcement.getById.replace("$1", getURLParam("id"))).then(res => {
+APIGet(ServiceURL.Announcement.getById(getURLParam("id"))).then(res => {
     let data = res.data.data;
     let image = data.image;
     let src;

@@ -1,9 +1,14 @@
+.kost-name {
+    font-size: 1.5rem;
+}
+
 .summary {
     background-color: var(--primary-color);
     display: flex;
     padding: 1rem;
     border-radius: 1rem;
     /* aspect-ratio: 16/auto; */
+    height: 16vh;
 }
 
 .bold {
@@ -71,31 +76,33 @@ footer :where(li, li a) {
 }
 
 #carousel {
-    border-radius: 0.5rem;;
+    border-radius: 0.5rem;
+}
+
+.carousel-item {
+    cursor: pointer;
 }
 
 .carousel-item figcaption {
     display: flex;
     padding-left: 1rem;
     align-items: center;
-    height: 6vmin;
+    height: 48px;
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
     background-color: var(--primary-color);
     font-weight: 500;
-    font-size: large;
 }
 
 .carousel-item img {
     display: block;
-    height: 46.35vmin;
+    height: 250px;
     background-size: cover;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
-    cursor: pointer;
     object-fit: contain;
 }
 
@@ -126,44 +133,60 @@ footer>ul>li>a:hover {
     text-shadow: 3px 5px 15px;
 }
 
-.service {
-    background-color: var(--primary-color);
-    border-radius: 1rem;
-    padding: 0.5rem;
-    color: white;
-    width: 15%;
-    /* height: 5rem; */
-    aspect-ratio: 1/1;
-    height: auto;
-    box-sizing: border-box;
+.menu-list {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    width: 100%;
+}
+
+.menu-item {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: var(--primary-color);
+    border-radius: 1rem;
+    padding: 0.5rem;
+    color: white;
+    width: 18%;
+    max-width: 150px;
+    min-width: 100px;
+    box-shadow: 0 0 8px #00000033;
+    aspect-ratio: 1/1;
+    height: auto;
+    box-sizing: border-box;
 }
 
-.service i {
+.menu-item:hover {
+    background-color: var(--secondary-dolor);
+    box-shadow: 0 0 10px var(--button-highlight);
+    transition-duration: 0.5s;
+    transform: scale(1.025, 1.025);
+}
+
+.menu-item i {
     padding-top: 0.5rem;
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
-.service span {
-    font-size: 1rem;
+.menu-item span {
+    padding-top: 0.5rem;
+    font-size: 0.9rem;
 }
 
-.service:hover {
-    color: var(--primary-color);
-    background-color: var(--white-color);
-    text-shadow: 3px 5px 15px;
-}
+/* ::-webkit-scrollbar {
+    height: 2px;
+} */
 
-@media screen and (min-width: 992px) {
-    .service {
-        width: 23%;
+@media screen and (min-width: 1190px) {
+    /* .menu-item {
+        width: 20%;
+        min-width: 20%;
         aspect-ratio: 1/1;
     }
 
-    .service-list{
-        height: 50vmin;
-    }
+    .menu-list{
+        height: 100px;
+    } */
 }
