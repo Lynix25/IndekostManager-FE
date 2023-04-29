@@ -27,7 +27,7 @@ export function getFormValue(formElement) {
 export function getFormValueV2(element) {
     // Make sure all input tag has name attribute
     function getValue(element) {
-        let hasAttrValue = element.hasAttribute("name") || element.value ? true : false;
+        let hasAttrValue = element.hasAttribute("value") || element.value ? true : false;
         let valueValue = element.value || element.getAttribute("value");
 
         let tag = element.tagName;
@@ -80,24 +80,45 @@ export function getFormValueV2(element) {
 }
 
 export function getUpdateFormValue(element) {
+
+    function getValue(element) {
+        let hasAttrValue = element.hasAttribute("value") || element.value ? true : false;
+        let valueValue = element.value || element.getAttribute("value");
+
+        let tag = element.tagName;
+        // if (tag != 'INPUT')
+        //     return element.getAttribute("value");
+
+        let type = element.type;
+        if (type == "checkbox")
+            valueValue = element.checked;
+
+        if (type == "file")
+            valueValue = element.files[0];
+
+        return [hasAttrValue, valueValue];
+    }
+
+    function getName(element) {
+        let hasAttrName = element.hasAttribute("name");
+        let nameAttrValue = element.getAttribute("name");
+
+        return [hasAttrName, nameAttrValue];
+    }
+
     // Make sure all input tag has name attribute
     let result = {};
 
-    let hasName = element.hasAttribute("name");
-    let hasValue = element.hasAttribute("value");
+    let [hasName, name] = getName("name");
+    let [hasValue, value] = getValue("value");
     let hasChange = element.hasAttribute("changed");
     if (hasName && hasValue && hasChange) {
-        let name = element.name;
-        let value = element.value;
         result[name] = value;
         return result;
     }
 
     if (hasName && hasChange) {
-        let name = element.getAttribute("name");
-        if (element.value)
-            result[name] = element.value;
-        else result[name] = element.innerHTML;
+        result[name] = value;
         return result;
     }
 

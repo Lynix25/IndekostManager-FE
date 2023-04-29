@@ -12,72 +12,29 @@
 </head>
 
 <body>
-    <div class="frame card w-100 p-4 my-4" id="announcement-detail">
+    <div class="frame card w-100 p-4 my-4">
+        <div class="card-body">
+            <div class="page-title my-4">
+                <div class="hover-text">
+                    <span class="tooltip-text tooltip-top-title">Kembali</span>
+                    <span id="back"><a href="#"><i class="fa fa-chevron-left"></i></a></span>
+                </div>
+                <h3 class="text-center m-0 w-100 title"></h3>
+            </div>
+            <div class="d-flex row align-items-center justify-content-center my-4">
+                <img class="image" width="75%">
+            </div>
+            <div class="text-center period" style="font-style: italic;"></div>
+                <hr/>
+                <p class="text-align-justify description m-0 px-2"></p>
+            </div>
+            <div class="card-footer text-end mt-4">
+                <button class="btn btn-primary mx-2" id="editAnnouncement">Ubah</button>
+                <button class="btn btn-danger" id="deleteAnnouncement">Hapus</button>
+                <button class="btn btn-secondary" id="exitAnnouncement">Kembali</button>
+            </div>
     </div>
-    <!-- <form class="frame card w-100 p-4 my-4" action="" method="post">
-        <h3 class="text-center">Pengumuman</h3>
-        <div class="d-flex row align-items-center justify-content-center my-2">
-            <img src="asset/announcement.png" width="75%">
-        </div>
-        
-        <div class="mt-2">
-            <label class="form-label" for="name">Judul</label>
-            <input class="form-control mb-2" type="text" name="title" id="title" required>
-        </div>
-    
-        <div>
-            <label class="form-label" for="alias">Deskripsi</label>
-            <textarea class="form-control mb-2" type="text" name="description" id="description" required></textarea>
-        </div>
-        
-        <div>
-            <label class="form-label" for="room">Berlaku pada</label>
-            <input class="form-control mb-2" type="text" name="period" id="period" required>
-        </div>
-
-        <div>
-            <label class="form-label" for="image">Unggah Gambar Baru</label>
-            <input class="form-control mb-2" type="file" name="image" id="image" accept=".jpg, .png, .jpeg, .jfif">
-        </div>
-        <div>
-            <button type="submit" class="btn btn-primary mt-4">Simpan</button>
-        </div>
-    </form> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
-
-<!-- <script type="module" id="sc">
-    import { ServiceURL } from "./js/config.js";
-    import { APIDelete, APIGet, getParamOnURL, isOwnerOrAdmin } from "./js/utils.js";
-</script>
-<script type="text/javascript">
-    // import { ServiceURL } from "./js/config.js";
-    // import { APIDelete, APIGet, getParamOnURL, isOwnerOrAdmin } from "./js/utils.js";
-    
-    import * as module from "module";
-    let edit = document.getElementById("editAnnouncement");
-    function goToHome() {
-        window.location.href='./home.html'
-    }
-    // function editAnnouncement() {
-        console.log(module.APIDelete(module.ServiceURL.Announcement.delete).replace("$1", getParamOnURL("id")))
-    console.log(edit)
-        // .addEventListener("click", e => {
-        //     console.log("???")
-        //     // console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getParamOnURL("id")))
-        // })
-    // }
-    // function deleteAnnouncement() {
-    //     console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getParamOnURL("id")))
-    // }
-    // console.log(document.getElementById("#editAnnouncement"))
-    // .addEventListener("click", e => {
-    //     alert(e)
-    // });
-    // function deleteAnnouncement() {
-    //     APIDelete(ServiceURL.Announcement.delete.replace("$1", getParamOnURL("id"))).then(res => {
-    //         console.log(res);
-    //         // goTo("./home.html");
-    //     });
-    // }
-</script> -->
 </html>

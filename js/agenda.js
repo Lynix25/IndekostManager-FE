@@ -1,10 +1,11 @@
 import { APIGet } from "./api.js";
+import { ServiceURL } from "./config.js";
 import { forEach, goTo, groupingMillisecondsToSameDate, UNIXtimeConverter } from "./utils.js";
 
-APIGet("/task").then(res => {
+APIGet(ServiceURL.Task.getAll('')).then(res => {
     let data = res.data.data;
-    let grouping = groupingMillisecondsToSameDate(data, "taskDate", "D MMM YYYY");
-
+    let grouping = groupingMillisecondsToSameDate(data, "taskDate", "DDD, D MMM YYYY");
+    
     forEach(grouping, (key, value) => {
         let task = document.createElement("li");
         task.classList.add("task");
@@ -18,7 +19,10 @@ APIGet("/task").then(res => {
 
         if (value.length > 0)
             forEach(value, task => {
-                APIGet("/service/" + task.serviceId).then(res => {
+                APIGet(ServiceURL.Service.getById(task.serviceId)).then(res => {
+                    
+                    let notes = task.notes == null ? "-" : task.notes;
+
                     let taskItem = document.createElement("li");
                     taskItem.classList.add("task-card", "border", "rounded");
                     taskItem.setAttribute("data", task.id);
@@ -29,7 +33,7 @@ APIGet("/task").then(res => {
                             <span><i class="fa-solid fa-info-circle"></i></span>
                         </div>
                         <div>
-                            ${task.notes}
+                            ${notes}
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="time">${UNIXtimeConverter(task.taskDate, "hh:mm")}</div>

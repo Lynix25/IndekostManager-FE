@@ -25,15 +25,15 @@
                 <div class="card-body">
                     <div class="mb-2">
                         <label class="form-label" for="title">Judul</label>
-                        <input class="form-control form-control-lg" type="text" name="title" id="title" required>
+                        <input class="form-control form-control-lg" type="text" name="title" id="title" maxlength="25" required>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label" for="period">Berlaku pada: (max 15 karakter) </label>
-                        <input class="form-control form-control-lg" type="text" name="period" id="period" maxlength="15" required>
+                        <label class="form-label" for="period">Berlaku pada: </label>
+                        <input class="form-control form-control-lg" type="text" name="period" id="period" maxlength="25" required>
                     </div>
                     <div class="mb-2">
                         <label class="form-label" for="description">Detail Pemberitahuan</label>
-                        <textarea class="form-control form-control-lg" type="text" name="description" id="description" value="" required></textarea>
+                        <textarea class="form-control form-control-lg" type="text" name="description" id="description" maxlength="500" value="" required></textarea>
                     </div>
                     <div>
                         <label class="form-label" for="image">Unggah Gambar untuk Pengumuman (Max 2MB)</label>
@@ -50,5 +50,7 @@
             </form>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
 </html>
