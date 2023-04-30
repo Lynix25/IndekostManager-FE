@@ -5,6 +5,7 @@ import { showModalForm } from "./createcontactable.js";
 import { showModalConfirmation } from "./component/modal.js";
 import { UNIXtimeConverter, addCustomEventListener, goTo, map, numberWithThousandsSeparators, range } from "./utils.js";
 import { Toast } from "./component/toast.js";
+import { logout } from "./main.js";
 
 APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     let user = res.data.data.user;
@@ -227,6 +228,11 @@ function getRoomData(roomId) {
         document.querySelector("#category5").innerHTML = Constant.roomDetailsCategory.FASILITAS_KAMAR_LAINNYA;
     });
 }
+
+addCustomEventListener("logout", e => {
+    logout();
+    console.log(e)
+});
 
 let js = document.createElement("script");
 js.innerHTML = `

@@ -1,21 +1,22 @@
 import { APIGet } from "./api.js";
 import { Constant, ServiceURL } from "./config.js";
-import { getURLParam, goTo } from "./utils.js";
+import { getParamOnURL, goTo } from "./utils.js";
 
-APIGet(ServiceURL.Room.getById(getURLParam("id"))).then(res => {
+APIGet(ServiceURL.Room.getById(getParamOnURL("id"))).then(res => {
     let room = res.data.data;
+    console.log(room)
     document.querySelector(".name").innerHTML = room.room.name;
     document.querySelector(".allotment").innerHTML = room.room.allotment;
     document.querySelector(".floor").innerHTML = 'Lantai ' + room.room.floor;
     document.querySelector(".description").innerHTML = room.room.description;
 
-    let status = (room.tenantsInRoom >= room.room.quota ? 'Kamar penuh' : 'Tersedia');
+    let status = (room.totalTenants >= room.room.quota ? 'Kamar penuh' : 'Tersedia');
     document.querySelector(".status").classList.add(status === 'Kamar penuh' ? "text-danger" : "text-success");
-    status += ` (${room.tenantsInRoom}/${room.room.quota})`;
+    status += ` (${room.totalTenants}/${room.room.quota})`;
     document.querySelector(".status").innerHTML = status;
 
     // Room Details
-    let details = room.details;
+    let details = room.room.details;
     details.forEach(detail => {
         let icon = detail.enable ? "fa-check-circle" : "fa-times-circle";
         if(detail.masterRoomDetailCategory.name === Constant.roomDetailsCategory.KAMAR_TIDUR) {
@@ -95,7 +96,7 @@ APIGet(ServiceURL.Room.getById(getURLParam("id"))).then(res => {
         }
     });
 
-    let prices = room.prices;
+    let prices = room.room.prices;
     prices.forEach(price => {
         let item = document.createElement("tr");
         item.innerHTML = `

@@ -91,7 +91,7 @@ if (!noNavbarPage.includes(currentPath)) {
                                     Pengaturan
                                 </a>
                                 <hr class="dropdown-divider">
-                                <a type="logout" class="dropdown-item">
+                                <a type="logout1" class="dropdown-item" href="#">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
                                     Keluar
                                 </a>
@@ -127,7 +127,7 @@ if (!noNavbarPage.includes(currentPath)) {
     let body = await getElementUntilElementAvailable("body");
     body.insertBefore(createElementFromString(navBar), document.body.firstChild);
         
-    addCustomEventListener("logout", e => {
+    addCustomEventListener("logout1", e => {
         logout();
     });
 }

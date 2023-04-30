@@ -8,11 +8,11 @@
     <title>In D'Kos</title>
 
     <script src="js/library.js"></script>
-    <style>
+    <!-- <style>
         .item-card {
             background-color: white;
         }
-    </style>
+    </style> -->
     <link rel="stylesheet" href="css/home.css">
     <script defer type="module" src="js/home.js"></script>
 </head>
@@ -25,51 +25,10 @@
                 <h5 class="kosName mb-2 text-muted fw-normal"></h5>
             </div>
             <br>
-            <div class="row card-as-container p-3" style="cursor: pointer;">
-                <div class="col-sm-3 d-flex justify-content-center align-items-center p-4">
-                    <img src="./asset/maps.png" height="100vmin">
-                </div>
-                <div class="col">
-                    <h6 class="my-2">Di sini alamat kosan kamu</h6>
-                    <div>
-                        <p class="m-0 address"></p>
-                        <p class="m-0 sub-district"></p>
-                        <p class="m-0 city-province-country"></p>
-                        <p class="m-0 postal-code"></p>
-                    </div>
-                </div>
+            <div id="carousel" class="carousel carousel-dark slide div-shadow">        
+                <div class="carousel-inner" id="announcement-list"></div>
             </div>
-            <br>
-            <div class="m-0 my-4 w-100">
-                <h4>Menu ini memudahkan untuk mengelola kosan</h4>
-            </div>
-            <div class="menu-list gap-3 row-cols-lg-6 row row-cols-4 my-2">
-                <a href="./announcementmenu.html" class="menu-item">
-                    <i class="fa-solid fa-newspaper"></i>
-                    <span class="text-center">Kelola Pengumuman</span>
-                </a>
-                <a href="./roomlist.html" class="menu-item">
-                    <i class="fa-solid fa-door-open"></i>
-                    <span class="text-center">Kelola Kamar</span>
-                </a>
-                <a href="./service.html" class="menu-item">
-                    <i class="fa-solid fa-tasks"></i>
-                    <span class="text-center">Kelola Layanan Kos</span>
-                </a>
-                <a href="./agenda.html" class="menu-item">
-                    <i class="fa-solid fa-money-bill-transfer"></i>
-                    <span class="text-center">Lihat Agenda</span>
-                </a>
-                <a href="./listuser.html" class="menu-item">
-                    <i class="fa-solid fa-users"></i>
-                    <span class="text-center">Kelola Penyewa</span>
-                </a>
-                <a href="#!" class="menu-item">
-                    <i class="fa-solid fa-money-bill-transfer"></i>
-                    <span class="text-center">Kelola Transaksi</span>
-                </a>
-            </div>
-            <!-- <div class="summary flex-column my-3 div-shadow">
+            <div class="summary flex-column my-3 div-shadow">
                 <div class="d-flex justify-content-between lh-1">
                     <div class="fw-bold kost-name">In D'Kos House</div>
                     <div class="d-flex">
@@ -86,92 +45,8 @@
                     </div>
                     <button class="border border-0 rounded-3 px-4 fw-bold text-center">Bayar</button>
                 </div>
-            </div> -->
-        </div>
-        <div class="col-lg-6">
-            <div>
-                <div class="d-flex align-items-end" style="height: 65px;">
-                    <h4 class="m-0 mt-2 text-end w-100">Ada pengumuman apa kali ini?</h4>
-                </div>
-                <div id="newest-announcement" class="small-container gap-3 m-0 mt-2 p-4 pb-0 ps-1">
-                    <!-- <div class="card-as-container image-container">
-                        <img src="./asset/no_announcement.png" alt="Judul Pengumuman">
-                        <figcaption>Judul Pengumuman Pengumuman Pengumuman</figcaption>
-                    </div> -->
-                </div>
-                <div id="no-announcement" class="card-as-container mb-4" style="height: 180px; margin-top: 32px;">
-                    <div class="d-flex justify-content-center align-items-center" style="height: 75%;">
-                        <img src="./asset/no_data.png" alt="Tidak ada data" height="100px" style="opacity: 50%;">
-                    </div>
-                    <h6 class="text-muted text-center fw-normal h-auto">Belum ada pengumuman</h6>
-                </div>
-            </div>
-            <br>
-            <div>
-                <div class="d-flex align-items-end">
-                    <h4 class="m-0 text-end w-100">Yuk, segera selesaikan pekerjaan berikut!</h4>
-                </div>
-                <br>
-                <div class="div-shadow card-as-container-static" style="height: 250px; overflow: hidden; overflow-y: scroll;">
-                    <ul id="request-list" class="px-4 py-3">
-                        <!-- <li class="row d-flex align-items-center">
-                            <div class="col-auto p-0">
-                                <i class="fa fa-solid fa-bullseye-arrow fs-4"></i>
-                            </div>
-                            <div class="col">
-                                <div>Jenis service: varian service</div>
-                                <div class="small">Target: Tanggal penyelesaian</div>
-                            </div>
-                            <div class="col-3 text-end">
-                                <div><span class="badge-blue p-1 small fw-bold rounded" style="font-size: x-small;">Status task</span></div>
-                                <div><span class="badge-yellow p-1 small fw-bold rounded" style="font-size: x-small;">Nama kamar</span></div>
-                            </div>
-                        </li>
-                        <hr>
-                        <li class="row d-flex align-items-center">
-                            <div class="col-auto p-0">
-                                <i class="fa fa-solid fa-bullseye-arrow fs-4"></i>
-                            </div>
-                            <div class="col">
-                                <div>Jenis service: varian service</div>
-                                <div class="small">Target: Tanggal penyelesaian</div>
-                            </div>
-                            <div class="col-3 text-end">
-                                <div><span class="badge-blue p-1 small fw-bold rounded" style="font-size: x-small;">Status task</span></div>
-                                <div><span class="badge-yellow p-1 small fw-bold rounded" style="font-size: x-small;">Nama kamar</span></div>
-                            </div>
-                        </li> -->
-                    </ul>
-                </div>
             </div>
         </div>
-            
-        <!-- <div class="col-lg-6 row-cols-lg-6 row row-cols-4 gap-2 justify-content-between mt-3 mt-lg-0 service-list">
-            <a href="/servicerequest.html" class="service">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-            <a href="" class="service">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-            <a href="" class="service">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-            <a href="" class="service">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-            <a href="" class="service">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-            <a href="" class="service">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
-        </div> -->
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

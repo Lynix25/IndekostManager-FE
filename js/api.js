@@ -23,7 +23,16 @@ function headers(aditionalConfig) {
 export function APIPut(resource, requestBody, requestHeader) {
     if (requestBody != null || requestBody != undefined) requestBody.requesterId = getCookie("id");
     return new Promise((resolve, reject) => {
-
+        let intervalId = setInterval(() => {
+            if (axios) {
+                clearInterval(intervalId)
+                axios.put(END_POINT + resource, requestBody, headers(requestHeader)).then(result => {
+                    resolve(result);
+                }).catch(result => {
+                    reject(result.response);
+                })
+            }
+        })
     })
 }
 
