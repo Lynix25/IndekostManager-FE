@@ -1,12 +1,16 @@
 import { APIGet } from "./api.js";
-import { ServiceURL } from "./config.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
+import { Toast } from "./component/toast.js";
 import { UNIXtimeConverter, numberWithThousandsSeparators, goTo, statusToString } from "./utils.js";
 
 
 APIGet(ServiceURL.User.getById(getCookie("id"))).then(res => {
     let data = res.data.data.user;
     document.querySelector(".currUsername").innerHTML = `Halo, ${data.name}!`;
+}).catch(err => {
+    Toast(Constant.httpStatus.ERROR, "Invalid Login Data");
+    setTimeout(() => goTo(PAGE.LOGIN), Event.timeout);
 })
 
 APIGet(ServiceURL.MasterData.getIndekos).then(res => {
@@ -28,7 +32,7 @@ APIGet(ServiceURL.MasterData.getIndekos).then(res => {
 
 APIGet(ServiceURL.Announcement.getAll).then(res => {
     let announcements = res.data.data;
-    if(announcements.length == 0) {
+    if (announcements.length == 0) {
         document.querySelector("#newest-announcement").remove();
     } else {
         document.querySelector("#no-announcement").remove();
@@ -36,11 +40,11 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
         let count = 0;
         announcements.forEach(data => {
 
-            if(count < 5) {
+            if (count < 5) {
                 let announcement = document.createElement("div");
                 let src;
                 let image = data.image;
-                if(image == null || image.trim() === "") src = "asset/no_image.png"
+                if (image == null || image.trim() === "") src = "asset/no_image.png"
                 else src = `data:image/png;base64,${image}`;
 
                 announcement.classList.add("card-as-container", "image-container");
@@ -48,7 +52,7 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
                     <img src="${src}" alt="${data.title}">
                     <figcaption>${data.title}</figcaption>
                 `;
-                
+
                 announcement.addEventListener("click", e => {
                     goTo("./announcementdetail.html?id=" + data.id);
                 });
@@ -74,7 +78,7 @@ APIGet(ServiceURL.Task.getAll('')).then(res => {
     let count = 0;
     res.data.data.forEach(service => {
 
-        if(count > 0) 
+        if (count > 0)
             document.querySelector("#request-list").appendChild(document.createElement("hr"));
 
         addRequest(service);
@@ -84,12 +88,12 @@ APIGet(ServiceURL.Task.getAll('')).then(res => {
 
 function addRequest(taskObject) {
     let requestList = document.querySelector("#request-list");
-    
+
     let task = document.createElement("li");
     task.setAttribute("data", taskObject.id);
     task.classList.add("row", "d-flex", "align-items-center");
     task.setAttribute("style", "cursor: pointer");
-    
+
     let [color, status] = statusToString(taskObject.status);
     APIGet(ServiceURL.Service.getById(taskObject.serviceId)).then(res => {
 
@@ -111,7 +115,7 @@ function addRequest(taskObject) {
     task.addEventListener("click", e => {
         goTo('./taskdetail.html?id=' + e.currentTarget.getAttribute("data"));
     });
-    
+
     requestList.appendChild(task);
 }
 
