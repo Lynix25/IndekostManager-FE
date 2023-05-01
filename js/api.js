@@ -55,14 +55,14 @@ export function APIPost(resource, requestBody, requestHeader) {
 export function APIGet(resource) {
     return new Promise((resolve, reject) => {
         let intervalId = setInterval(() => {
-            if (axios) {
-                clearInterval(intervalId);
+            try {
                 axios.get(END_POINT + resource, headers()).then(result => {
-                    resolve(result)
+                    clearInterval(intervalId);
+                    resolve(result);
                 }).catch(result => {
-                    reject(result.response)
+                    reject(result.response);
                 })
-            }
+            } catch { }
         }, 50);
     })
 }

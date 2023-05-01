@@ -64,17 +64,6 @@ footer :where(li, li a) {
     background-color: var(--primary-color);
 }
 
-.menu {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0px;
-    padding: 0.5rem;
-    width: 2rem;
-    aspect-ratio: 1/1;
-    box-sizing: border-box;
-}
-
 #carousel {
     border-radius: 0.5rem;
 }
