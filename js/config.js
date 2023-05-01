@@ -149,5 +149,6 @@ export const ServiceURL = {
     },
     Transaction: {
         unpaid: (id) => `/transaction/unpaid/${id}`,
+        pay: "/transaction"
     }
 }
