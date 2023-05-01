@@ -29,77 +29,85 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     `;
     document.querySelector("#identity-image").appendChild(identityImage);
 
-    if (user.contactAblePersons.length) {
-        const contactAblePersonList = document.querySelector("#contactAblePersonList");
-        contactAblePersonList.classList.add("carousel", "carousel-dark", "slide", "p-0");
+    let contactables = user.contactAblePersons;
+    if(contactables.length == 0) {
+        document.querySelector("#list-not-empty").remove();
+    } else {
+        document.querySelector("#list-empty").remove();
 
-        let list = `
-        <div class="carousel-inner">
-            ${map(user.contactAblePersons, contactAblePerson =>
-            `<div class="carousel-item">
-                <div class="row">
-                    <div class="col">
-                        <div>
-                            <div class="title">Nama</div>
-                            <div>${contactAblePerson.name}</div>
-                        </div>
-                        <div>
-                            <div class="title">Nomor Telfon</div>
-                            <div>${contactAblePerson.phone}</div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div>
-                            <div class="title">Alamat</div>
-                            <div>${contactAblePerson.address}</div>
-                        </div>
-                        <div>
-                            <div class="title">Hubungan</div>
-                            <div>${contactAblePerson.relation}</div>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary me-3" type="delete-contactable" target="${contactAblePerson.id}">Delete</button>
-                        <button class="btn btn-primary" type="edit-contactable">Edit</button>
-                    </div>
-                </div>
-            </div>`).replace('carousel-item"', 'carousel-item active"')}
-        </div>
-        <div class="carousel-indicators align-items-end mb-0" style="position: relative;">
-            ${map(range(user.contactAblePersons.length), i =>
-                `<button type="button" data-bs-target="#contactAblePersonList" data-bs-slide-to="${i}" ${i ? "" :
-                    'class="active" aria-current="true"'}></button>
-                `
-            )}
-        </div>
-        `
-        contactAblePersonList.innerHTML = list;
-        
-        addCustomEventListener("delete-contactable", e => {
-            const target = e.detail.target.getAttribute("target");
-            showModalConfirmation(
-                Constant.modalType.DELETECONFIRMATION,
-                'Hapus Kontak Alternatif',
-                'Anda yakin ingin menghapus kontak alternatif?',
-                'Hapus', 'Batal',
-                () => {
-                    APIDelete(ServiceURL.User.deleteContactable(getCookie('id')) + target).then(response => {
-                        Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                        setTimeout(function () { goTo('./profile.html') }, Event.timeout);
-                    }).catch(err => {
-                        Toast(Constant.httpStatus.ERROR, err?.message);
-                    });
-                }
-            );
-        })
+        let count = 0;
+        contactables.forEach(data => {
+            if(!data.deleted) {
+                count++;
 
-        addCustomEventListener("edit-contactable", e => {
-            console.log(e.detail.target);
-        })
+                let toggleEdit = document.createElement("td");
+                toggleEdit.classList.add("text-center", "hover");
+                toggleEdit.innerHTML = `
+                    <div class="hover-text">
+                        <span class="tooltip-text tooltip-top-toggle">Ubah</span>
+                        <span id="edit"><a href="#"><i class="fa-solid fa-pencil"></i></a></span>
+                    </div>`;
+                    
+                let toggleDelete = document.createElement("td");
+                toggleDelete.classList.add("text-center", "hover");
+                toggleDelete.innerHTML = `
+                    <div class="hover-text">
+                        <span class="tooltip-text tooltip-top-toggle">Hapus</span>
+                        <span id="delete"><a href="#"><i class="fa-solid fa-trash"></i></a></span>
+                    </div>`;
+                
+                let item = document.createElement("tr");
+                item.innerHTML = `
+                    <th scope="row">${count}</th>
+                    <td class="contactable-table-data text-truncate">
+                        <a href="/editcontactable.html?id=${data.id}">
+                            ${data.name}
+                        </a>
+                    </td>
+                    <td class="contactable-table-data text-truncate">
+                        <a href="/editcontactable.html?id=${data.id}">
+                            ${data.relation}
+                        </a>
+                    </td>
+                    <td class="text-truncate" style="max-width: 8rem; min-width: 8rem;">
+                        <a href="/editcontactable.html?id=${data.id}">
+                            ${data.phone}
+                        </a>
+                    </td>
+                    <td class="text-truncate" style="max-width: 18rem; min-width: 8rem;">
+                        <a href="/editcontactable.html?id=${data.id}">
+                            ${data.address}
+                        </a>
+                    </td>
+                `;
 
+                toggleEdit.addEventListener("click", e => {
+                    goTo("./editcontactable.html?id=" + data.id);
+                });
+                item.appendChild(toggleEdit);
+
+                toggleDelete.addEventListener("click", e => {
+                    showModalConfirmation(
+                        Constant.modalType.DELETECONFIRMATION, 
+                        'Hapus Kontak Alternatif', 
+                        'Anda yakin ingin menghapus kontak alternatif?', 
+                        'Hapus', 'Batal', () => {
+                            APIDelete(ServiceURL.User.deleteContactable(getCookie('id')) + data.id).then(response => {
+                                Toast(Constant.httpStatus.SUCCESS, response.data.message);
+                                // setTimeout(function() { goTo('./profile.html') }, Event.timeout);
+                            }).catch(err => {
+                                Toast(Constant.httpStatus.ERROR, err?.message);
+                            });
+                        }
+                    );
+                });
+                item.appendChild(toggleDelete);
+
+                document.querySelector("#list-data").appendChild(item);
+            }
+        });    
     }
-
-    getRoomData(room.id)
+    // getRoomData(room.id)
 });
 
 addCustomEventListener("show-room-info", e => {

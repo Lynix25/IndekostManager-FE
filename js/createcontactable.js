@@ -48,7 +48,7 @@ export const showModalForm = (type, title, actionBtnLabel = 'Simpan') => {
                                     </div>
                                     <div class="col p-0 pb-2">
                                         <label class="form-label" for="phone">No. Telepon</label>
-                                        <input class="form-control" type="phone" name="phone" id="phone" minlength="10" required>
+                                        <input class="form-control" type="number" name="phone" id="phone" minlength="10" required>
                                     </div>
                                 </div>
                                 <div class="col">
