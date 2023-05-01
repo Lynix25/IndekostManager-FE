@@ -23,12 +23,12 @@ APIGet(ServiceURL.MasterData.getIndekos).then(res => {
     document.querySelector(".postal-code").innerHTML = `Kode pos: ${data.postalCode}`;
 })
 
-// APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
-//     let data = res.data;
+APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
+    let data = res.data;
 
-//     document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
-//     document.querySelector(".due-date").innerHTML = UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY");
-// })
+    document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
+    document.querySelector(".due-date").innerHTML = UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY");
+})
 
 APIGet(ServiceURL.Announcement.getAll).then(res => {
     let announcements = res.data.data;
