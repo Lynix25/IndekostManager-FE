@@ -1,7 +1,7 @@
-import { APIGet } from "./api.js";
+import { APIGet, APIPost } from "./api.js";
 import { ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { addCustomEventListener, getFormValue, numberWithThousandsSeparators, UNIXtimeConverter } from "./utils.js";
+import { addCustomEventListener, filter, forEach, getFormValue, getFormValueV2, getUpdateFormValue, handleFormSubmited, listenChangedInput, numberWithThousandsSeparators, UNIXtimeConverter } from "./utils.js";
 
 APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
     let data = res.data;
@@ -59,7 +59,19 @@ APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
     })
 })
 
-addCustomEventListener("pay", e => {
-    let data = getFormValue(e.target);
-    // console.log(document.querySelector(".cart").children[0].children[0].children[0].type);
-}, document.querySelector("form"));
+handleFormSubmited(e => {
+    let data = getFormValueV2(e.target);
+
+    APIPost(ServiceURL.Payment.create + "?amount=10001").then(res => {
+        window.snap.pay(res.data, {
+            onSuccess: function (result) { alert('success'); console.log(result); },
+            onPending: function (result) { alert('pending'); console.log(result); },
+            onError: function (result) { alert('error'); console.log(result); },
+            onClose: function () { alert('customer closed the popup without finishing the payment'); }
+        });
+    })
+    
+    // console.log(filter(data, (k, v) =>
+    //     v === true ? k : undefined
+    // ));
+})

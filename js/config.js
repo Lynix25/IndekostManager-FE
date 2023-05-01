@@ -137,6 +137,9 @@ export const ServiceURL = {
         getAll: (status) => `/task?requestor=${status}`,
         getById: (id) => `/task/${id}`,
     },
+    Payment: {
+        create: "/payment/pay"
+    },
     Announcement: {
         getAll: "/announcement",
         getById: (id) => `/announcement/${id}`,

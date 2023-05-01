@@ -79,8 +79,14 @@ export function getFormValueV2(element) {
     return result;
 }
 
-export function getUpdateFormValue(element) {
+export function listenChangedInput() {
+    document.addEventListener("change", e => {
+        e.target.setAttribute("changed", "");
+    });
+}
 
+export function getUpdateFormValue(element) {
+    console.log(element);
     function getValue(element) {
         let hasAttrValue = element.hasAttribute("value") || element.value ? true : false;
         let valueValue = element.value || element.getAttribute("value");
@@ -105,7 +111,6 @@ export function getUpdateFormValue(element) {
 
         return [hasAttrName, nameAttrValue];
     }
-
     // Make sure all input tag has name attribute
     let result = {};
 
@@ -174,6 +179,36 @@ export function map(array, callback) {
 
     return result;
 }
+/*
+{
+    a : false
+    b : false
+    c : true
+}
+[
+    {a:false}
+    {b:false}
+    {c:true}
+]
+[
+    a,b,c
+]
+[
+    false,false,true
+]
+*/
+// filter(data, (k,v) => {
+//     v === true
+// })
+export function filter(object, callback) {
+    let result = [];
+    let temp;
+    forEach(object, (k, v) => {
+        temp = callback(k, v);
+        temp ? result.push(temp) : ""
+    })
+    return result;
+}
 
 export function range(stop, start = 0, step = 1) {
     stop--;
@@ -189,11 +224,11 @@ export function range(stop, start = 0, step = 1) {
  * 
  */
 
-export function handleFormSubmited(callback, formSelector = "form", preventDefault = true) {
+export function handleFormSubmited(callback, formSelector = "form", preventDefault = true, resetFormAfterSubmit = false) {
     let form = document.querySelector(formSelector)
     form.addEventListener('submit', e => {
         callback(e);
-        form.reset();
+        if (resetFormAfterSubmit) form.reset();
         if (preventDefault) e.preventDefault();
     })
 }
