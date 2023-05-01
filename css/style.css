@@ -57,7 +57,7 @@
     color: var(--secondary-color);
 }
 
-input {
+input, textarea {
     font-size: 14px !important;
 }
 
@@ -95,6 +95,14 @@ ul {
 ul {
     margin: 0;
     padding: 0;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 auto 0 auto;
 }
 
 .navbar {

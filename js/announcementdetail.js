@@ -24,20 +24,15 @@ APIGet(ServiceURL.Announcement.getById(getParamOnURL("id"))).then(res => {
     }
 });
 
-document.querySelector("#back").addEventListener("click", e => {
-    goBack();
-});
-
 document.querySelector("#editAnnouncement").addEventListener("click", e => {
     goTo("/editannouncement.html?id=" + getParamOnURL("id"))
 });
 
 document.querySelector("#deleteAnnouncement").addEventListener("click", e => {
-    console.log(e.target)
     showModalConfirmation(
         Constant.modalType.DELETECONFIRMATION,
         'Hapus Pengumuman',
-        'Anda yakin ingin menghapus pemgumuman?',
+        'Anda yakin ingin menghapus pengumuman?',
         'Hapus', 'Batal',
         () => {
             APIDelete(ServiceURL.Announcement.delete(getParamOnURL('id'))).then(response => {
@@ -54,21 +49,6 @@ document.querySelector("#exitAnnouncement").addEventListener("click", e => {
     goTo('./announcementmenu.html')
 });
 
-//     // function editAnnouncement() {
-//     //     document.getElementById("editAnnouncement").addEventListener("click", e => {
-//     //         // console.log("???")
-//     //         console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getParamOnURL("id")))
-//     //     })
-//     //     // .onclick(e => {
-//     //     //     console.log("???")
-//     //     //     // console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getParamOnURL("id")))
-//     //     // })
-//     // }
-
-
-// APIDelete("/announcement/" + getParamOnURL("id")).then(res => {
-//     console.log(res.data);
-//     document.querySelector("#delete-announcement").addEventListener("click", e => {
-//         goTo("./home.html");
-//     })
-// })
+document.querySelector("#back").addEventListener("click", e => {
+    goTo('./announcementmenu.html')
+});

@@ -1,6 +1,13 @@
 import { APIGet } from "./api.js";
 import { ServiceURL } from "./config.js";
-import { goBack, goTo } from "./utils.js";
+import { goBack, goTo, isOwnerOrAdmin } from "./utils.js";
+
+if(isOwnerOrAdmin()) {
+    document.querySelector("#announcement-page-title").innerHTML = "Kelola Pengumuman";
+} else {
+    document.querySelector("#add-announcement-toggle").setAttribute("hidden", "");
+    document.querySelector("#announcement-page-title").innerHTML = "Pengumuman";
+}
 
 const searchBox = document.getElementById("search");
 let announcementList = []
@@ -67,10 +74,6 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
         });
     }
 });
-
-document.getElementById("back").addEventListener("click", e => {
-    goBack();
-})
 
 document.getElementById("add-new").addEventListener("click", e => {
     goTo("./createannouncement.html");

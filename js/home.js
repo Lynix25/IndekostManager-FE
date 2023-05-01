@@ -1,13 +1,17 @@
 import { APIGet } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { ServiceURL } from "./config.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { Toast } from "./component/toast.js";
-import { UNIXtimeConverter, numberWithThousandsSeparators, goTo, statusToString } from "./utils.js";
+import { UNIXtimeConverter, numberWithThousandsSeparators, goTo, statusToString, createElementFromString, isOwnerOrAdmin } from "./utils.js";
 
 APIGet(ServiceURL.User.getById(getCookie("id"))).then(res => {
-    let data = res.data.data.user;
-    document.querySelector(".currUsername").innerHTML = `Halo, ${data.name}!`;
+    let data = res.data.data;
+    if(isOwnerOrAdmin()) {
+        document.querySelector(".greetings2").setAttribute("hidden", "");
+    } else {
+        document.querySelector(".greetings1").innerHTML = `Halo, ${data.user.name}!`;
+        document.querySelector(".room-name").innerHTML = data.room.name;
+    }
 }).catch(err => {
     Toast(Constant.httpStatus.ERROR, "Data login tidak valid");
     setTimeout(() => goTo(PAGE.LOGIN), Event.timeout);
@@ -15,23 +19,52 @@ APIGet(ServiceURL.User.getById(getCookie("id"))).then(res => {
 
 APIGet(ServiceURL.MasterData.getIndekos).then(res => {
     let data = res.data;
-
-    document.querySelector(".kosName").innerHTML = `Selamat bergabung di <b class="text-muted fs-5">"${data.name}"</b>`
-    document.querySelector(".address").innerHTML = `${data.address} RT.${data.rt}/ RW.${data.rw}`;
-    document.querySelector(".sub-district").innerHTML = `${data.subdistrict}, ${data.district}`;
-    document.querySelector(".city-province-country").innerHTML = `${data.cityOrRegency}, ${data.province}, ${data.country}`;
-    document.querySelector(".postal-code").innerHTML = `Kode pos: ${data.postalCode}`;
+    if (isOwnerOrAdmin()) {
+        document.querySelector(".greetings1").setAttribute("style", "height: 50px");
+        document.querySelector(".greetings1").classList.add("d-flex", "align-items-end");
+        document.querySelector(".greetings1").innerHTML = `${data.name}`;
+    } else {
+        document.querySelector(".greetings2").innerHTML = `Selamat bergabung di <b class="text-muted fs-5">"${data.name}"</b>`;
+    } 
+    
+    // document.querySelector(".address").innerHTML = `${data.address} RT.${data.rt}/ RW.${data.rw}`;
+    // document.querySelector(".sub-district").innerHTML = `${data.subdistrict}, ${data.district}`;
+    // document.querySelector(".city-province-country").innerHTML = `${data.cityOrRegency}, ${data.province}, ${data.country}`;
+    // document.querySelector(".postal-code").innerHTML = `Kode pos: ${data.postalCode}`;
 })
 
-APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
-    let data = res.data;
-    document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
-    document.querySelector(".due-date").innerHTML = UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY");
-});
+let taskOrRequestParamRequestorId;
+let taskOrRequestNoDataId;
+let taskOrRequestListId;
+let taskOrRequestListContainer;
+if(isOwnerOrAdmin()) {
+    document.querySelector(".summary").setAttribute("hidden", "");
+    document.querySelector("#carousel").setAttribute("hidden", "");
+    document.querySelector(".menu-tenant").setAttribute("hidden", "");
+    document.querySelector(".recent-request").setAttribute("hidden", "");
+    taskOrRequestParamRequestorId = "";
+    taskOrRequestNoDataId = "#no-data-task";
+    taskOrRequestListId = "#task-list";
+    taskOrRequestListContainer = ".active-task-list";
+} else {
+    document.querySelector(".menu-admin").setAttribute("hidden", "");
+    document.querySelector(".chart").setAttribute("hidden", "");
+    document.querySelector(".active-task").setAttribute("hidden", "");
+    taskOrRequestParamRequestorId = getCookie("id");;
+    taskOrRequestNoDataId = "#no-data-request";
+    taskOrRequestListId = "#request-list";
+    taskOrRequestListContainer = ".recent-request-list";
+
+    APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
+        let data = res.data;
+        document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
+        document.querySelector(".due-date").innerHTML = UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY");
+    });
+}
 
 APIGet(ServiceURL.Announcement.getAll).then(res => {
     let announcements = res.data.data;
-    if(announcements.length == 0) {
+    if(announcements.length > 0) {
         let announcementCarousel = document.createElement("div");
         announcementCarousel.classList.add("carousel-indicators", "align-items-end");
         announcementCarousel.innerHTML = `
@@ -92,39 +125,72 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
             });
             document.querySelector("#announcement-list").appendChild(announcement);
         });
-        // if(count > 1) {
-        //     let carouselButton = document.createElement("div");
-        //     carouselButton.innerHTML = `
-        //         <button class="carousel-button carousel-control-prev ml-2" type="button" data-bs-target="#carousel" data-bs-slide="prev">
-        //             <span class="carousel-control-prev-icon rounded-circle" aria-hidden="true"></span>
-        //         </button>
-        //         <button class="carousel-button carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
-        //             <span class="carousel-control-next-icon rounded-circle" aria-hidden="true"></span>
-        //         </button>
-        //     `;
-        //     document.querySelector("#carousel").appendChild(carouselButton);
-        // }
+        if(count > 1) {
+            let carouselButton = document.createElement("div");
+            carouselButton.innerHTML = `
+                <button class="carousel-control-prev ml-2" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon rounded-circle" aria-hidden="true"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon rounded-circle" aria-hidden="true"></span>
+                </button>
+            `;
+            document.querySelector("#carousel").appendChild(carouselButton);
+        }
     }
 });
+
+APIGet(ServiceURL.Task.getAll(taskOrRequestParamRequestorId)).then(res => {
+    let data = res.data.data;
+    if(data.length > 0) {
+        document.querySelector(taskOrRequestNoDataId).setAttribute("hidden", "");
+
+        let count = 0;
+        data.forEach(service => {
+            if (count > 0)
+                document.querySelector(taskOrRequestListId).appendChild(document.createElement("hr"));
+            addRequest(service, taskOrRequestListId);
+            count++;
+        });
+    } else {
+        document.querySelector(taskOrRequestListContainer).setAttribute("hidden", "");
+    }
+});
+
+function addRequest(taskObject, elementId) {
+    let requestList = document.querySelector(elementId);
+
+    let task = document.createElement("li");
+    task.setAttribute("data", taskObject.id);
+    task.classList.add("row", "d-flex", "align-items-center");
+    task.setAttribute("style", "cursor: pointer");
+
+    let [color, status] = statusToString(taskObject.status);
+    APIGet(ServiceURL.Service.getById(taskObject.serviceId)).then(res => {
+
+        task.innerHTML = `
+        <div class="col p-0 d-flex align-items-center">
+            <div class="pe-2">
+                <i class="fa fa-solid fa-bullseye-arrow fs-4"></i>
+            </div>
+            <div>    
+                <div>${res.data.serviceName}: ${res.data.variant}</div>
+                <div class="small">Target: ${UNIXtimeConverter(taskObject.taskDate, "DD MMMM YYYY hh:mm")}</div>
+            </div>
+        </div>
+        <div class="col-3 p-2 pe-0 text-end">
+            <div><span class="${color} p-1 small fw-bold rounded" style="font-size: x-small;">${status}</span></div>
+            <div><span class="badge-green p-1 small fw-bold rounded" style="font-size: x-small;">Nama kamar</span></div>
+        </div>`;
+    });
+    task.addEventListener("click", e => {
+        goTo('./taskdetail.html?id=' + e.currentTarget.getAttribute("data"));
+    });
+
+    requestList.appendChild(task);
+}
+
 /*
-APIGet(ServiceURL.User.getById(getCookie("id"))).then(res => {
-    let data = res.data.data.user;
-    document.querySelector(".currUsername").innerHTML = `Halo, ${data.name}!`;
-}).catch(err => {
-    Toast(Constant.httpStatus.ERROR, "Invalid Login Data");
-    setTimeout(() => goTo(PAGE.LOGIN), Event.timeout);
-})
-
-APIGet(ServiceURL.MasterData.getIndekos).then(res => {
-    let data = res.data;
-
-    document.querySelector(".kosName").innerHTML = `Selamat bergabung di <b class="text-muted fs-5">"${data.name}"</b>`
-    document.querySelector(".address").innerHTML = `${data.address} RT.${data.rt}/ RW.${data.rw}`;
-    document.querySelector(".sub-district").innerHTML = `${data.subdistrict}, ${data.district}`;
-    document.querySelector(".city-province-country").innerHTML = `${data.cityOrRegency}, ${data.province}, ${data.country}`;
-    document.querySelector(".postal-code").innerHTML = `Kode pos: ${data.postalCode}`;
-})
-
 APIGet(ServiceURL.Announcement.getAll).then(res => {
     let announcements = res.data.data;
     if (announcements.length == 0) {
@@ -168,49 +234,4 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
         document.querySelector("#newest-announcement").appendChild(viewmore);
     }
 });
-
-APIGet(ServiceURL.Task.getAll('')).then(res => {
-    let count = 0;
-    res.data.data.forEach(service => {
-
-        if (count > 0)
-            document.querySelector("#request-list").appendChild(document.createElement("hr"));
-
-        addRequest(service);
-        count++;
-    });
-})
-
-function addRequest(taskObject) {
-    let requestList = document.querySelector("#request-list");
-
-    let task = document.createElement("li");
-    task.setAttribute("data", taskObject.id);
-    task.classList.add("row", "d-flex", "align-items-center");
-    task.setAttribute("style", "cursor: pointer");
-
-    let [color, status] = statusToString(taskObject.status);
-    APIGet(ServiceURL.Service.getById(taskObject.serviceId)).then(res => {
-
-        task.innerHTML = `
-        <div class="col p-0 d-flex align-items-center">
-            <div class="pe-2">
-                <i class="fa fa-solid fa-bullseye-arrow fs-4"></i>
-            </div>
-            <div>    
-                <div>${res.data.serviceName}: ${res.data.variant}</div>
-                <div class="small">Target: ${UNIXtimeConverter(taskObject.taskDate, "DD MMMM YYYY hh:mm")}</div>
-            </div>
-        </div>
-        <div class="col-3 p-2 pe-0 text-end">
-            <div><span class="${color} p-1 small fw-bold rounded" style="font-size: x-small;">${status}</span></div>
-            <div><span class="badge-green p-1 small fw-bold rounded" style="font-size: x-small;">Nama kamar</span></div>
-        </div>`;
-    });
-    task.addEventListener("click", e => {
-        goTo('./taskdetail.html?id=' + e.currentTarget.getAttribute("data"));
-    });
-
-    requestList.appendChild(task);
-}
 */

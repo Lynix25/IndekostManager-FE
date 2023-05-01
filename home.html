@@ -20,30 +20,124 @@
 <body>
     <div class="row m-4" id="content">
         <div class="col-lg-6">
+            <!-- Greetings -->
             <div>
-                <h3 class="currUsername fw-bold"></h3>
-                <h5 class="kosName mb-2 text-muted fw-normal"></h5>
+                <h3 class="greetings1 fw-bold"></h3>
+                <h5 class="greetings2 mb-2 text-muted fw-normal"></h5>
             </div>
             <br>
-            <div id="carousel" class="carousel carousel-dark slide div-shadow">        
+
+            <!-- Content 1: Tenant -->
+            <div id="carousel" class="carousel carousel-dark div-shadow slide" data-ride="carousel">        
                 <div class="carousel-inner" id="announcement-list"></div>
             </div>
+
+            <!-- Content 2: Tenant -->
             <div class="summary flex-column my-3 div-shadow">
-                <div class="d-flex justify-content-between lh-1">
-                    <div class="fw-bold kost-name">In D'Kos House</div>
-                    <div class="d-flex">
-                        <a href="/payment.html" class="d-flex m-auto">
-                            <div class="me-3 fs-3 fw-bold">Rp <span class="fs-3 unpaid-total"></span></div>
-                            <i class="fs-3 fa-solid fa-angle-right fw-bold"></i>
-                        </a>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center lh-1">
+                    <div class="fw-bold room-name payment-label"></div>
                 </div>
-                <div class="mt-1 room-name">Kamar 2</div>
-                <div class="d-flex justify-content-between">
-                    <div class="due-date">
-                        Tidak ada tagihan
+                <div class="d-flex justify-content-between align-items-center mt-1">
+                    <div class="fw-bold payment-label-2">Total Tagihan</div>
+                    <a href="/payment.html" class="d-flex align-items-center text-end">
+                        <div class="payment-label me-3 fw-bold">Rp <span class="payment-label unpaid-total"></span></div>
+                        <i class="payment-label fa-solid fa-angle-right fw-bold"></i>
+                    </a>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <div class="d-flex">
+                        <span class="me-2 payment-label-2">Bayar sebelum: </span>
+                        <div class="due-date payment-label-2">
+                            Tidak ada tagihan
+                        </div>
                     </div>
-                    <button class="border border-0 rounded-3 px-4 fw-bold text-center">Bayar</button>
+                    <button class="btn btn-sm btn-light p-0 px-4 fw-bold" style="color: var(--black-color);">Bayar</button>
+                </div>
+            </div>
+            <!-- Content 1-2: Owner/Admin -->
+            <div class="card-as-container-static chart" style="width: 100%">
+                <img src="./asset/chartDummy.png" alt="chart" width="100%">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <!-- Content 3: Tenant -->
+            <div class="menu-tenant">
+                <div class="m-0 mt-4 w-100 d-flex align-items-center justify-content-end" style="height: 50px;">
+                    <h4 class="m-0">Menu ini memudahkan untuk akses cepat</h4>
+                </div>
+                <div class="menu-list gap-3 row-cols-lg-6 row row-cols-4 my-4">
+                    <a href="./announcementmenu.html" class="menu-item">
+                        <i class="fa-solid fa-newspaper"></i>
+                        <span class="text-center">Semua Pengumuman</span>
+                    </a>
+                    <a href="./profile.html" class="menu-item">
+                        <i class="fa-solid fa-user"></i>
+                        <span class="text-center">Data diri</span>
+                    </a>
+                    <a href="./paymenthistory.html" class="menu-item">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                        <span class="text-center">Histori Transaksi</span>
+                    </a>
+                    <a href="/payment.html" class="menu-item">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        <span class="text-center">Bayar Tagihan</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Content 3: Owner/Admin -->
+            <div class="menu-admin">
+                <div class="m-0 mt-4 w-100 text-end justify-content-end" style="height: 50px;">
+                    <h4>Menu ini memudahkan untuk mengelola kosan</h4>
+                </div>
+                <div class="menu-list gap-3 row-cols-lg-6 row row-cols-4 my-2">
+                    <a href="./roomlist.html" class="menu-item">
+                        <i class="fa-solid fa-door-open"></i>
+                        <span class="text-center">Semua Kamar</span>
+                    </a>
+                    <a href="./agenda.html" class="menu-item">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span class="text-center">Agenda</span>
+                    </a>
+                    <a href="./listuser.html" class="menu-item">
+                        <i class="fa-solid fa-users"></i>
+                        <span class="text-center">Semua Penyewa</span>
+                    </a>
+                    <a href="/report.html" class="menu-item">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        <span class="text-center">Rekap Laporan</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Content 4: Tenant -->
+            <div class="recent-request">
+                <div class="d-flex align-items-end">
+                    <h4 class="m-0 mt-4 text-end w-100">Ini daftar layanan terbaru yang kamu ajukan</h4>
+                </div>
+                <br>
+                <div class="div-shadow card-as-container-static recent-request-list" style="height: 355px; overflow: hidden; overflow-y: scroll;">
+                    <ul id="request-list" class="px-4 py-3"></ul>
+                </div>
+                <div id="no-data-request" class="card-as-container-static mb-4 recent-request" style="height: 180px;">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 75%;">
+                        <img src="./asset/no_data.png" alt="Tidak ada data" height="100px" style="opacity: 50%;">
+                    </div>
+                    <h6 class="text-muted text-center fw-normal h-auto">Belum ada data</h6>
+                </div>
+            </div>
+            <!-- Content 4: Owner/Admin -->
+            <div class="active-task">
+                <div class="d-flex align-items-end">
+                    <h4 class="m-0 mt-4 text-end w-100">Yuk, segera selesaikan pekerjaan berikut!</h4>
+                </div>
+                <br>
+                <div class="div-shadow card-as-container-static active-task-list" style="height: 355px; overflow: hidden; overflow-y: scroll;">
+                    <ul id="task-list" class="px-4 py-3"></ul>
+                </div>
+                <div id="no-data-task" class="card-as-container-static mb-4 recent-request" style="height: 180px;">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 75%;">
+                        <img src="./asset/no_data.png" alt="Tidak ada data" height="100px" style="opacity: 50%;">
+                    </div>
+                    <h6 class="text-muted text-center fw-normal h-auto">Belum ada data</h6>
                 </div>
             </div>
         </div>

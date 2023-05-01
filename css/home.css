@@ -1,5 +1,13 @@
-.kost-name {
-    font-size: 1.5rem;
+.payment-label {
+    font-size: 4vmin;
+}
+
+.payment-label-2 {
+    font-size: 3.25vmin;
+}
+
+.payment-label-3 {
+    font-size: 3.5vmin;
 }
 
 .summary {
@@ -7,8 +15,8 @@
     display: flex;
     padding: 1rem;
     border-radius: 1rem;
-    /* aspect-ratio: 16/auto; */
-    height: 16vh;
+    aspect-ratio: 16/auto;
+    /* height: 19vh; */
 }
 
 .bold {
@@ -122,7 +130,6 @@ footer :where(li, li a) {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    border-radius: 0.5rem;
 }
 
 footer li a {

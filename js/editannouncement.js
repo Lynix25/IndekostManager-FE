@@ -34,32 +34,12 @@ document.addEventListener("change", e => {
 
 handleFormSubmited(e => {
     let data = getFormValueV2(e.target);
-    
-    // // Remove unused key
-    // let keyToRemove = ['id', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate', 'image'];
-    // let oldData = announcementData;
-    // keyToRemove.forEach(key => {
-    //     delete oldData[key];
-    // })
-
-    // // Replace old value with change
-    // if(countChanges > 0) {
-    //     Object.keys(data).forEach(function(key) {
-    //         Object.keys(oldData).forEach(function(oldKey) {
-    //             if(oldKey === key) {
-    //                 oldData[oldKey] = data[key];
-    //             }
-    //             if(key === 'image') {
-    //                 oldData[key] = data[key];
-    //             }
-    //         });
-    //     });
-    // }
-
     APIPut(ServiceURL.Announcement.update(getParamOnURL('id')), data, { 
         "requesterId" : getUserID(), 
         "Content-Type" : "multipart/form-data"
     }).then(response => {
+        console.log(data)
+        console.log(response.data)
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
         setTimeout(function () { goTo('./announcementdetail.html?id=' + getParamOnURL('id')) }, Event.timeout);
@@ -75,6 +55,7 @@ document.querySelector("#image").addEventListener("change", event => {
     let loading = document.createElement("i");
 
     reader.addEventListener("loadend", e => {
+        document.querySelector("#currImage").removeAttribute("hidden");
         document.querySelector(".fa-spin").setAttribute("hidden", "")
         event.target?.parentElement.querySelector("img").setAttribute("src", reader.result);
     });
@@ -89,5 +70,5 @@ document.querySelector("#image").addEventListener("change", event => {
 });
 
 document.querySelector("#back").addEventListener("click", e => {
-    goBack();
+    goTo('./announcementdetail.html?id=' + getParamOnURL('id'));
 });
