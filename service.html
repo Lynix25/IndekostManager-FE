@@ -39,11 +39,19 @@
                         </div>
                         <div class="my-1">
                             <label for="variant" class="form-label">Varian</label>
-                            <input type="text" class="form-control" name="variant" id="variant" placeholder="Varian pengajuan" required>
+                            <input type="text" class="form-control" name="variant" id="variant" placeholder="Varian pengajuan/ jenis layanan lebih spesifik" required>
                         </div>
                         <div class="my-1">
                             <label for="price" class="form-label">Harga</label>
                             <input type="number" class="form-control" name="price" id="price" placeholder="Harga yang dikenakan" required>
+                        </div>
+                        <div class="my-1 quantity">
+                            <label for="quantity" class="form-label">Kuantitas</label>
+                            <input type="number" class="form-control" name="quantity" id="quantity" placeholder="Kuantitas untuk harga yang dikenakan">
+                        </div>
+                        <div class="my-1 units">
+                            <label for="units" class="form-label">Satuan</label>
+                            <input type="text" class="form-control" name="units" id="units" placeholder="Satuan kuantitas (kilo, buah, pasang, dll.)">
                         </div>
                         <div class="card-footer text-end mt-2">
                             <button class="btn btn-primary" type="submit">Buat</button>
@@ -58,10 +66,12 @@
                         <table class="table table-primary table-striped" id="table1">
                             <thead>
                                 <tr>
-                                    <th colspan="2" id="category1"></th>
+                                    <th colspan="4" id="category1"></th>
                                 </tr>
                                 <tr class="text-center">
                                     <th>Varian</th>
+                                    <th>Jumlah</th>
+                                    <th>Satuan</th>
                                     <th>Harga</th>
                                 </tr>
                             </thead>
