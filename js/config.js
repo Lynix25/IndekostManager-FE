@@ -7,6 +7,10 @@ export const Event = {
 }
 
 export const Constant = {
+    image: {
+        maxSize: 1, // in MB
+        dividersImageSizeByteToMB: 1048576,
+    },
     serviceRequestStatus: {
         REJECTED: "Ditolak",
         SUBMITTED: "Menunggu Konfirmasi",
@@ -56,7 +60,11 @@ export const Constant = {
 
 export const PAGE = {
     HOME: "/home.html",
-    LOGIN: "/login.html"
+    LOGIN: "/login.html",
+    ANNOUNCEMENTMENU: "/announcementmenu.html", 
+    ANNOUNCEMENTDETAIL: "/announcementdetail.html?id=",
+    CREATEANNOUNCEMENT: "/createannouncement.html",
+    EDITANNOUNCEMENT: "/editannouncement.html?id=",
 };
 
 export const CONTENT_TYPE = {

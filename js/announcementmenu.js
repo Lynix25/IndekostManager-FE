@@ -1,7 +1,7 @@
 import { APIDelete, APIGet } from "./api.js";
 import { showModalConfirmation } from "./component/modal.js";
 import { Toast } from "./component/toast.js";
-import { Constant, Event, ServiceURL } from "./config.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { addCustomEventListener, goBack, goTo, isOwnerOrAdmin } from "./utils.js";
 
 if(isOwnerOrAdmin()) {
@@ -69,7 +69,7 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
             `;
 
             announcementContent.addEventListener("click", e => {
-                goTo("./announcementdetail.html?id=" + data.id);
+                goTo(PAGE.ANNOUNCEMENTDETAIL + data.id);
             });
             announcement.appendChild(announcementContent);
             
@@ -89,7 +89,7 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
                 `;
                 
                 editButton.addEventListener("click", e => {
-                    goTo("./editannouncement.html?id=" + data.id);
+                    goTo(PAGE.EDITANNOUNCEMENT + data.id);
                 });
                 announcementFooter.appendChild(editButton);
     
@@ -109,7 +109,7 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
                         () => {
                             APIDelete(ServiceURL.Announcement.delete(data.id)).then(response => {
                                 Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                                setTimeout(function () { goTo('./announcementmenu.html') }, Event.timeout);
+                                setTimeout(function () { goTo(PAGE.ANNOUNCEMENTMENU) }, Event.timeout);
                             }).catch(err => {
                                 if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
                                 else Toast(Constant.httpStatus.ERROR, err.data.message);
@@ -127,5 +127,9 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
 });
 
 document.getElementById("add-new").addEventListener("click", e => {
-    goTo("./createannouncement.html");
-})
+    goTo(PAGE.CREATEANNOUNCEMENT);
+});
+
+document.getElementById("back").addEventListener("click", e => {
+    goBack();
+});

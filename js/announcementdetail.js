@@ -1,5 +1,5 @@
 import { APIDelete, APIGet } from "./api.js";
-import { Constant, Event, ServiceURL } from "./config.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { showModalConfirmation } from "./component/modal.js";
 import { getParamOnURL, goBack, goTo, isOwnerOrAdmin } from "./utils.js";
 import { Toast } from "./component/toast.js";
@@ -25,7 +25,7 @@ APIGet(ServiceURL.Announcement.getById(getParamOnURL("id"))).then(res => {
 });
 
 document.querySelector("#editAnnouncement").addEventListener("click", e => {
-    goTo("/editannouncement.html?id=" + getParamOnURL("id"))
+    goTo(PAGE.EDITANNOUNCEMENT + getParamOnURL("id"))
 });
 
 document.querySelector("#deleteAnnouncement").addEventListener("click", e => {
@@ -37,7 +37,7 @@ document.querySelector("#deleteAnnouncement").addEventListener("click", e => {
         () => {
             APIDelete(ServiceURL.Announcement.delete(getParamOnURL('id'))).then(response => {
                 Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                setTimeout(function () { goTo('./announcementmenu.html') }, Event.timeout);
+                setTimeout(function () { goTo(PAGE.ANNOUNCEMENTMENU) }, Event.timeout);
             }).catch(err => {
                 Toast(Constant.httpStatus.ERROR, err?.message);
             });
@@ -46,9 +46,9 @@ document.querySelector("#deleteAnnouncement").addEventListener("click", e => {
 });
 
 document.querySelector("#exitAnnouncement").addEventListener("click", e => {
-    goTo('./announcementmenu.html')
+    goTo(PAGE.ANNOUNCEMENTMENU)
 });
 
 document.querySelector("#back").addEventListener("click", e => {
-    goTo('./announcementmenu.html')
+    goBack();
 });
