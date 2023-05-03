@@ -37,7 +37,7 @@ document.addEventListener("change", e => {
 handleFormSubmited(e => {
     let data = getFormValueV2(e.target);
     
-    if((data.image != undefined || data.image != null) && data.image.size/Constant.image.dividersImageSizeByteToMB > Constant.image.maxSize) {
+    if(data.image != undefined && data.image != null && data.image.size/Constant.image.dividersImageSizeByteToMB > Constant.image.maxSize) {
         Toast(Constant.httpStatus.ERROR, `Ukuran file lebih besar dari ${Constant.image.maxSize}MB`);
     } else {
         APIPut(ServiceURL.Announcement.update(getParamOnURL('id')), data, { 

@@ -7,7 +7,7 @@ document.querySelector(".image").innerHTML = `Unggah Gambar untuk Pengumuman (Ma
 
 handleFormSubmited(e => {
     let data = getFormValue(e?.target);
-    if((data.image != undefined || data.image != null) && data.image.size/Constant.image.dividersImageSizeByteToMB > Constant.image.maxSize) {
+    if(data.image != undefined && data.image != null && data.image.size/Constant.image.dividersImageSizeByteToMB > Constant.image.maxSize) {
         Toast(Constant.httpStatus.ERROR, `Ukuran file lebih besar dari ${Constant.image.maxSize}MB`);
     } else {
         APIPost(ServiceURL.Announcement.create, data, { 
