@@ -38,13 +38,12 @@ handleFormSubmited(e => {
         "requesterId" : getUserID(), 
         "Content-Type" : "multipart/form-data"
     }).then(response => {
-        console.log(data)
-        console.log(response.data)
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
         setTimeout(function () { goTo('./announcementdetail.html?id=' + getParamOnURL('id')) }, Event.timeout);
     }).catch(err => {
-        Toast(Constant.httpStatus.ERROR, err?.message);
+        if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+        else Toast(Constant.httpStatus.ERROR, err.data.message);
     });
 });
 
