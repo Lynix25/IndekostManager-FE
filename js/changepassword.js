@@ -1,7 +1,7 @@
 import { APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, ServiceURL } from "./config.js";
-import { clearCookiesAndLogout } from "./main.js";
+import { logoutWithoutToast } from "./main.js";
 import { getFormValue, goTo, handleFormSubmited } from "./utils.js";
 
 window.addEventListener('load', e => {
@@ -38,7 +38,7 @@ function resetPassword(e) {
     APIPut(ServiceURL.User.changePassword, data).then(response => {
         if (response.status == 200) {
             Toast(Constant.httpStatus.SUCCESS, response.data.message);
-            if(document.cookie.length > 0) clearCookiesAndLogout();
+            if(document.cookie.length > 0) logoutWithoutToast();
             setTimeout(function() { goTo('./login.html') }, Event.timeout);
         }
     }).catch(err => {

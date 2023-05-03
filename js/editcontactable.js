@@ -29,8 +29,10 @@ handleFormSubmited(e => {
     APIPut(ServiceURL.User.editContactable(getCookie('id')) + getParamOnURL("id"), data).then(response => {
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
+        setTimeout(function () { goTo('./profile.html')}, Event.timeout);
     }).catch(err => {
-        Toast(Constant.httpStatus.ERROR, err?.message);
+        if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+        else Toast(Constant.httpStatus.ERROR, err.data.message);
     });
 })
 

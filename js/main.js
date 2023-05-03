@@ -24,6 +24,16 @@ export function logout() {
     })
 }
 
+export function logoutWithoutToast() {
+    APIPut(ServiceURL.User.logout(getCookie('id'))).then(res => {
+        let deletedCache = res.data.data.deletedCache;
+        deleteCookie(...deletedCache);
+    }).catch(err => {
+        if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+        else Toast(Constant.httpStatus.ERROR, err.data.message);
+    });
+}
+
 // window.addEventListener('load', (e) => {
     // console.log(form.elementes[0]);
     // document.querySelector('#login_form').addEventListener('submit', (e) => {
