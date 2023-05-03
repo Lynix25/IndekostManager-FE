@@ -53,8 +53,14 @@
                     <a class="d-flex justify-content-between align-items-center">Bantuan <i
                             class="fa-solid fa-angle-right"></i></a>
                     <hr class="my-2">
-                    <a class="d-flex justify-content-between align-items-center">Laporan <i
+                    <div class="report">
+                        <a href="./report.html" class="d-flex justify-content-between align-items-center">Laporan <i
+                                class="fa-solid fa-angle-right"></i></a>
+                    </div>
+                    <div class="about">
+                        <a href="./about.html" class="d-flex justify-content-between align-items-center">Tentang Kos <i
                             class="fa-solid fa-angle-right"></i></a>
+                    </div>
                     <hr class="my-2">
                     <a href="#" class="d-flex justify-content-between align-items-center" type="logout">Keluar <i
                             class="fa-solid fa-angle-right"></i></a>
@@ -64,8 +70,8 @@
         </div>
         <div class="col">
             <div class="row">
-                <button type="show-tenant-info" class="btn col text-center"><b>Info Penyewa</b></button>
-                <button type="show-room-info" class="btn col text-center"><b>Info Kamar</b></button>
+                <button type="show-tenant-info" class="btn col text-center user-info"></button>
+                <button type="show-room-info" class="btn col text-center roomOrAddress-info"></button>
             </div>
             <div id="tenant-information">
                 <div class="row border rounded mb-3 pb-3">
@@ -142,7 +148,7 @@
             <div id="room-information" class="row border rounded mb-3" hidden>
                 <div class="d-flex justify-content-between align-items-center p-3 rounded-top title"
                     style="background-color: var(--primary-color);">
-                    Informasi Kamar
+                    Data Kamar
                 </div>
                 <div class="p-4 mx-auto">
                     <div class="row">
