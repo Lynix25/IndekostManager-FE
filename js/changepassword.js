@@ -1,6 +1,6 @@
 import { APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { Constant, Event, ServiceURL } from "./config.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { logoutWithoutToast } from "./main.js";
 import { getFormValue, goTo, handleFormSubmited } from "./utils.js";
 
@@ -39,7 +39,7 @@ function resetPassword(e) {
         if (response.status == 200) {
             Toast(Constant.httpStatus.SUCCESS, response.data.message);
             if(document.cookie.length > 0) logoutWithoutToast();
-            setTimeout(function() { goTo('./login.html') }, Event.timeout);
+            setTimeout(function() { goTo(PAGE.LOGIN) }, Event.timeout);
         }
     }).catch(err => {
         if(err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
