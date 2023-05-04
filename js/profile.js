@@ -1,39 +1,51 @@
 import { APIDelete, APIGet } from "./api.js";
-import { Constant, Event, ServiceURL } from "./config.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 import { showModalForm } from "./createcontactable.js";
 import { showModalConfirmation } from "./component/modal.js";
-import { UNIXtimeConverter, addCustomEventListener, goTo, map, numberWithThousandsSeparators, range } from "./utils.js";
+import { UNIXtimeConverter, addCustomEventListener, goTo, map, numberWithThousandsSeparators, range, isOwnerOrAdmin } from "./utils.js";
 import { Toast } from "./component/toast.js";
 import { logout } from "./main.js";
+
+if(isOwnerOrAdmin()) {
+    document.querySelector(".user-info").innerHTML = "<b>Biodata</b>";
+    document.querySelector(".roomOrAddress-info").innerHTML = "<b>Info Kos</b>";
+    document.querySelector(".about").setAttribute("hidden", "");
+} else {
+    document.querySelector(".user-info").innerHTML = "<b>Biodata</b>";
+    document.querySelector(".roomOrAddress-info").innerHTML = "<b>Info Kamar</b>";
+    document.querySelector(".report").setAttribute("hidden", "");
+}
 
 APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     let user = res.data.data.user;
     let room = res.data.data.room;
 
     document.querySelector("#name").innerText = user.name;
-    document.querySelector("#alias").innerText = `(${user.alias})`;
-    document.querySelector("#email").innerText = user.email;
+    document.querySelector("#alias").innerText = (user.alias == null || user.alias === "") ? "" : `(${user.alias})`;
+    document.querySelector("#email").innerText = (user.email == null || user.email === "") ? "-" : user.email;
     document.querySelector("#phone").innerText = user.phone;
     document.querySelector("#job").innerText = user.job;
     document.querySelector("#gender").innerText = user.gender;
-    document.querySelector("#status").innerText = user.married ? 'Sudah Menikah' : 'Belum Menikah';
+    document.querySelector("#status").innerText = user.married ? Constant.userAttribute.maritalStatus.MARRIED : Constant.userAttribute.maritalStatus.SINGLE;
     document.querySelector("#joinedOn").innerText = UNIXtimeConverter(user.joinedOn, 'DD MMMM YYYY');
-    document.querySelector("#description").innerText = user.description;
+    document.querySelector("#description").innerText = (user.description == null || user.description === "") ? "-" : user.description;
 
     let identityImage = document.createElement("div");
+    let src = (user.identityCardImage == null || user.identityCardImage === "") ?
+                "./asset/no_image.png" : `data:image/png;base64,${user.identityCardImage}`;
     identityImage.innerHTML = `
         <a href="#" onclick="openImageInNewWindow(this)">
-            <img src="data:image/png;base64,${user.identityCardImage}" alt="KTP">
+            <img src="${src}" alt="KTP">
         </a>
     `;
     document.querySelector("#identity-image").appendChild(identityImage);
 
     let contactables = user.contactAblePersons;
     if(contactables.length == 0) {
-        document.querySelector("#list-not-empty").remove();
+        document.querySelector("#list-not-empty").setAttribute("hidden", "");
     } else {
-        document.querySelector("#list-empty").remove();
+        document.querySelector("#list-empty").setAttribute("hidden", "");
 
         let count = 0;
         contactables.forEach(data => {
@@ -60,29 +72,29 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
                 item.innerHTML = `
                     <th scope="row">${count}</th>
                     <td class="contactable-table-data text-truncate">
-                        <a href="/editcontactable.html?id=${data.id}">
+                        <a href="${PAGE.EDITCONTACTABLE + data.id}">
                             ${data.name}
                         </a>
                     </td>
                     <td class="contactable-table-data text-truncate">
-                        <a href="/editcontactable.html?id=${data.id}">
+                        <a href="${PAGE.EDITCONTACTABLE + data.id}">
                             ${data.relation}
                         </a>
                     </td>
                     <td class="text-truncate" style="max-width: 8rem; min-width: 8rem;">
-                        <a href="/editcontactable.html?id=${data.id}">
+                        <a href="${PAGE.EDITCONTACTABLE + data.id}">
                             ${data.phone}
                         </a>
                     </td>
                     <td class="text-truncate" style="max-width: 18rem; min-width: 8rem;">
-                        <a href="/editcontactable.html?id=${data.id}">
+                        <a href="${PAGE.EDITCONTACTABLE + data.id}">
                             ${data.address}
                         </a>
                     </td>
                 `;
 
                 toggleEdit.addEventListener("click", e => {
-                    goTo("./editcontactable.html?id=" + data.id);
+                    goTo(PAGE.EDITCONTACTABLE + data.id);
                 });
                 item.appendChild(toggleEdit);
 
@@ -94,7 +106,7 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
                         'Hapus', 'Batal', () => {
                             APIDelete(ServiceURL.User.deleteContactable(getCookie('id')) + data.id).then(response => {
                                 Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                                // setTimeout(function() { goTo('./profile.html') }, Event.timeout);
+                                setTimeout(function() { goTo(PAGE.PROFILE) }, Event.timeout);
                             }).catch(err => {
                                 Toast(Constant.httpStatus.ERROR, err?.message);
                             });
@@ -107,7 +119,7 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
             }
         });    
     }
-    // getRoomData(room.id)
+    if(!isOwnerOrAdmin()) getRoomData(room.id);
 });
 
 addCustomEventListener("show-room-info", e => {
@@ -130,8 +142,6 @@ function getRoomData(roomId) {
         document.querySelector(".name").innerHTML = room.name;
         document.querySelector(".price").innerHTML = `Rp${numberWithThousandsSeparators("1000000")}`;
         document.querySelector(".floor").innerHTML = `Lantai ${room.floor}`;
-        // document.querySelector(".price").innerHTML = room.price;
-        // document.querySelector(".description").innerHTML = room.description;
 
         let status = (room.totalTenants >= room.quota ? 'Kamar penuh' : 'Tersedia');
         document.querySelector(".status").classList.add(status === 'Kamar penuh' ? "text-danger" : "text-success");
@@ -239,7 +249,6 @@ function getRoomData(roomId) {
 
 addCustomEventListener("logout", e => {
     logout();
-    console.log(e)
 });
 
 let js = document.createElement("script");
