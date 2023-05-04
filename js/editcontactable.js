@@ -1,6 +1,6 @@
 import { APIGet, APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { Constant, Event, ServiceURL } from "./config.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 import { getFormValue, getParamOnURL, goTo, handleFormSubmited } from "./utils.js";
 
@@ -29,7 +29,7 @@ handleFormSubmited(e => {
     APIPut(ServiceURL.User.editContactable(getCookie('id')) + getParamOnURL("id"), data).then(response => {
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
-        setTimeout(function () { goTo('./profile.html')}, Event.timeout);
+        setTimeout(function () { goTo(PAGE.PROFILE)}, Event.timeout);
     }).catch(err => {
         if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
         else Toast(Constant.httpStatus.ERROR, err.data.message);
@@ -38,4 +38,4 @@ handleFormSubmited(e => {
 
 document.addEventListener("change", e => {
     e.target.setAttribute("changed", "");
-})
+});
