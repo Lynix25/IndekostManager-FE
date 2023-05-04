@@ -57,7 +57,7 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
                 toggleEdit.innerHTML = `
                     <div class="hover-text">
                         <span class="tooltip-text tooltip-top-toggle">Ubah</span>
-                        <span id="edit"><a href="#"><i class="fa-solid fa-pencil"></i></a></span>
+                        <span><i class="fa-solid fa-pencil"></i></span>
                     </div>`;
                     
                 let toggleDelete = document.createElement("td");
@@ -65,7 +65,7 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
                 toggleDelete.innerHTML = `
                     <div class="hover-text">
                         <span class="tooltip-text tooltip-top-toggle">Hapus</span>
-                        <span id="delete"><a href="#"><i class="fa-solid fa-trash"></i></a></span>
+                        <span><i class="fa-solid fa-trash"></i></span>
                     </div>`;
                 
                 let item = document.createElement("tr");
@@ -108,7 +108,8 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
                                 Toast(Constant.httpStatus.SUCCESS, response.data.message);
                                 setTimeout(function() { goTo(PAGE.PROFILE) }, Event.timeout);
                             }).catch(err => {
-                                Toast(Constant.httpStatus.ERROR, err?.message);
+                                if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+                                else Toast(Constant.httpStatus.ERROR, err.data.message);
                             });
                         }
                     );
