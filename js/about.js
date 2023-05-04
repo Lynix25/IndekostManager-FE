@@ -23,7 +23,7 @@ APIGet(ServiceURL.User.getAll).then(response => {
             <li>
                 <p class="mb-1">${user.name} ${user.alias == null || user.alias == "" ? "" : `(${user.alias})`}</p>
                 <p class="mb-1">${user.phone}</p>
-                <p class="mb-1">${role}</p>
+                <p class="mb-1">${role === Constant.role.ADMIN ? "Penjaga Kos" : "Pemilik kos"}</p>
             </li>
         `;
         if(role === Constant.role.ADMIN) {
