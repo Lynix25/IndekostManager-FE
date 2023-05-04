@@ -61,10 +61,12 @@ export const Constant = {
 export const PAGE = {
     HOME: "/home.html",
     LOGIN: "/login.html",
+    PROFILE: "/profile.html",
     ANNOUNCEMENTMENU: "/announcementmenu.html", 
     ANNOUNCEMENTDETAIL: "/announcementdetail.html?id=",
     CREATEANNOUNCEMENT: "/createannouncement.html",
     EDITANNOUNCEMENT: "/editannouncement.html?id=",
+    EDITCONTACTABLE: "/editcontactable.html?id=",
 };
 
 export const CONTENT_TYPE = {
