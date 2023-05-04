@@ -1,12 +1,21 @@
 import { APIGet, APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { Constant, Event, ServiceURL } from "./config.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { MasterRole } from "./masterdata/masterrole.js";
-import { getUpdateFormValue, getUserID, handleFormSubmited, isOwnerOrAdmin } from "./utils.js";
+import { getFormValueV2, getUserID, goTo, handleFormSubmited, isOwnerOrAdmin } from "./utils.js";
 
-let userData;
-let roleId, roomId;
+document.querySelector("#identityCardImageLabel").innerHTML=`Kartu Identitas (Max ${Constant.image.maxSize}MB)`;
+
+if(!isOwnerOrAdmin()) 
+    document.querySelector(".restrictedData").setAttribute("hidden", "");
+else {
+    document.querySelector("#name").removeAttribute("disabled");
+    document.querySelector("#gender").removeAttribute("disabled");
+    document.querySelector("#married").removeAttribute("disabled");
+    document.querySelector(".room-container").setAttribute("hidden", "");
+}
+
+let userData = {};
 APIGet(ServiceURL.User.getById(getCookie("id"))).then(res => {
     userData = res.data.data;
     reloadData(userData);
@@ -18,109 +27,101 @@ function reloadData(currUserData) {
 
     let aliasInput = document.querySelector("#alias");
     aliasInput.setAttribute("value", 
-    (currUserData.user.alias == null || currUserData.user.alias.length == 0) ? "-" : currUserData.user.alias);
+    (currUserData.user.alias == null || currUserData.user.alias == "") ? "" : currUserData.user.alias);
 
     let phoneInput = document.querySelector("#phone");
     phoneInput.setAttribute("value", currUserData.user.phone);
     
     let emailInput = document.querySelector("#email");
     emailInput.setAttribute("value", 
-    (currUserData.user.email == null || currUserData.user.email.length == 0) ? "-" : currUserData.user.email);
+    (currUserData.user.email == null || currUserData.user.email == "") ? "" : currUserData.user.email);
     
     let genderInput = document.querySelector("#gender");
-    genderInput.setAttribute("value", currUserData.user.gender);
+    setSelected(genderInput, currUserData.user.gender);
 
     let statusInput = document.querySelector("#married");
-    statusInput.setAttribute("value", currUserData.user.married ? 
-        Constant.userAttribute.maritalStatus.MARRIED : Constant.userAttribute.maritalStatus.SINGLE);
+    setSelectedMarried(statusInput, currUserData.user.married);
 
     let jobInput = document.querySelector("#job");
     jobInput.setAttribute("value", currUserData.user.job);
     
     let descriptionInput = document.querySelector("#description");
-    let description = (currUserData.user.description == null || currUserData.user.description == 0) ? "-" : currUserData.user.description;
+    let description = (currUserData.user.description == null || currUserData.user.description == "") ? "" : currUserData.user.description;
     descriptionInput.setAttribute("value", description);
     descriptionInput.innerHTML = description;
 
-    let roomInput = document.querySelector("#roomId");
-    roomInput.setAttribute("value", (currUserData.room == null) ? "-" : currUserData.room.name);
-    if(currUserData.room != null) roomId = currUserData.room.id;
+    let roomInput = document.querySelector("#room");
+    roomInput.setAttribute("value", (currUserData.room == null) ? "" : currUserData.room.name);
 
-    let roleInput = document.querySelector("#roleId");
-    roleInput.setAttribute("value", currUserData.user.role.name);
-    roleId = currUserData.user.role.id;
+    let roleInput = document.querySelector("#role");
+    setSelected(roleInput, currUserData.user.role.name);
 
     let identityCardInput = document.querySelector("#identityCardImage");
     let identityCard = document.querySelector("#identityImage");
-    if(currUserData.user.identityCardImage == null || currUserData.user.identityCardImage.length == 0) {
-        identityCard.remove();
-    } else {
-        identityCardInput.removeAttribute("required");
-        identityCardInput.setAttribute("value", currUserData.user.identityCardImage);
-        identityCard.setAttribute("src", `data:image/png;base64,${currUserData.user.identityCardImage}`);
-    }
+    let image = currUserData.user.identityCardImage;
+    if(image == null || image === "") identityCard.setAttribute("hidden", "");
+    else {
+        if(image != undefined) {
+            identityCardInput.removeAttribute("required");
+            identityCard.setAttribute("src", `data:image/png;base64,${image}`);
+        }
+    } 
+}
 
-    if(isOwnerOrAdmin()) {
-        nameInput.removeAttribute("disabled");
-        genderInput.removeAttribute("disabled");
-        statusInput.removeAttribute("disabled");
-        roleInput.removeAttribute("disabled");
-        roomInput.removeAttribute("disabled");
-    } else {
-        identityCardInput.classList.add("invisible");
+function setSelected(listOption, selectedValue) {
+    for(let i=0; i < listOption.options.length; i++) {
+        if(listOption.options[i].text === selectedValue) {
+            listOption.options[i].selected = true;
+        }
+    }
+}
+
+function setSelectedMarried(listOption, selectedValue) {
+    for(let i=0; i < listOption.options.length; i++) {
+        if(selectedValue == true) {
+            if(listOption.options[i].text === Constant.userAttribute.maritalStatus.MARRIED) {
+                listOption.options[i].selected = true;
+            }
+        } else {
+            if(listOption.options[i].text === Constant.userAttribute.maritalStatus.SINGLE) {
+                listOption.options[i].selected = true;
+            }
+        }
     }
 }
 
 let countChanges = 0;
 document.addEventListener("change", e => {
-    countChanges++;
     e.target.setAttribute("changed","");
+    countChanges++;
 })
 
 handleFormSubmited(e => {
-    let data = getUpdateFormValue(e.target);
-    // Filter old key-value to make request input
-    let keyToRemove = ['id', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate', 'deleted', 'inActiveSince', 'joinedOn', 'role', 'setting'];
-    let oldData = userData.user;
-    keyToRemove.forEach(key => {
-        // 'identityCardImage' can only be updated by owner or admin
-        if(!isOwnerOrAdmin()) {
-            delete oldData['identityCardImage'];
-        }
-        delete oldData[key];
-    })
+    let data = getFormValueV2(e.target);
 
-    // Replace old value with change
-    if(countChanges > 0) {
-        Object.keys(data).forEach(function(key) {
-            // '-' value means the data is empty. Translate '-' -> null
-            if(data[key] === '-') data[key] = null;
-            // 'married' key accepts boolean as input. Translate status -> boolean
-            if(key === 'married') {
-                if(data[key] === Constant.userAttribute.maritalStatus.MARRIED) data[key] = true;
-                else data[key] = false;
-            }
-            Object.keys(oldData).forEach(function(oldKey) {
-                if(oldKey === key) {
-                    oldData[oldKey] = data[key];
-                }
-            });
+    Object.keys(data).forEach(function(key) {
+        if(key === 'married') {
+            data[key] = (data[key] === Constant.userAttribute.maritalStatus.MARRIED ? true : false);
+        }
+        if(data[key] === "" || data[key] == undefined) data[key] = null
+    });
+
+    if(data.image != undefined && data.image != null && data.image.size/Constant.image.dividersImageSizeByteToMB > Constant.image.maxSize) {
+        Toast(Constant.httpStatus.ERROR, `Ukuran file lebih besar dari ${Constant.image.maxSize}MB`);
+    } else {
+        APIPut(ServiceURL.User.getById(getCookie('id')), data, { 
+            "requesterId" : getUserID(), 
+            "Content-Type" : "multipart/form-data"
+        }).then(response => {
+            reloadData(response.data.data);
+            Toast(Constant.httpStatus.SUCCESS, response.data.message);
+            setTimeout(function () { goTo(PAGE.PROFILE)}, Event.timeout);
+        }).catch(err => {
+            if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+            else Toast(Constant.httpStatus.ERROR, err.data.message);
         });
     }
-
-    // Add additional key-value to request input: roleId & roomId
-    /* Code here: Unfinished */
-
-    APIPut(ServiceURL.User.getById(getCookie('id')), userData.user, { 
-        "requesterId" : getUserID(), 
-        "Content-Type" : "multipart/form-data"
-    }).then(response => {
-        reloadData(response.data.data);
-        Toast(Constant.httpStatus.SUCCESS, response.data.message);
-    }).catch(err => {
-        Toast(Constant.httpStatus.ERROR, err?.message);
-    });
-})
+});
 
 document.querySelector("#identityCardImage").addEventListener("change", event => {
     
@@ -129,7 +130,8 @@ document.querySelector("#identityCardImage").addEventListener("change", event =>
     let loading = document.createElement("i");
 
     reader.addEventListener("loadend", e => {
-        document.querySelector(".fa-spin").setAttribute("hidden", "")
+        document.querySelector("#identityImage").removeAttribute("hidden");
+        document.querySelector(".fa-spin").setAttribute("hidden", "");
         event.target?.parentElement.querySelector("img").setAttribute("src", reader.result);
     });
 
