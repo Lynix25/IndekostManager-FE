@@ -31,7 +31,7 @@ APIGet(ServiceURL.MasterData.getIndekos).then(res => {
     // document.querySelector(".sub-district").innerHTML = `${data.subdistrict}, ${data.district}`;
     // document.querySelector(".city-province-country").innerHTML = `${data.cityOrRegency}, ${data.province}, ${data.country}`;
     // document.querySelector(".postal-code").innerHTML = `Kode pos: ${data.postalCode}`;
-})
+});
 
 let taskOrRequestParamRequestorId;
 let taskOrRequestNoDataId;
@@ -42,6 +42,7 @@ if(isOwnerOrAdmin()) {
     document.querySelector("#carousel").setAttribute("hidden", "");
     document.querySelector(".menu-tenant").setAttribute("hidden", "");
     document.querySelector(".recent-request").setAttribute("hidden", "");
+
     taskOrRequestParamRequestorId = "";
     taskOrRequestNoDataId = "#no-data-task";
     taskOrRequestListId = "#task-list";
@@ -50,6 +51,7 @@ if(isOwnerOrAdmin()) {
     document.querySelector(".menu-admin").setAttribute("hidden", "");
     document.querySelector(".chart").setAttribute("hidden", "");
     document.querySelector(".active-task").setAttribute("hidden", "");
+
     taskOrRequestParamRequestorId = getCookie("id");;
     taskOrRequestNoDataId = "#no-data-request";
     taskOrRequestListId = "#request-list";
@@ -59,12 +61,14 @@ if(isOwnerOrAdmin()) {
         let data = res.data;
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
         document.querySelector(".due-date").innerHTML = UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY");
+    }).catch(err => {
+        document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(0);
     });
 }
 
 APIGet(ServiceURL.Announcement.getAll).then(res => {
     let announcements = res.data.data;
-    if(announcements.length > 0) {
+    if(announcements.length == 0) {
         let announcementCarousel = document.createElement("div");
         announcementCarousel.classList.add("carousel-indicators", "align-items-end");
         announcementCarousel.innerHTML = `
