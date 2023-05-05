@@ -7,12 +7,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>In D'Kos</title>
 
+    <style>
+        .total-price-container {
+            justify-content: end;
+        }
+
+        .inline-group {
+            justify-content: start;    
+        }
+
+        .charge {
+            width: 7rem !important;
+        }
+
+        @media screen and (max-width: 480px) {
+            .total-price-container {
+                justify-content: center;
+                margin: 8px 0;
+            }
+
+            .inline-group {
+                justify-content: center;
+            }
+        }
+    </style>
     <script src="js/library.js"></script>
-    
     <script type="module" src="js/servicerequest.js"></script>
 </head>
-
-
 <body>
     <form class="frame card p-4 mx-auto my-4" action="" method="put">
         <div class="page-title my-4">
@@ -34,6 +55,9 @@
         </div>
         <div class="mb-2">
             <label for="serviceId" class="form-label">Varian</label>
+            <!-- <ul id="laundry-form" class="alert alert-info"> -->
+            <ul id="laundry-form">
+            </ul>
             <select id="serviceId" name="serviceId" class="form-select">
                 <!-- <option>Selimut</option>
                 <option>Selimut</option>
@@ -45,7 +69,7 @@
         <div class="card-body price-tag mb-2 alert alert-warning">
             <label for="price">Layanan ini dikenakan biaya sebesar:</label>
             <div id="price" name="price" class="fw-bold">Rp -</div>
-            <input id="charge" hidden>
+            <input id="charge" name="charge" hidden>
         </div>
         <div class="mb-2">
             <label for="taskDate" class="form-label">Waktu Pengerjaan</label>
