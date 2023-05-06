@@ -13,42 +13,54 @@
 
 <body>
     <div class="row d-flex justify-content-center align-items-center m-4">
-        <div class="page-title my-4">
+        <div class="page-title mt-4 mb-2">
             <div class="hover-text">
                 <span class="tooltip-text tooltip-top-title">Kembali</span>
-                <span id="back"><a href="/home.html"><i class="fa fa-chevron-left"></i></a></span>
+                <span id="back"><i class="fa fa-chevron-left"></i></span>
             </div>
-            <h4 class="m-0">History Pembayaran</h4>
+            <h4 class="m-0">History Pembayaran</h5>
         </div>
     </div>
-    <div class="frame border rounded p-3 m-auto">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <div>Nama Kamar</div>
-                <div>1 Jan 2022</div>
+    <div class="container frame-max mx-auto px-4">
+        <form class="card-body input-group mb-4" role="search">
+            <input type="text" id="search" name="text" id="text" class="form-control border-end-0" placeholder="Cari ..." />
+            <button type="button" class="input-group-text bg-transparent">
+                <i class="fas fa-search text-center"></i>
+            </button>
+        </form>
+        <ul id="paid-list" class="card-body">
+            <div class="text-center w-100 p-2 no-data">
+                <img src="./asset/no_data.png" alt="Tidak ada data" height="100px" style="opacity: 50%;">
+                <p>Belum ada data</p>
             </div>
-            <div class="badge-blue">Dalam Pengerjaan</div>
-        </div>
-        <hr>
-        <div>
-            <div class="d-flex">
-                <span>
-                    <i class="fa-solid fa-toilet"></i>
-                </span>
-                <div>
-                    <div>Sedot Toilet Mampet</div>
-                    <div>Permintaan pengerjaan: 1/1/2022 19:00</div>
+            <!-- <li class="border rounded px-3 py-1 m-auto" onclick="e => {
+                toTaskDetail(e)}">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="order-room">Nama Kamar</div>
+                        <div class="order-date">1 Jan 2022</div>
+                    </div>
+                    <div class="badge badge-blue">Dalam Pengerjaan</div>
                 </div>
-            </div>
-            <div>
-                + 1 service lainnya
-            </div>
-            <div>
-                Total
-            </div>
-            <div>Rp 2.050.000</div>
-        </div>
+                <hr style="margin: .5rem 0px;">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="text-center">
+                            <i class="fa-solid fa-toilet"></i>
+                        </div>
+                        <div class="">
+                            <div>Sedot Toilet Mampet</div>
+                            <div>Permintaan pengerjaan: 1/1/2022 19:00</div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <button class="btn bg-primary">Komplain</button>
+                    </div>
+                </div>
+            </li> -->
+        </ul>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
-
 </html>
