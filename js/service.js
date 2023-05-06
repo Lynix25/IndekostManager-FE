@@ -1,10 +1,25 @@
 import { APIGet, APIPost } from "./api.js";
 import { Constant, Event, ServiceURL } from "./config.js";
-import { getFormValue, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
+import { addCustomEventListener, getFormValue, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 import { Toast } from "./component/toast.js";
+
+document.querySelector("#serviceName").addEventListener("change", e => {
+    let selected = e.target.value;
+    if(selected !== Constant.serviceCategory.LAUNDRY) {
+        document.querySelector(".quantity").setAttribute("hidden", "");
+        document.querySelector(".units").setAttribute("hidden", "");
+    } else {
+        document.querySelector(".quantity").setAttribute("required", "");
+        document.querySelector(".units").setAttribute("required", "");
+    }
+})
 
 handleFormSubmited((e) => {
     let data = getFormValue(e.target);
+    if(data.variant !== Constant.serviceCategory.LAUNDRY) {
+        document.querySelector(".quantity").removeAttribute("hidden");
+        document.querySelector(".units").removeAttribute("hidden");
+    }
     APIPost(ServiceURL.Service.getAll, data).then(response => {
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
         setTimeout(function() { goTo('./service.html') }, Event.timeout);
@@ -39,6 +54,8 @@ APIGet(ServiceURL.Service.getAll).then(res => {
             let categoryItem = document.createElement("tr");
             categoryItem.innerHTML = `
                 <td class="text-truncate">${service.variant}</td>
+                <td class="text-center" style="width: 24px">${service.quantity}</td>
+                <td class="text-truncate" style="width: 24px">${service.units}</td>
                 <td style="width: 120px">Rp ${numberWithThousandsSeparators(service.price)}</td>
             `;
             document.querySelector("#service-list-category1").appendChild(categoryItem);

@@ -57,3 +57,8 @@ let mainJs = document.createElement("script");
 mainJs.setAttribute("type", "module");
 mainJs.setAttribute("src", "js/main.js");
 document.head.appendChild(mainJs);
+
+let chartJs = document.createElement("script");
+// chartJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js");
+chartJs.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js");
+document.head.appendChild(chartJs);

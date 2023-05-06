@@ -1,6 +1,6 @@
 import { APIPost } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { Constant, Event, ServiceURL } from "./config.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 import { getFormValue, goTo } from "./utils.js";
 
@@ -48,12 +48,12 @@ export const showModalForm = (type, title, actionBtnLabel = 'Simpan') => {
                                     </div>
                                     <div class="col p-0 pb-2">
                                         <label class="form-label" for="phone">No. Telepon</label>
-                                        <input class="form-control" type="phone" name="phone" id="phone" minlength="10" required>
+                                        <input class="form-control" type="number" name="phone" id="phone" minlength="10" required>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <label class="form-label" for="address">Alamat</label>
-                                    <textarea class="form-control" type="text" name="address"id="address" required></textarea>
+                                    <textarea class="form-control" type="text" name="address" id="address" required></textarea>
                                 </div>
                             </div>
                             <div class="modal-footer bg-light">
@@ -75,9 +75,10 @@ export const showModalForm = (type, title, actionBtnLabel = 'Simpan') => {
         else {
             APIPost(ServiceURL.User.addContactable(getCookie('id')), data).then(response => {
                 Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                setTimeout(function() { goTo('./profile.html') }, Event.timeout);
+                setTimeout(function() { goTo(PAGE.PROFILE) }, Event.timeout);
             }).catch(err => {
-                Toast(Constant.httpStatus.ERROR, err?.message);
+                if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+                else Toast(Constant.httpStatus.ERROR, err.data.message);
             });
         }
         form.reset();

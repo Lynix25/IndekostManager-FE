@@ -1,24 +1,26 @@
 import { APIPost } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { ServiceURL, Constant, Event } from "./config.js";
-import { getFormValue, handleFormSubmited, getUserID, goBack, goTo } from "./utils.js";
+import { ServiceURL, Constant, Event, PAGE } from "./config.js";
+import { getFormValue, handleFormSubmited, getUserID, goTo, goBack } from "./utils.js";
+
+document.querySelector(".image").innerHTML = `Unggah Gambar untuk Pengumuman (Max ${Constant.image.maxSize}MB)`;
 
 handleFormSubmited(e => {
     let data = getFormValue(e?.target);
-    // console.log(data)
-    if(data.image.size/1000 > 2000) {
-        Toast(Constant.httpStatus.ERROR, "Ukuran file lebih besar dari 2MB");
-        return;
+    if(data.image != undefined && data.image != null && data.image.size/Constant.image.dividersImageSizeByteToMB > Constant.image.maxSize) {
+        Toast(Constant.httpStatus.ERROR, `Ukuran file lebih besar dari ${Constant.image.maxSize}MB`);
+    } else {
+        APIPost(ServiceURL.Announcement.create, data, { 
+            "requesterId" : getUserID(), 
+            "Content-Type" : "multipart/form-data"
+        }).then(response => {
+            Toast(Constant.httpStatus.SUCCESS, response.data.message);
+            setTimeout(function() { goTo(PAGE.ANNOUNCEMENTMENU) }, Event.timeout);
+        }).catch(err => {
+            if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+            else Toast(Constant.httpStatus.ERROR, err.data.message);
+        });
     }
-    APIPost(ServiceURL.Announcement.create, data, { 
-        "requesterId" : getUserID(), 
-        "Content-Type" : "multipart/form-data"
-    }).then(response => {
-        Toast(Constant.httpStatus.SUCCESS, response.data.message);
-        setTimeout(function() { goTo("./announcementmenu.html") }, Event.timeout);
-    }).catch(err => {
-        Toast(Constant.httpStatus.ERROR, err?.message);
-    });
 });
 
 document.querySelector("#image").addEventListener("change", event => {

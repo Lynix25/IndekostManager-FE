@@ -1,7 +1,9 @@
 import { APIGet, APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { Constant, Event, ServiceURL } from "./config.js";
-import { getUpdateFormValue, getParamOnURL, goBack, handleFormSubmited, goTo, getUserID, getFormValueV2 } from "./utils.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
+import { getParamOnURL, goBack, handleFormSubmited, goTo, getUserID, getFormValueV2 } from "./utils.js";
+
+document.querySelector(".image").innerHTML = `Unggah Gambar untuk Pengumuman (Max ${Constant.image.maxSize}MB)`;
 
 let announcementData;
 APIGet(ServiceURL.Announcement.getById(getParamOnURL('id'))).then(res => {
@@ -35,37 +37,21 @@ document.addEventListener("change", e => {
 handleFormSubmited(e => {
     let data = getFormValueV2(e.target);
     
-    // // Remove unused key
-    // let keyToRemove = ['id', 'createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate', 'image'];
-    // let oldData = announcementData;
-    // keyToRemove.forEach(key => {
-    //     delete oldData[key];
-    // })
-
-    // // Replace old value with change
-    // if(countChanges > 0) {
-    //     Object.keys(data).forEach(function(key) {
-    //         Object.keys(oldData).forEach(function(oldKey) {
-    //             if(oldKey === key) {
-    //                 oldData[oldKey] = data[key];
-    //             }
-    //             if(key === 'image') {
-    //                 oldData[key] = data[key];
-    //             }
-    //         });
-    //     });
-    // }
-
-    APIPut(ServiceURL.Announcement.update(getParamOnURL('id')), data, { 
-        "requesterId" : getUserID(), 
-        "Content-Type" : "multipart/form-data"
-    }).then(response => {
-        reloadData(response.data.data);
-        Toast(Constant.httpStatus.SUCCESS, response.data.message);
-        setTimeout(function () { goTo('./announcementdetail.html?id=' + getParamOnURL('id')) }, Event.timeout);
-    }).catch(err => {
-        Toast(Constant.httpStatus.ERROR, err?.message);
-    });
+    if(data.image != undefined && data.image != null && data.image.size/Constant.image.dividersImageSizeByteToMB > Constant.image.maxSize) {
+        Toast(Constant.httpStatus.ERROR, `Ukuran file lebih besar dari ${Constant.image.maxSize}MB`);
+    } else {
+        APIPut(ServiceURL.Announcement.update(getParamOnURL('id')), data, { 
+            "requesterId" : getUserID(), 
+            "Content-Type" : "multipart/form-data"
+        }).then(response => {
+            reloadData(response.data.data);
+            Toast(Constant.httpStatus.SUCCESS, response.data.message);
+            setTimeout(function () { goTo(PAGE.ANNOUNCEMENTDETAIL + getParamOnURL('id')) }, Event.timeout);
+        }).catch(err => {
+            if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+            else Toast(Constant.httpStatus.ERROR, err.data.message);
+        });
+    }
 });
 
 document.querySelector("#image").addEventListener("change", event => {
@@ -75,6 +61,7 @@ document.querySelector("#image").addEventListener("change", event => {
     let loading = document.createElement("i");
 
     reader.addEventListener("loadend", e => {
+        document.querySelector("#currImage").removeAttribute("hidden");
         document.querySelector(".fa-spin").setAttribute("hidden", "")
         event.target?.parentElement.querySelector("img").setAttribute("src", reader.result);
     });

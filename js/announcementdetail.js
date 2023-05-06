@@ -1,5 +1,5 @@
 import { APIDelete, APIGet } from "./api.js";
-import { Constant, Event, ServiceURL } from "./config.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { showModalConfirmation } from "./component/modal.js";
 import { getParamOnURL, goBack, goTo, isOwnerOrAdmin } from "./utils.js";
 import { Toast } from "./component/toast.js";
@@ -24,25 +24,20 @@ APIGet(ServiceURL.Announcement.getById(getParamOnURL("id"))).then(res => {
     }
 });
 
-document.querySelector("#back").addEventListener("click", e => {
-    goBack();
-});
-
 document.querySelector("#editAnnouncement").addEventListener("click", e => {
-    goTo("/editannouncement.html?id=" + getParamOnURL("id"))
+    goTo(PAGE.EDITANNOUNCEMENT + getParamOnURL("id"))
 });
 
 document.querySelector("#deleteAnnouncement").addEventListener("click", e => {
-    console.log(e.target)
     showModalConfirmation(
         Constant.modalType.DELETECONFIRMATION,
         'Hapus Pengumuman',
-        'Anda yakin ingin menghapus pemgumuman?',
+        'Anda yakin ingin menghapus pengumuman?',
         'Hapus', 'Batal',
         () => {
             APIDelete(ServiceURL.Announcement.delete(getParamOnURL('id'))).then(response => {
                 Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                setTimeout(function () { goTo('./announcementmenu.html') }, Event.timeout);
+                setTimeout(function () { goTo(PAGE.ANNOUNCEMENTMENU) }, Event.timeout);
             }).catch(err => {
                 Toast(Constant.httpStatus.ERROR, err?.message);
             });
@@ -51,24 +46,9 @@ document.querySelector("#deleteAnnouncement").addEventListener("click", e => {
 });
 
 document.querySelector("#exitAnnouncement").addEventListener("click", e => {
-    goTo('./announcementmenu.html')
+    goTo(PAGE.ANNOUNCEMENTMENU)
 });
 
-//     // function editAnnouncement() {
-//     //     document.getElementById("editAnnouncement").addEventListener("click", e => {
-//     //         // console.log("???")
-//     //         console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getParamOnURL("id")))
-//     //     })
-//     //     // .onclick(e => {
-//     //     //     console.log("???")
-//     //     //     // console.log(APIDelete(ServiceURL.Announcement.delete).replace("$1", getParamOnURL("id")))
-//     //     // })
-//     // }
-
-
-// APIDelete("/announcement/" + getParamOnURL("id")).then(res => {
-//     console.log(res.data);
-//     document.querySelector("#delete-announcement").addEventListener("click", e => {
-//         goTo("./home.html");
-//     })
-// })
+document.querySelector("#back").addEventListener("click", e => {
+    goBack();
+});

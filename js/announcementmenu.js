@@ -1,6 +1,15 @@
-import { APIGet } from "./api.js";
-import { ServiceURL } from "./config.js";
-import { goBack, goTo } from "./utils.js";
+import { APIDelete, APIGet } from "./api.js";
+import { showModalConfirmation } from "./component/modal.js";
+import { Toast } from "./component/toast.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
+import { addCustomEventListener, goBack, goTo, isOwnerOrAdmin } from "./utils.js";
+
+if(isOwnerOrAdmin()) {
+    document.querySelector("#announcement-page-title").innerHTML = "Kelola Pengumuman";
+} else {
+    document.querySelector("#add-announcement-toggle").setAttribute("hidden", "");
+    document.querySelector("#announcement-page-title").innerHTML = "Pengumuman";
+}
 
 const searchBox = document.getElementById("search");
 let announcementList = []
@@ -47,7 +56,9 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
             let content = data.description;
             let announcement = document.createElement("div");
             announcement.classList.add("card");
-            announcement.innerHTML = `
+
+            let announcementContent = document.createElement("div");
+            announcementContent.innerHTML = `
                 <div class="card-image-container">
                     <img src=${src} >
                 </div>
@@ -55,23 +66,70 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
                     <div class="card-title m-0"><b>${title}</b></div>
                     <div class="card-text mb-1 content">${content}</div>
                 </div>
-                <div class="card-footer">
-                    <p class="small">Berlaku pada: ${data.period}</p>
-                </div>`;
+            `;
 
-            announcement.addEventListener("click", e => {
-                goTo("./announcementdetail.html?id=" + data.id);
+            announcementContent.addEventListener("click", e => {
+                goTo(PAGE.ANNOUNCEMENTDETAIL + data.id);
             });
+            announcement.appendChild(announcementContent);
+            
+            let announcementFooter = document.createElement("div");
+            announcementFooter.classList.add("card-footer", "p-0", "pt-2");
+            announcementFooter.innerHTML = `
+                <p class="small text-center pb-2">Berlaku pada: ${data.period}</p>
+            `;
+            announcement.appendChild(announcementFooter);
+
+            if(isOwnerOrAdmin()) {
+                let editButton = document.createElement("div");
+                editButton.classList.add("hover-text", "pe-2", "w-50", "badge-yellow");
+                editButton.innerHTML = `
+                    <span class="tooltip-text tooltip-top-toggle2">Ubah</span>
+                    <i class="fa fa-pencil small" style="cursor: pointer"></i>
+                `;
+                
+                editButton.addEventListener("click", e => {
+                    goTo(PAGE.EDITANNOUNCEMENT + data.id);
+                });
+                announcementFooter.appendChild(editButton);
+    
+                let deleteButton = document.createElement("div");
+                deleteButton.classList.add("hover-text", "w-50", "badge-red");
+                deleteButton.innerHTML = `
+                    <span class="tooltip-text tooltip-top-toggle2">Hapus</span>
+                    <i class="fa fa-trash small" style="cursor: pointer"></i>
+                `;
+                
+                deleteButton.addEventListener("click", e => {
+                    showModalConfirmation(
+                        Constant.modalType.DELETECONFIRMATION,
+                        'Hapus Pengumuman',
+                        'Anda yakin ingin menghapus pengumuman?',
+                        'Hapus', 'Batal',
+                        () => {
+                            APIDelete(ServiceURL.Announcement.delete(data.id)).then(response => {
+                                Toast(Constant.httpStatus.SUCCESS, response.data.message);
+                                setTimeout(function () { goTo(PAGE.ANNOUNCEMENTMENU) }, Event.timeout);
+                            }).catch(err => {
+                                if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+                                else Toast(Constant.httpStatus.ERROR, err.data.message);
+                            });
+                        }
+                    );
+                });
+                announcementFooter.appendChild(deleteButton);
+            }
+            
             document.querySelector("#list-announcement").appendChild(announcement);
             return { title: title, element: announcement};
         });
     }
 });
 
+document.getElementById("add-new").addEventListener("click", e => {
+    goTo(PAGE.CREATEANNOUNCEMENT);
+});
+
 document.getElementById("back").addEventListener("click", e => {
     goBack();
-})
-
-document.getElementById("add-new").addEventListener("click", e => {
-    goTo("./createannouncement.html");
-})
+});

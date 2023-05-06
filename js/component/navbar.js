@@ -26,10 +26,15 @@ if (!noNavbarPage.includes(currentPath)) {
                 <li><a class="dropdown-item" href="/createroom.html">Tambah Data Kamar</a></li>
             </ul>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/service.html" role="button">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 Kelola Layanan Kos 
             </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="/agenda.html">Lihat Agenda</a></li>
+                <li><a class="dropdown-item" href="/service.html">Tambah Layanan Baru</a></li>
+            </ul>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -41,20 +46,37 @@ if (!noNavbarPage.includes(currentPath)) {
                 <li><a class="dropdown-item" href="/registeruser.html">Tambah Data Penyewa</a></li>
             </ul>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#!" role="button">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
                 Kelola Transaksi
             </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="/report.html">Lihat Rekap Laporan</a></li>
+            </ul>
         </li>`;
 
     const tenantMenu = `
-        <li class="nav-item">
-            <a class="nav-link" href="/servicerequest.html">Pengajuan Layanan</a>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+                Layanan Kos
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="/servicerequest.html">Ajukan Layanan</a></li>
+                <li><a class="dropdown-item" href="/requesthistory.html">Lihat History Pengajuan</a></li>
+            </ul>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/requesthistory.html">Histori Pengajuan Layanan</a>
-        </li>
-        `;
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+                Pembayaran
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="/payment.html">Bayar Tagihan</a></li>
+                <li><a class="dropdown-item" href="/paymenthistory.html">Lihat History Pembayaran</a></li>
+            </ul>
+        </li>`;
 
     const navBar = !isMobileDevice() ? `
         <nav class="navbar navbar-expand-lg sticky-top">
@@ -91,7 +113,7 @@ if (!noNavbarPage.includes(currentPath)) {
                                     Pengaturan
                                 </a>
                                 <hr class="dropdown-divider">
-                                <a type="logout" class="dropdown-item">
+                                <a type="logout1" class="dropdown-item" href="#">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
                                     Keluar
                                 </a>
@@ -127,7 +149,7 @@ if (!noNavbarPage.includes(currentPath)) {
     let body = await getElementUntilElementAvailable("body");
     body.insertBefore(createElementFromString(navBar), document.body.firstChild);
         
-    addCustomEventListener("logout", e => {
+    addCustomEventListener("logout1", e => {
         logout();
     });
 }

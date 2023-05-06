@@ -1,104 +1,126 @@
 import { APIDelete, APIGet } from "./api.js";
-import { Constant, Event, ServiceURL } from "./config.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 import { showModalForm } from "./createcontactable.js";
 import { showModalConfirmation } from "./component/modal.js";
-import { UNIXtimeConverter, addCustomEventListener, goTo, map, numberWithThousandsSeparators, range } from "./utils.js";
+import { UNIXtimeConverter, addCustomEventListener, goTo, map, numberWithThousandsSeparators, range, isOwnerOrAdmin } from "./utils.js";
 import { Toast } from "./component/toast.js";
+import { logout } from "./main.js";
+
+if(isOwnerOrAdmin()) {
+    document.querySelector(".user-info").innerHTML = "<b>Biodata</b>";
+    document.querySelector(".roomOrAddress-info").innerHTML = "<b>Info Kos</b>";
+    document.querySelector(".about").setAttribute("hidden", "");
+} else {
+    document.querySelector(".user-info").innerHTML = "<b>Biodata</b>";
+    document.querySelector(".roomOrAddress-info").innerHTML = "<b>Info Kamar</b>";
+    document.querySelector(".report").setAttribute("hidden", "");
+}
 
 APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     let user = res.data.data.user;
     let room = res.data.data.room;
 
     document.querySelector("#name").innerText = user.name;
-    document.querySelector("#alias").innerText = `(${user.alias})`;
-    document.querySelector("#email").innerText = user.email;
+    document.querySelector("#alias").innerText = (user.alias == null || user.alias === "") ? "" : `(${user.alias})`;
+    document.querySelector("#email").innerText = (user.email == null || user.email === "") ? "-" : user.email;
     document.querySelector("#phone").innerText = user.phone;
     document.querySelector("#job").innerText = user.job;
     document.querySelector("#gender").innerText = user.gender;
-    document.querySelector("#status").innerText = user.married ? 'Sudah Menikah' : 'Belum Menikah';
+    document.querySelector("#status").innerText = user.married ? Constant.userAttribute.maritalStatus.MARRIED : Constant.userAttribute.maritalStatus.SINGLE;
     document.querySelector("#joinedOn").innerText = UNIXtimeConverter(user.joinedOn, 'DD MMMM YYYY');
-    document.querySelector("#description").innerText = user.description;
+    document.querySelector("#description").innerText = (user.description == null || user.description === "") ? "-" : user.description;
 
     let identityImage = document.createElement("div");
+    let src = (user.identityCardImage == null || user.identityCardImage === "") ?
+                "./asset/no_image.png" : `data:image/png;base64,${user.identityCardImage}`;
     identityImage.innerHTML = `
         <a href="#" onclick="openImageInNewWindow(this)">
-            <img src="data:image/png;base64,${user.identityCardImage}" alt="KTP">
+            <img src="${src}" alt="KTP">
         </a>
     `;
     document.querySelector("#identity-image").appendChild(identityImage);
 
-    if (user.contactAblePersons.length) {
-        const contactAblePersonList = document.querySelector("#contactAblePersonList");
-        contactAblePersonList.classList.add("carousel", "carousel-dark", "slide", "p-0");
+    let contactables = user.contactAblePersons;
+    if(contactables.length == 0) {
+        document.querySelector("#list-not-empty").setAttribute("hidden", "");
+    } else {
+        document.querySelector("#list-empty").setAttribute("hidden", "");
 
-        let list = `
-        <div class="carousel-inner">
-            ${map(user.contactAblePersons, contactAblePerson =>
-            `<div class="carousel-item">
-                <div class="row">
-                    <div class="col">
-                        <div>
-                            <div class="title">Nama</div>
-                            <div>${contactAblePerson.name}</div>
-                        </div>
-                        <div>
-                            <div class="title">Nomor Telfon</div>
-                            <div>${contactAblePerson.phone}</div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div>
-                            <div class="title">Alamat</div>
-                            <div>${contactAblePerson.address}</div>
-                        </div>
-                        <div>
-                            <div class="title">Hubungan</div>
-                            <div>${contactAblePerson.relation}</div>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="btn btn-primary me-3" type="delete-contactable" target="${contactAblePerson.id}">Delete</button>
-                        <button class="btn btn-primary" type="edit-contactable">Edit</button>
-                    </div>
-                </div>
-            </div>`).replace('carousel-item"', 'carousel-item active"')}
-        </div>
-        <div class="carousel-indicators align-items-end mb-0" style="position: relative;">
-            ${map(range(user.contactAblePersons.length), i =>
-                `<button type="button" data-bs-target="#contactAblePersonList" data-bs-slide-to="${i}" ${i ? "" :
-                    'class="active" aria-current="true"'}></button>
-                `
-            )}
-        </div>
-        `
-        contactAblePersonList.innerHTML = list;
-        
-        addCustomEventListener("delete-contactable", e => {
-            const target = e.detail.target.getAttribute("target");
-            showModalConfirmation(
-                Constant.modalType.DELETECONFIRMATION,
-                'Hapus Kontak Alternatif',
-                'Anda yakin ingin menghapus kontak alternatif?',
-                'Hapus', 'Batal',
-                () => {
-                    APIDelete(ServiceURL.User.deleteContactable(getCookie('id')) + target).then(response => {
-                        Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                        setTimeout(function () { goTo('./profile.html') }, Event.timeout);
-                    }).catch(err => {
-                        Toast(Constant.httpStatus.ERROR, err?.message);
-                    });
-                }
-            );
-        })
+        let count = 0;
+        contactables.forEach(data => {
+            if(!data.deleted) {
+                count++;
 
-        addCustomEventListener("edit-contactable", e => {
-            console.log(e.detail.target);
-        })
+                let toggleEdit = document.createElement("td");
+                toggleEdit.classList.add("text-center", "hover");
+                toggleEdit.innerHTML = `
+                    <div class="hover-text">
+                        <span class="tooltip-text tooltip-top-toggle">Ubah</span>
+                        <span><i class="fa-solid fa-pencil"></i></span>
+                    </div>`;
+                    
+                let toggleDelete = document.createElement("td");
+                toggleDelete.classList.add("text-center", "hover");
+                toggleDelete.innerHTML = `
+                    <div class="hover-text">
+                        <span class="tooltip-text tooltip-top-toggle">Hapus</span>
+                        <span><i class="fa-solid fa-trash"></i></span>
+                    </div>`;
+                
+                let item = document.createElement("tr");
+                item.innerHTML = `
+                    <th scope="row">${count}</th>
+                    <td class="contactable-table-data text-truncate">
+                        <a href="${PAGE.EDITCONTACTABLE + data.id}">
+                            ${data.name}
+                        </a>
+                    </td>
+                    <td class="contactable-table-data text-truncate">
+                        <a href="${PAGE.EDITCONTACTABLE + data.id}">
+                            ${data.relation}
+                        </a>
+                    </td>
+                    <td class="text-truncate" style="max-width: 8rem; min-width: 8rem;">
+                        <a href="${PAGE.EDITCONTACTABLE + data.id}">
+                            ${data.phone}
+                        </a>
+                    </td>
+                    <td class="text-truncate" style="max-width: 18rem; min-width: 8rem;">
+                        <a href="${PAGE.EDITCONTACTABLE + data.id}">
+                            ${data.address}
+                        </a>
+                    </td>
+                `;
 
+                toggleEdit.addEventListener("click", e => {
+                    goTo(PAGE.EDITCONTACTABLE + data.id);
+                });
+                item.appendChild(toggleEdit);
+
+                toggleDelete.addEventListener("click", e => {
+                    showModalConfirmation(
+                        Constant.modalType.DELETECONFIRMATION, 
+                        'Hapus Kontak Alternatif', 
+                        'Anda yakin ingin menghapus kontak alternatif?', 
+                        'Hapus', 'Batal', () => {
+                            APIDelete(ServiceURL.User.deleteContactable(getCookie('id')) + data.id).then(response => {
+                                Toast(Constant.httpStatus.SUCCESS, response.data.message);
+                                setTimeout(function() { goTo(PAGE.PROFILE) }, Event.timeout);
+                            }).catch(err => {
+                                if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+                                else Toast(Constant.httpStatus.ERROR, err.data.message);
+                            });
+                        }
+                    );
+                });
+                item.appendChild(toggleDelete);
+
+                document.querySelector("#list-data").appendChild(item);
+            }
+        });    
     }
-
-    getRoomData(room.id)
+    if(!isOwnerOrAdmin()) getRoomData(room.id);
 });
 
 addCustomEventListener("show-room-info", e => {
@@ -121,8 +143,6 @@ function getRoomData(roomId) {
         document.querySelector(".name").innerHTML = room.name;
         document.querySelector(".price").innerHTML = `Rp${numberWithThousandsSeparators("1000000")}`;
         document.querySelector(".floor").innerHTML = `Lantai ${room.floor}`;
-        // document.querySelector(".price").innerHTML = room.price;
-        // document.querySelector(".description").innerHTML = room.description;
 
         let status = (room.totalTenants >= room.quota ? 'Kamar penuh' : 'Tersedia');
         document.querySelector(".status").classList.add(status === 'Kamar penuh' ? "text-danger" : "text-success");
@@ -227,6 +247,10 @@ function getRoomData(roomId) {
         document.querySelector("#category5").innerHTML = Constant.roomDetailsCategory.FASILITAS_KAMAR_LAINNYA;
     });
 }
+
+addCustomEventListener("logout", e => {
+    logout();
+});
 
 let js = document.createElement("script");
 js.innerHTML = `
