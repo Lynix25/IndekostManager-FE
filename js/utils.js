@@ -363,9 +363,6 @@ export function statusToString(statusCode) {
     if (statusCode === Constant.serviceRequestStatus.ACCEPTED) {
         return ["badge-blue", Constant.serviceRequestStatus.ACCEPTED];
     }
-    if (statusCode === Constant.serviceRequestStatus.ON_PROCESS) {
-        return ["badge-blue", Constant.serviceRequestStatus.ON_PROCESS];
-    }
     if (statusCode === Constant.serviceRequestStatus.COMPLETED) {
         return ["badge-green", Constant.serviceRequestStatus.COMPLETED];
     }
@@ -393,6 +390,11 @@ export function createElementFromString(htmlString) {
     div.innerHTML = htmlString.trim();
 
     return div.firstChild;
+}
+
+export function getTicketRequest(id, date) {
+    let uniqueCode = id.split('-')[2];
+    return `T-${UNIXtimeConverter(date, "DD/MM/YY")}-${uniqueCode}`;
 }
 
 // ====================================== DATE ======================================
@@ -474,7 +476,7 @@ export function UNIXtimeConverter(UNIXTimestamp, format = "MM/DD/YYYY hh:mm:ss U
         MM: (month + 1).toString().padStart(2, "0"), //01-12
         M: month + 1, //1-12
         YYYY: year, //1900-9999
-        // YY: year, // 
+        YY: year.toString().substring(2), // 00-99
         hh: hour.toString().padStart(2, "0"), //00-23
         mm: min.toString().padStart(2, "0"), //00-59
         ss: sec.toString().padStart(2, "0"), //00-59

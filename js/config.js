@@ -14,8 +14,7 @@ export const Constant = {
     serviceRequestStatus: {
         REJECTED: "Ditolak",
         SUBMITTED: "Menunggu Konfirmasi",
-        ACCEPTED: "Diterima",
-        ON_PROCESS: "Dalam Pengerjaan",
+        ACCEPTED: "Dalam Pengerjaan",
         COMPLETED: "Selesai"
     },
     userAttribute: {
@@ -36,7 +35,8 @@ export const Constant = {
         ERROR: "error",
         SUCCESS: "success",
         WARNING: "warning",
-        UNKNOWN: "unknown"
+        UNKNOWN: "unknown",
+        INFO: "info"
     },
     role: {
         OWNER: "Owner",
@@ -62,11 +62,19 @@ export const PAGE = {
     HOME: "./home.html",
     LOGIN: "/login.html",
     PROFILE: "./profile.html",
+    
     ANNOUNCEMENTMENU: "./announcementmenu.html", 
     ANNOUNCEMENTDETAIL: "./announcementdetail.html?id=",
+    
     CREATEANNOUNCEMENT: "./createannouncement.html",
     EDITANNOUNCEMENT: "./editannouncement.html?id=",
     EDITCONTACTABLE: "./editcontactable.html?id=",
+    
+    SERVICEREQUEST: "./servicerequest.html",
+    REQUESTHISTORY: "./requesthistory.html",
+    TASKDETAIL: "./taskdetail.html?id=",
+
+    PAYMENT: "./payment.html"
 };
 
 export const CONTENT_TYPE = {
