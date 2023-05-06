@@ -196,6 +196,14 @@ footer>ul>li>a:hover {
     height: 2px;
 } */
 
+.recent-request-list, .active-task-list {
+    min-height: 180px;
+    height: fit-content;
+    max-height: 355px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
 @media screen and (min-width: 992px) {
     .service {
         width: 23%;

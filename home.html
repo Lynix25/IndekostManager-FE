@@ -17,14 +17,27 @@
         <div class="col-lg-6">
             <!-- Greetings -->
             <div>
-                <h3 class="greetings1 fw-bold"></h3>
-                <h5 class="greetings2 mb-2 text-muted fw-normal"></h5>
+                <h3 class="greetings1 fw-bold">Selamat datang di aplikasi In D'Kos</h3>
+                <h5 class="greetings2 mb-2 text-muted fw-normal">Sahabat sejati kos-kosan Anda</h5>
             </div>
             <br>
 
             <!-- Content 1: Tenant -->
-            <div id="carousel" class="carousel carousel-dark div-shadow slide" data-ride="carousel">        
-                <div class="carousel-inner" id="announcement-list"></div>
+            <div id="announcement-content">
+                <div id="carousel-offline" class="carousel carousel-dark div-shadow slide" data-ride="carousel">
+                    <div class="carousel-indicators align-items-end">
+                        <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active"
+                            aria-current="true" aria-label="Slide 1"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="img-no-text" src="./asset/no_announcement.png" alt="Belum ada pengumuman">
+                        </div>
+                    </div>
+                </div>
+                <div id="carousel" class="carousel carousel-dark div-shadow slide" data-ride="carousel" hidden>
+                    <div class="carousel-inner" id="announcement-list"></div>
+                </div>
             </div>
 
             <!-- Content 2: Tenant -->
@@ -35,7 +48,7 @@
                 <div class="d-flex justify-content-between align-items-center mt-1">
                     <div class="fw-bold payment-label-2">Total Tagihan</div>
                     <a href="/payment.html" class="d-flex align-items-center text-end">
-                        <div class="payment-label me-3 fw-bold">Rp <span class="payment-label unpaid-total"></span></div>
+                        <div class="payment-label me-3 fw-bold">Rp <span class="payment-label unpaid-total">0</span></div>
                         <i class="payment-label fa-solid fa-angle-right fw-bold"></i>
                     </a>
                 </div>
@@ -44,7 +57,7 @@
                         <span class="me-2 payment-label-2">Bayar sebelum: </span>
                         <div class="due-date payment-label-2">-</div>
                     </div>
-                    <button class="btn btn-sm btn-light p-0 px-4 fw-bold" style="color: var(--black-color);">Bayar</button>
+                    <button class="btn btn-sm btn-light p-0 px-4 fw-bold pay" style="color: var(--black-color);">Bayar</button>
                 </div>
             </div>
             <!-- Content 1-2: Owner/Admin -->
@@ -101,36 +114,20 @@
                     </a>
                 </div>
             </div>
-            <!-- Content 4: Tenant -->
-            <div class="recent-request">
+            <!-- Content 4: Tenant & Owner/Admin -->
+            <div>
                 <div class="d-flex align-items-end">
-                    <h4 class="m-0 mt-4 text-end w-100">Ini daftar layanan terbaru yang kamu ajukan</h4>
+                    <h4 class="m-0 mt-4 text-end w-100 taskOrRequest-label">List Pengajuan Layanan</h4>
                 </div>
                 <br>
-                <div class="div-shadow card-as-container-static recent-request-list" style="height: 355px; overflow: hidden; overflow-y: scroll;">
-                    <ul id="request-list" class="px-4 py-3"></ul>
-                </div>
-                <div id="no-data-request" class="card-as-container-static mb-4 recent-request" style="height: 180px;">
-                    <div class="d-flex justify-content-center align-items-center" style="height: 75%;">
-                        <img src="./asset/no_data.png" alt="Tidak ada data" height="100px" style="opacity: 50%;">
+                <div class="div-shadow card-as-container-static recent-taskOrRequest">
+                    <div id="no-taskOrRequest" class="py-4">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <img src="./asset/no_data.png" alt="Tidak ada data" height="100px" style="opacity: 50%;">
+                        </div>
+                        <h6 class="text-muted text-center fw-normal h-auto">Belum ada data</h6>
                     </div>
-                    <h6 class="text-muted text-center fw-normal h-auto">Belum ada data</h6>
-                </div>
-            </div>
-            <!-- Content 4: Owner/Admin -->
-            <div class="active-task">
-                <div class="d-flex align-items-end">
-                    <h4 class="m-0 mt-4 text-end w-100">Yuk, segera selesaikan pekerjaan berikut!</h4>
-                </div>
-                <br>
-                <div class="div-shadow card-as-container-static active-task-list" style="height: 355px; overflow: hidden; overflow-y: scroll;">
-                    <ul id="task-list" class="px-4 py-3"></ul>
-                </div>
-                <div id="no-data-task" class="card-as-container-static mb-4 recent-request" style="height: 180px;">
-                    <div class="d-flex justify-content-center align-items-center" style="height: 75%;">
-                        <img src="./asset/no_data.png" alt="Tidak ada data" height="100px" style="opacity: 50%;">
-                    </div>
-                    <h6 class="text-muted text-center fw-normal h-auto">Belum ada data</h6>
+                    <ul id="list-taskOrRequest" class="px-4 py-3" hidden></ul>
                 </div>
             </div>
         </div>

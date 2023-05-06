@@ -25,38 +25,23 @@ APIGet(ServiceURL.MasterData.getIndekos).then(res => {
         document.querySelector(".greetings1").innerHTML = `${data.name}`;
     } else {
         document.querySelector(".greetings2").innerHTML = `Selamat bergabung di <b class="text-muted fs-5">"${data.name}"</b>`;
-    } 
-    
-    // document.querySelector(".address").innerHTML = `${data.address} RT.${data.rt}/ RW.${data.rw}`;
-    // document.querySelector(".sub-district").innerHTML = `${data.subdistrict}, ${data.district}`;
-    // document.querySelector(".city-province-country").innerHTML = `${data.cityOrRegency}, ${data.province}, ${data.country}`;
-    // document.querySelector(".postal-code").innerHTML = `Kode pos: ${data.postalCode}`;
+    }
 });
 
-let taskOrRequestParamRequestorId;
-let taskOrRequestNoDataId;
-let taskOrRequestListId;
-let taskOrRequestListContainer;
+let taskOrRequestParamRequestorId = "";
 if(isOwnerOrAdmin()) {
     document.querySelector(".summary").setAttribute("hidden", "");
-    document.querySelector("#carousel").setAttribute("hidden", "");
+    document.querySelector("#announcement-content").setAttribute("hidden", "");
     document.querySelector(".menu-tenant").setAttribute("hidden", "");
-    document.querySelector(".recent-request").setAttribute("hidden", "");
 
-    taskOrRequestParamRequestorId = "";
-    taskOrRequestNoDataId = "#no-data-task";
-    taskOrRequestListId = "#task-list";
-    taskOrRequestListContainer = ".active-task-list";
+    document.querySelector(".taskOrRequest-label").innerHTML = "Yuk, segera selesaikan pekerjaan berikut!";
 } else {
     document.querySelector(".menu-admin").setAttribute("hidden", "");
     document.querySelector(".chart").setAttribute("hidden", "");
-    document.querySelector(".active-task").setAttribute("hidden", "");
+    document.querySelector(".taskOrRequest-label").innerHTML = "Ini daftar layanan terbaru yang kamu ajukan";
 
-    taskOrRequestParamRequestorId = getCookie("id");;
-    taskOrRequestNoDataId = "#no-data-request";
-    taskOrRequestListId = "#request-list";
-    taskOrRequestListContainer = ".recent-request-list";
-
+    taskOrRequestParamRequestorId = getCookie("id");
+    
     APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
         let data = res.data;
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
@@ -68,6 +53,10 @@ if(isOwnerOrAdmin()) {
 
 APIGet(ServiceURL.Announcement.getAll).then(res => {
     let announcements = res.data.data;
+
+    document.querySelector("#carousel-offline").setAttribute("hidden", "");
+    document.querySelector("#carousel").removeAttribute("hidden");
+
     if(announcements.length == 0) {
         let announcementCarousel = document.createElement("div");
         announcementCarousel.classList.add("carousel-indicators", "align-items-end");
@@ -147,23 +136,24 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
 APIGet(ServiceURL.Task.getAll(taskOrRequestParamRequestorId)).then(res => {
     let data = res.data.data;
     if(data.length > 0) {
-        document.querySelector(taskOrRequestNoDataId).setAttribute("hidden", "");
+        document.querySelector("#no-taskOrRequest").setAttribute("hidden", "");
+        document.querySelector("#list-taskOrRequest").removeAttribute("hidden");
 
         let count = 0;
-        data.forEach(service => {
+        data.forEach(task => {
             if (count > 0)
-                document.querySelector(taskOrRequestListId).appendChild(document.createElement("hr"));
-            addRequest(service, taskOrRequestListId);
+                document.querySelector("#list-taskOrRequest").appendChild(document.createElement("hr"));
+
+            addRequest(task.user.roomName, task.task, "#list-taskOrRequest");
             count++;
         });
-    } else {
-        document.querySelector(taskOrRequestListContainer).setAttribute("hidden", "");
     }
 });
 
-function addRequest(taskObject, elementId) {
+function addRequest(room, taskObject, elementId) {
+    
     let requestList = document.querySelector(elementId);
-
+    
     let task = document.createElement("li");
     task.setAttribute("data", taskObject.id);
     task.classList.add("row", "d-flex", "align-items-center");
@@ -182,9 +172,9 @@ function addRequest(taskObject, elementId) {
                 <div class="small">Target: ${UNIXtimeConverter(taskObject.taskDate, "DD MMMM YYYY hh:mm")}</div>
             </div>
         </div>
-        <div class="col-3 p-2 pe-0 text-end">
+        <div class="col-sm-6 p-2 pe-0 text-end">
             <div><span class="${color} p-1 small fw-bold rounded" style="font-size: x-small;">${status}</span></div>
-            <div><span class="badge-green p-1 small fw-bold rounded" style="font-size: x-small;">Nama kamar</span></div>
+            <div><span class="badge-green p-1 small fw-bold rounded" style="font-size: x-small;">${room}</span></div>
         </div>`;
     });
     task.addEventListener("click", e => {
@@ -194,48 +184,6 @@ function addRequest(taskObject, elementId) {
     requestList.appendChild(task);
 }
 
-/*
-APIGet(ServiceURL.Announcement.getAll).then(res => {
-    let announcements = res.data.data;
-    if (announcements.length == 0) {
-        document.querySelector("#newest-announcement").remove();
-    } else {
-        document.querySelector("#no-announcement").remove();
-
-        let count = 0;
-        announcements.forEach(data => {
-
-            if (count < 5) {
-                let announcement = document.createElement("div");
-                let src;
-                let image = data.image;
-                if (image == null || image.trim() === "") src = "asset/no_image.png"
-                else src = `data:image/png;base64,${image}`;
-
-                announcement.classList.add("card-as-container", "image-container");
-                announcement.innerHTML = `
-                    <img src="${src}" alt="${data.title}">
-                    <figcaption>${data.title}</figcaption>
-                `;
-
-                announcement.addEventListener("click", e => {
-                    goTo("./announcementdetail.html?id=" + data.id);
-                });
-                document.querySelector("#newest-announcement").appendChild(announcement);
-
-                count++;
-            }
-        });
-
-        let viewmore = document.createElement("div");
-        viewmore.classList.add("d-flex", "align-items-center", "px-2");
-        viewmore.innerHTML = `
-            <div class="hover-text">
-                <span class="tooltip-text tooltip-top-title">Lihat lebih banyak</span>
-                <a href="./announcementmenu.html"><i class="fa-solid fa-circle-chevron-right fs-2 text-on-hover"></i></a>
-            </div>
-        `;
-        document.querySelector("#newest-announcement").appendChild(viewmore);
-    }
-});
-*/
+document.querySelector(".pay").addEventListener("click", e => {
+    goTo(PAGE.PAYMENT);
+})
