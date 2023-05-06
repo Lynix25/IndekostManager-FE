@@ -1,15 +1,33 @@
 import { APIGet } from "./api.js";
-import { ServiceURL } from "./config.js";
-import { goBack, goTo, statusToString, UNIXtimeConverter } from "./utils.js";
+import { PAGE, ServiceURL } from "./config.js";
+import { getUserID, goBack, goTo, isOwnerOrAdmin, statusToString, UNIXtimeConverter } from "./utils.js";
 
-APIGet(ServiceURL.Task.getAll('')).then(res => {
-    res.data.data.forEach(service => {
-        // console.log(service);
-        addRequest(service);
-    });
-})
+/* 
+    Pending: Search
+*/
+let paramGetTask = "";
+if(isOwnerOrAdmin()) {
+} else {
+    paramGetTask = getUserID();
+}
 
-function addRequest(taskObject) {
+APIGet(ServiceURL.Task.getAll(paramGetTask)).then(res => {
+    let data = res.data.data;
+    if(data.length > 0) {
+
+        document.querySelector(".no-data").setAttribute("hidden", "");
+        data.forEach(service => {
+            // console.log(service);
+            addRequest(service);
+        });
+    }
+});
+
+function addRequest(data) {
+
+    let taskObject = data.task;
+    let userObject = data.user;
+
     let requestList = document.querySelector("#request-list");
     let task = document.createElement("li");
     task.setAttribute("data", taskObject.id);
@@ -18,6 +36,11 @@ function addRequest(taskObject) {
     task.setAttribute("style", "cursor: pointer")
     let [color, status] = statusToString(taskObject.status);
     APIGet(ServiceURL.Service.getById(taskObject.serviceId)).then(res => {
+
+        let roomInfo = "";
+        if(isOwnerOrAdmin())
+            roomInfo = `<div><span class="badge-green p-1 small fw-bold rounded" style="font-size: x-small;">${userObject.roomName}</span></div>`;
+
         task.innerHTML = `
         <div class="row d-flex justify-content-between align-items-center">
             <div class="col-sm-6 p-0">
@@ -27,12 +50,13 @@ function addRequest(taskObject) {
                     <div class="small fw-bold col-sm-6 p-0 text-success">${UNIXtimeConverter(taskObject.createdDate, "DD MMMM YYYY hh:mm")}</div>
                 </div>
                 <div class="row">
-                    <div class="small col-sm-6 p-0">Harap selesai sebelum</div>
+                    <div class="small col-sm-6 p-0">Permintaan pengerjaan</div>
                     <div class="small fw-bold col-sm-6 p-0 text-danger">${UNIXtimeConverter(taskObject.taskDate, "DD MMMM YYYY hh:mm")}</div>
                 </div>
             </div>
-            <div class="col-sm-6 text-end p-0">
-                <div class="badge ${color} my-2">${status}</div>
+            <div class="col-sm-6 p-2 pe-0 text-end">
+                <div><span class="${color} p-1 small fw-bold rounded" style="font-size: x-small;">${status}</span></div>
+                ${roomInfo}
             </div>
         </div>
         <hr style="margin: .5rem 0px;">
@@ -51,7 +75,7 @@ function addRequest(taskObject) {
         // </div>
     })
     task.addEventListener("click", e => {
-        goTo('./taskdetail.html?id=' + e.currentTarget.getAttribute("data"));
+        goTo(PAGE.TASKDETAIL + e.currentTarget.getAttribute("data"));
     });
     
     requestList.appendChild(task);
