@@ -32,7 +32,7 @@ APIGet(ServiceURL.User.getUserSetting(getCookie("id"))).then(res => {
                 console.log(err);
             });
         } else {
-            unsubscribe();
+            unsubscribe(e.target.parentElement);
         }
     })
 })
@@ -90,7 +90,7 @@ function sendSubscriptionToServer(endpoint, key, auth, element) {
     });
 }
 
-function unsubscribe() {
+function unsubscribe(element) {
     var endpoint = null;
     navigator.serviceWorker.ready.then(reg => {
         reg.pushManager.getSubscription().then(function (subscription) {
@@ -101,22 +101,13 @@ function unsubscribe() {
         }).catch(function (error) {
             console.log('Error unsubscribing', error);
         }).then(function () {
-            removeSubscriptionFromServer();
+            removeSubscriptionFromServer(element);
         });
     })
 }
 
-function removeSubscriptionFromServer() {
-    APIDelete(ServiceURL.Notification.unsub(getCookie('id')).then(res => {
+function removeSubscriptionFromServer(element) {
+    APIDelete(ServiceURL.Notification.unsub(getCookie('id'))).then(res => {
         console.log(res);
-    }))
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: 'http://localhost:8123/test/unsubscribe',
-    //         data: { notificationEndPoint: endpoint },
-    //         success: function (response) {
-    //             console.log('Unsubscribed successfully! ' + JSON.stringify(response));
-    //         },
-    //         dataType: 'json'
-    //     });
+    });
 }
