@@ -56,6 +56,13 @@ export const Constant = {
         PEMBERSIHAN_KAMAR: "Pembersihan Kamar",
         PERBAIKAN_FASILITAS: "Perbaikan Fasilitas",
         LAYANAN_LAINNYA: "Layanan Lainnya"
+    },
+    roomStatus: {
+        KOSONG: "Kosong",
+        TERSEDIA: "Tersedia",
+        PENUH: "Penuh",
+        RESERVED: "Disewa Pribadi",
+        FAMILY_RESERVERED: "Disewa Pasutri"
     }
 }
 
@@ -74,6 +81,10 @@ export const PAGE = {
     SERVICEREQUEST: "./servicerequest.html",
     REQUESTHISTORY: "./requesthistory.html",
     TASKDETAIL: "./taskdetail.html?id=",
+
+    ROOMLIST: './roomlist.html',
+    ROOMDETAIL: './roomdetail.html?id=',
+    EDITROOM: './editroom.html?id=',
 
     PAYMENT: "./payment.html"
 };
@@ -132,19 +143,19 @@ export const ServiceURL = {
         getById: (id) => `/room/${id}`,
         create: "/room",
         update: (id) => `/room/${id}`,
-        delete: (id) => `/room/${id}`,
+        delete: (id, requester) => `/room/${id}?requester=${requester}`,
 
         // Room Details
         getDetail: (id) => `/room/${id}/details`,
         addDetail: (id) => `/room/${id}/details`,
-        editDetail: (id) => `/room/${id}/details`,
-        removeDetail: (id) => `/room/${id}/details`,
+        editDetail: (id) => `/room/${id}/details?edit=`,
+        removeDetail: (id, detailId, requester) => `/room/${id}/details?delete=${detailId}&requester=${requester}`,
 
         // Room Price Detail
         getPrice: (id) => `/room/${id}/prices`,
         addPrice: (id) => `/room/${id}/prices`,
-        editPrice: (id) => `/room/${id}/prices`,
-        removePrice: (id) => `/room/${id}/prices`
+        editPrice: (id) => `/room/${id}/prices?edit=`,
+        removePrice: (id, detailId, requester) => `/room/${id}/prices?delete=${detailId}&requester=${requester}`
     },
     Service: {
         getAll: "/service",

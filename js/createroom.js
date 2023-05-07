@@ -1,14 +1,26 @@
 import { APIPost } from "./api.js";
-import { ServiceURL } from "./config.js";
-import { addCustomEventListener, forEach, getFormValue, getFormValueV2, getTempID, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
+import { Toast } from "./component/toast.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
+import { addCustomEventListener, forEach, getFormValue, getFormValueV2, getTempID, getUserID, goBack, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 
 handleFormSubmited(e => {
-    let data = getFormValueV2(e.target);
-    APIPost(ServiceURL.Room.create, data).then(res => {
-        console.log(res);
-    })
+    let data = getFormValue(e.target);
+    APIPost(ServiceURL.Room.create, data, {
+        "requesterId" : getUserID()
+    }).then(response => {
+        Toast(Constant.httpStatus.SUCCESS, response.data.message);
+        setTimeout(function () { goTo(PAGE.ROOMDETAIL + response.data.data.room.id)}, Event.timeout);
+    }).catch(err => {
+        if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+        else Toast(Constant.httpStatus.ERROR, err.data.message);
+    });
 })
 
+document.querySelector("#back").addEventListener("click", e => {
+    goBack();
+});
+
+/*
 handleFormSubmited(e => {
     let data = getFormValue(e.target);
     let identifier = e.target.getAttribute("data");
@@ -87,6 +99,7 @@ handleFormSubmited(e => {
         })
     }, deleteDetail);
 }, "#addRoomPrice")
+*/
 
 // function* countGenerator() {
 //     let count = 1;

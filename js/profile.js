@@ -11,10 +11,22 @@ if(isOwnerOrAdmin()) {
     document.querySelector(".user-info").innerHTML = "<b>Biodata</b>";
     document.querySelector(".roomOrAddress-info").innerHTML = "<b>Info Kos</b>";
     document.querySelector(".about").setAttribute("hidden", "");
+
+    APIGet(ServiceURL.MasterData.getIndekos).then(res => {
+        let data = res.data;
+        document.querySelector(".kosName").innerHTML = `${data.name}`;
+        document.querySelector(".address").innerHTML = `${data.address} RT.${data.rt}/ RW.${data.rw}`;
+        document.querySelector(".sub-district").innerHTML = `${data.subdistrict}, ${data.district}`;
+        document.querySelector(".city-province-country").innerHTML = `${data.cityOrRegency}, ${data.province}, ${data.country}`;
+        document.querySelector(".postal-code").innerHTML = `Kode pos: ${data.postalCode}`;
+    });
 } else {
     document.querySelector(".user-info").innerHTML = "<b>Biodata</b>";
     document.querySelector(".roomOrAddress-info").innerHTML = "<b>Info Kamar</b>";
     document.querySelector(".report").setAttribute("hidden", "");
+    document.querySelector("#room-info").removeAttribute("hidden");
+    document.querySelector("#address-info").setAttribute("hidden", "");
+    document.querySelector(".title").innerHTML = "Data Kamar";
 }
 
 APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
@@ -123,13 +135,13 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     if(!isOwnerOrAdmin()) getRoomData(room.id);
 });
 
-addCustomEventListener("show-room-info", e => {
+addCustomEventListener("show-roomOrAddress-info", e => {
     document.getElementById("tenant-information").setAttribute("hidden", "");
-    document.getElementById("room-information").removeAttribute("hidden");
+    document.getElementById("roomOrAddress-information").removeAttribute("hidden");
 });
 
 addCustomEventListener("show-tenant-info", e => {
-    document.getElementById("room-information").setAttribute("hidden", "");
+    document.getElementById("roomOrAddress-information").setAttribute("hidden", "");
     document.getElementById("tenant-information").removeAttribute("hidden");
 });
 
@@ -140,30 +152,39 @@ addCustomEventListener("add-alternatif-contact", e => {
 function getRoomData(roomId) {
     APIGet(ServiceURL.Room.getById(roomId)).then(res => {
         let room = res.data.data.room;
+        let roomP = res.data.data;
         document.querySelector(".name").innerHTML = room.name;
-        document.querySelector(".price").innerHTML = `Rp${numberWithThousandsSeparators("1000000")}`;
         document.querySelector(".floor").innerHTML = `Lantai ${room.floor}`;
 
-        let status = (room.totalTenants >= room.quota ? 'Kamar penuh' : 'Tersedia');
-        document.querySelector(".status").classList.add(status === 'Kamar penuh' ? "text-danger" : "text-success");
-        status += ` (${res.data.data.totalTenants}/${room.quota})`;
-        document.querySelector(".status").innerHTML = status;
+        document.querySelector(".status").classList.add((roomP.status === Constant.roomStatus.KOSONG || roomP.status === Constant.roomStatus.TERSEDIA) ? "text-success" : "text-danger");
+        document.querySelector(".status").innerHTML = `Kamar ${roomP.status} (${roomP.totalTenants}/${room.quota})`;
+
+        let prices = room.prices;
+        document.querySelector(".price").innerHTML = `Rp${numberWithThousandsSeparators(prices[0].price)}`;
+        prices.forEach(price => {
+            if(roomP.totalTenants == price.capacity) {
+                document.querySelector(".price").innerHTML = `Rp${numberWithThousandsSeparators(price.price)}`;
+            }
+        });
 
         // Room Details
         let details = room.details;
         details.forEach(detail => {
-            let icon = detail.enable ? "fa-check-circle" : "fa-times-circle";
+            let countLainnya = 0;
             if (detail.masterRoomDetailCategory.name === Constant.roomDetailsCategory.KAMAR_TIDUR) {
                 let itemList = document.createElement("div");
                 itemList.classList.add("d-flex", "col", "align-items-center")
+
+                let description = "";
+                if(detail.description != null && detail.description !== "")
+                    description = `<div class="font-italic">${detail.description}</div>`;
 
                 itemList.innerHTML = `
                     <div class="w-100">
                         <div class="d-flex align-items-center">
                             <li class="w-100">${detail.name}</li>
-                            <i class="fa ${icon}"></i>
                         </div>
-                        <div class="font-italic">This is description</div>
+                        ${description}
                     </div>
                 `;
                 document.querySelector("#kamar-tidur").appendChild(itemList);
@@ -172,13 +193,16 @@ function getRoomData(roomId) {
                 let itemList = document.createElement("div");
                 itemList.classList.add("d-flex", "col", "align-items-center")
 
+                let description = "";
+                if(detail.description != null && detail.description !== "")
+                    description = `<div class="font-italic">${detail.description}</div>`;
+
                 itemList.innerHTML = `
                     <div class="w-100">
                         <div class="d-flex align-items-center">
                             <li class="w-100">${detail.name}</li>
-                            <i class="fa ${icon}"></i>
                         </div>
-                        <div class="font-italic">This is description</div>
+                        ${description}
                     </div>
                 `;
                 document.querySelector("#kamar-mandi").appendChild(itemList);
@@ -187,13 +211,16 @@ function getRoomData(roomId) {
                 let itemList = document.createElement("div");
                 itemList.classList.add("d-flex", "col", "align-items-center")
 
+                let description = "";
+                if(detail.description != null && detail.description !== "")
+                    description = `<div class="font-italic">${detail.description}</div>`;
+
                 itemList.innerHTML = `
                     <div class="w-100">
                         <div class="d-flex align-items-center">
                             <li class="w-100">${detail.name}</li>
-                            <i class="fa ${icon}"></i>
                         </div>
-                        <div class="font-italic">This is description</div>
+                        ${description}
                     </div>
                 `;
                 document.querySelector("#furniture").appendChild(itemList);
@@ -202,28 +229,38 @@ function getRoomData(roomId) {
                 let itemList = document.createElement("div");
                 itemList.classList.add("d-flex", "col", "align-items-center")
 
-                itemList.innerHTML = `
-                    <div class="w-100">
-                        <div class="d-flex align-items-center">
-                            <li class="w-100">${detail.name}</li>
-                            <i class="fa ${icon}"></i>
-                        </div>
-                        <div class="font-italic">This is description</div>
-                    </div>
-                `;
-                document.querySelector("#alat-elektronik").appendChild(itemList);
-            }
-            else {
-                let itemList = document.createElement("div");
-                itemList.classList.add("d-flex", "col", "align-items-center")
+                let description = "";
+                if(detail.description != null && detail.description !== "")
+                    description = `<div class="font-italic">${detail.description}</div>`;
 
                 itemList.innerHTML = `
                     <div class="w-100">
                         <div class="d-flex align-items-center">
                             <li class="w-100">${detail.name}</li>
-                            <i class="fa ${icon}"></i>
                         </div>
-                        <div class="font-italic">This is description</div>
+                        ${description}
+                    </div>
+                `;
+                document.querySelector("#alat-elektronik").appendChild(itemList);
+            }
+            else {
+                countLainnya++;
+                if(countLainnya == 1)
+                    document.querySelector("#no-item").setAttribute("hidden", "");
+
+                let itemList = document.createElement("div");
+                itemList.classList.add("d-flex", "col", "align-items-center")
+
+                let description = "";
+                if(detail.description != null && detail.description !== "")
+                    description = `<div class="font-italic">${detail.description}</div>`;
+
+                itemList.innerHTML = `
+                    <div class="w-100">
+                        <div class="d-flex align-items-center">
+                            <li class="w-100">${detail.name}</li>
+                        </div>
+                        ${description}
                     </div>
                 `;
                 document.querySelector("#fasilitas-lain").appendChild(itemList);

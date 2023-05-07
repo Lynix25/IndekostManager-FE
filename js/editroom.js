@@ -1,12 +1,55 @@
-import { APIGet } from "./api.js";
-import { getParamOnURL, numberWithThousandsSeparators } from "./utils.js";
+import { APIGet, APIPut } from "./api.js";
+import { Toast } from "./component/toast.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
+import { getFormValue, getParamOnURL, getUpdateFormValue, getUserID, goBack, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 
-APIGet("/room/" + getParamOnURL("id")).then(res => {
-    let room = res.data.data;
-
+APIGet(ServiceURL.Room.getById(getParamOnURL("id"))).then(res => {
+    let room = res.data.data.room;
     reloadData(room);
 })
 
+function reloadData(room) {
+    document.querySelector("#name").value = room.name;
+    document.querySelector("#floor").value = room.floor;
+    document.querySelector("#quota").value = room.quota;
+
+    setSelected(document.querySelector("#allotment"), room.allotment);
+    
+    document.querySelector("#description").value = room.description;
+    document.querySelector("#description").innerHTML = room.description;
+}
+
+function setSelected(listOption, selectedValue) {
+    for(let i=0; i < listOption.options.length; i++) {
+        if(listOption.options[i].text === selectedValue) {
+            listOption.options[i].selected = true;
+        }
+    }
+}
+
+document.addEventListener("change", e => {
+    e.target.setAttribute("changed", "");
+})
+
+handleFormSubmited(e => {
+    let data = getFormValue(e.target);
+    APIPut(ServiceURL.Room.update(getParamOnURL("id")), data, {
+        "requesterId" : getUserID()
+    }).then(response => {
+        reloadData(response.data.data.room);
+        Toast(Constant.httpStatus.SUCCESS, response.data.message);
+        setTimeout(function () { goTo(PAGE.ROOMDETAIL + getParamOnURL('id'))}, Event.timeout);
+    }).catch(err => {
+        if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+        else Toast(Constant.httpStatus.ERROR, err.data.message);
+    });
+});
+
+document.querySelector("#back").addEventListener("click", e => {
+    goBack();
+});
+
+/*
 function reloadData(room) {
     document.getElementById("name").value = room.name;
     document.getElementById("floor").value = room.floor;
@@ -95,3 +138,4 @@ handleFormSubmited(e => {
         console.log(err);
     })
 })
+*/

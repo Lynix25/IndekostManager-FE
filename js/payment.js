@@ -1,7 +1,7 @@
 import { APIGet, APIPost } from "./api.js";
 import { ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { UNIXtimeConverter, filter, getFormValueV2, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
+import { UNIXtimeConverter, filter, getFormValueV2, goBack, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 
 APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
     let data = res.data;
