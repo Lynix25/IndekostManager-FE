@@ -14,27 +14,51 @@
 
 <body>
     <form class="frame card p-4 mx-auto my-4" action="" method="post">
-        <h5 class="text-center">Tambahkan Kamar</h5>
+        <div class="page-title my-4">
+            <div class="hover-text">
+                <span class="tooltip-text tooltip-top-title">Kembali</span>
+                <span id="back"><i class="fa fa-chevron-left"></i></span>
+            </div>
+            <h5 class="text-center m-0 w-100">Tambah Data Kamar</h5>
+        </div>
         <hr />
-        <div>
-            <label class="form-label" for="name">Nama Kamar</label>
-            <input class="form-control" type="text" name="name" id="name">
+        <div class="card-body">
+            <div class="mb-2">
+                <label class="form-label" for="name">Nama Kamar</label>
+                <input class="form-control form-control-lg" type="text" name="name" id="name" placeholder="Nama kamar" required>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="floor">Lantai</label>
+                <input class="form-control form-control-lg" type="number" name="floor" id="floor" placeholder="Lokasi lantai kamar" required>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="quota">Kuota</label>
+                <input class="form-control form-control-lg" type="number" name="quota" placeholder="Jumlah max. penyewa" id="quota" required>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="allotment">Alokasi Kamar</label>
+                <select id="allotment" name="allotment" class="form-select" required>
+                    <option>Putra</option>
+                    <option>Putri</option>
+                    <option>Pasutri</option>
+                </select>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="description">Deskripsi</label>
+                <textarea type="text" class="form-control" name="description" id="description" placeholder="Keterangan lain"></textarea>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="price">Harga</label>
+                <div class="input-group mb-1">
+                    <span class="input-group-text">Rp</span>
+                    <input class="form-control form-control-lg" type="number" name="price" placeholder="Harga kamar untuk per orang" id="price" required>
+                    <span class="input-group-text">/ Orang</span>
+                </div>
+                <small class="text-danger"><span class="fw-bold fs- text-danger">* Catatan: </span> Untuk pasutri dihitung 1 keluarga</small>
+            </div>
         </div>
-        <div>
-            <label class="form-label" for="allotment">Kamar Untuk</label>
-            <input class="form-control" type="text" name="allotment" id="allotment">
-        </div>
-        <div>
-            <label class="form-label" for="quota">Kuota</label>
-            <input class="form-control" type="number" name="quota" id="quota">
-        </div>
-        <div>
-            <label class="form-label" for="floor">Lantai</label>
-            <input class="form-control" type="text" name="floor" id="floor">
-        </div>
-        <div>
-            <label class="form-label" for="description">Deskripsi</label>
-            <textarea class="form-control" type="text" name="description" id="description"></textarea>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
         <!-- <div>
             <label class="form-label" for="quota">Kuota</label>
@@ -42,16 +66,16 @@
             <button type="button" class="btn">+</button>
         </div> -->
 
-        <div class="mt-2">
+        <!-- <div class="mt-2"> -->
             <!-- Button trigger room price modal -->
-            <button type="add-price-detail" class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#addRoomPrice">+</button>
+            <!-- <button type="add-price-detail" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#addRoomPrice">+</button> -->
             <!-- Button trigger facility modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                 data-bs-target="#addFacility">+</button>
-        </div>
+        </div> -->
 
-        <table class="table price-details">
+        <!-- <table class="table price-details">
             <thead>
                 <h6 class="text-center">Detail Harga</h6>
                 <hr />
@@ -62,7 +86,7 @@
                     <th scope="col">Delete</th>
                 </tr>
             </thead>
-            <tbody group-name="prices">
+            <tbody group-name="prices"> -->
                 <!-- <tr>
                     <td>
                         <div input name="capacity" value=1>1 Orang</div>
@@ -91,9 +115,9 @@
                         <button class="btn" type="button"><i class="fa fa-trash"></i></button>
                     </td>
                 </tr> -->
-            </tbody>
+            <!-- </tbody>
         </table>
-        <ul group-name="details">
+        <ul group-name="details"> -->
             <!-- <li class="d-flex">
                 <div name="category">Spesifikasi</div>
                 <div name="name">Tidak termasuk listrik</div>
@@ -107,14 +131,14 @@
                 <div name="category">Fasilitas kamar mandi</div>
                 <div name="name">Shower</div>
             </li> -->
-        </ul>
+        <!-- </ul>
         <div>
             <button class="btn btn-primary">Buat</button>
         </div>
-    </form>
+    </form> -->
 
     <!-- Room Price Modal -->
-    <form id="addRoomPrice" action="" method="post" class="modal fade" tabindex="-1" aria-labelledby="addRoomPriceLabel"
+    <!-- <form id="addRoomPrice" action="" method="post" class="modal fade" tabindex="-1" aria-labelledby="addRoomPriceLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -138,10 +162,10 @@
                 </div>
             </div>
         </div>
-    </form>
+    </form> -->
 
     <!-- Update Room Price Modal -->
-    <form id="updateRoomPrice" action="" method="post" class="modal fade" tabindex="-1" aria-labelledby="updateRoomPriceLabel"
+    <!-- <form id="updateRoomPrice" action="" method="post" class="modal fade" tabindex="-1" aria-labelledby="updateRoomPriceLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -165,10 +189,10 @@
                 </div>
             </div>
         </div>
-    </form>
+    </form> -->
 
     <!-- Room Facility Modal -->
-    <form id="addFacility" action="" method="post" class="modal fade" tabindex="-1"
+    <!-- <form id="addFacility" action="" method="post" class="modal fade" tabindex="-1"
         aria-labelledby="addRoomFacilityLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -199,8 +223,9 @@
                 </div>
             </div>
         </div>
-    </form>
+    </form> -->
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
-
 </html>
