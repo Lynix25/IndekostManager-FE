@@ -337,6 +337,21 @@ export function convertImage64ToSrc(imageInBase64, imageExt = "png") {
     return `data:image/${imageExt};base64,` + imageInBase64;
 }
 
+export function urlB64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (var i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
 export function getCurrentPath() {
     let currentPath = window.location.pathname;
     return currentPath;

@@ -1,13 +1,8 @@
-let CACHE_NAME = "my-site-cache-v1"
-let urlsToCache = [
-    "/",
-    "/login.html",
-    "/js/main.js",
-    "/asset/home_image.jpeg"
-]
+let CACHE_NAME = "indkost-cache-v1";
+let urlsToCache = [];
 
 self.addEventListener('install', event => {
-    console.log('Install triggered')
+    console.log('Service worker install triggered')
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
             console.log(`Install serviceworker ${CACHE_NAME}, Opened cache and files cache in url ` + urlsToCache);
@@ -19,13 +14,13 @@ self.addEventListener('install', event => {
 })
 
 self.addEventListener('activate', event => {
-    console.log('Activate triggered')
+    console.log('Service worker activate triggered')
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(cacheNames.filter(cacheName => {
                 return cacheName != CACHE_NAME;
             }).map(cacheName => {
-                console.log(cacheName + " cahce deleted")
+                console.log(cacheName + " cache deleted")
                 return caches.delete(cacheName);
             }))
         })
@@ -33,42 +28,55 @@ self.addEventListener('activate', event => {
 })
 
 self.addEventListener("fetch", event => {
-    console.log("Fetch triggered")
-    let request = event.request
-    let url = new URL(request.url)
+    console.log("Service worker fetch triggered")
 
-    console.log(location.origin, url.href)
-    if (url.origin === location.origin) {
-        event.waitUntil(
-            console.log(caches, "caches in fetch")
-        )
-        event.respondWith(
-            caches.match(request).then(response => {
-                return response || fetch(request);
-            })
-        )
-    }
-    // else {
-    //     event.respondWith(
-    //         caches.open('new-cache').then(cache => {
-    //             return fetch(request).then(liveResponse => {
-    //                 cache.put(request, liveResponse.clone())
-    //                 return liveResponse;
-    //             })
-    //         })
-    //     )
-    // }
-
-    // event.respondWith(
-    //     caches.match(event.request).then(response => {
-    //         if (response) {
-    //             // console.log(event.request)
-    //             // console.log("Get event request above from Cache")
-    //             return response
-    //         }
-    //         // console.log(event.request)
-    //         // console.log("Get event request above from Network")
-    //         return fetch(event.request);
-    //     })
-    // )
+    event.respondWith(
+        caches.match(event.request).then(response => {
+            return fetch(event.request).then(res => {
+                console.log(`Get ${event.request.url} from Network`)
+                return res;
+            }).catch(err => {
+                if (response) {
+                    console.log(`Get ${event.request.url} from Cache`)
+                    return response
+                } else {
+                    console.log(`Fail to fetch ${event.request.url}`);
+                }
+            });
+        })
+    )
 })
+
+self.addEventListener('push', function (event) {
+    console.log("Service worker recive push triggered");
+    console.log(event);
+    if (!(self.Notification && self.Notification.permission === 'granted')) {
+        return;
+    }
+
+    var response = {};
+    if (event.data) response = event.data.json();
+
+    console.log(response);
+    response.icon = "asset/image/Logo.png";
+    response.badge = "asset/image/Logo.png";
+
+    self.clickTarget = response.redirect;
+    // {
+    //     body: message,
+    //     icon: icon,
+    //     badge: icon,
+    //      data : {hello : "world"}
+    // }
+    event.waitUntil(self.registration.showNotification(response.title, response));
+});
+
+self.addEventListener('notificationclick', function (event) {
+    console.log('Service Worker Notification click Received.');
+
+    event.notification.close();
+
+    if (clients.openWindow) {
+        event.waitUntil(clients.openWindow(self.clickTarget));
+    }
+});

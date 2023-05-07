@@ -1,7 +1,7 @@
 import { APIGet, APIPost } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL, TOKENS } from "./config.js";
-import { forEach, getFormValue, goBack, goTo, handleFormSubmited } from "./utils.js";
+import { addCustomEventListener, forEach, getFormValue, goBack, goTo, handleFormSubmited, urlB64ToUint8Array } from "./utils.js";
 import { getCookie, setCookie } from "./cookiemanagement.js";
 
 document.querySelector("#password-show-hide").addEventListener("click", e => {
@@ -10,9 +10,9 @@ document.querySelector("#password-show-hide").addEventListener("click", e => {
 
 if (getCookie(TOKENS.REMEMBERME)) {
     let data = {
-        username : "rememberme",
-        password : "rememberme",
-        token : getCookie(TOKENS.REMEMBERME)
+        username: "rememberme",
+        password: "rememberme",
+        token: getCookie(TOKENS.REMEMBERME)
     }
     APIPost(ServiceURL.User.login, data).then(response => {
         if (response.status == 200) {
