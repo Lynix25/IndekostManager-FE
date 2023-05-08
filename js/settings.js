@@ -2,7 +2,7 @@ import { APIDelete, APIGet, APIPost, APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { getFormValueV2, urlB64ToUint8Array } from "./utils.js";
+import { addCustomEventListener, getFormValueV2, urlB64ToUint8Array } from "./utils.js";
 
 APIGet(ServiceURL.User.getUserSetting(getCookie("id"))).then(res => {
     let userSettings = res.data.data;
@@ -36,6 +36,23 @@ APIGet(ServiceURL.User.getUserSetting(getCookie("id"))).then(res => {
         }
     })
 })
+
+addCustomEventListener("remove-serviceworker", e => {
+    unregisterServiceWorker();
+})
+
+function unregisterServiceWorker() {
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistrations()
+            .then(function (registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+    }
+    
+    unsubscribe();
+}
 
 document.querySelector("form").addEventListener("change", e => {
     let data = getFormValueV2(e.currentTarget);
@@ -90,7 +107,7 @@ function sendSubscriptionToServer(endpoint, key, auth, element) {
     });
 }
 
-function unsubscribe(element) {
+function unsubscribe() {
     var endpoint = null;
     navigator.serviceWorker.ready.then(reg => {
         reg.pushManager.getSubscription().then(function (subscription) {
@@ -101,12 +118,12 @@ function unsubscribe(element) {
         }).catch(function (error) {
             console.log('Error unsubscribing', error);
         }).then(function () {
-            removeSubscriptionFromServer(element);
+            removeSubscriptionFromServer();
         });
     })
 }
 
-function removeSubscriptionFromServer(element) {
+function removeSubscriptionFromServer() {
     APIDelete(ServiceURL.Notification.unsub(getCookie('id'))).then(res => {
         console.log(res);
     });
