@@ -1,11 +1,9 @@
 import { APIGet } from "./api.js";
-import { Toast } from "./component/toast.js";
-import { Constant, PAGE, ServiceURL } from "./config.js";
-import { convertDateToMillis, createElementFromString, filter, forEach, getCurrentWeekList, getDateRange, goBack, goTo, groupingMillisecondsToSameDate, isInSameDay, map, map2, UNIXtimeConverter, UNIXtimeRemoveTime } from "./utils.js";
+import { ServiceURL } from "./config.js";
+import { UNIXtimeConverter, UNIXtimeRemoveTime, convertDateToMillis, createElementFromString, forEach, getDateRange, goBack, map2 } from "./utils.js";
 
 APIGet(ServiceURL.Task.getAll('')).then(res => {
     let data = res.data.data;
-    let grouping = groupingMillisecondsToSameDate(data, "taskDate", "DDD, D MMM YYYY");
 
     let groupingTask = {};
     forEach(data, v => {
@@ -18,7 +16,7 @@ APIGet(ServiceURL.Task.getAll('')).then(res => {
     document.addEventListener("change", e => {
         let startDateMillis = convertDateToMillis(document.querySelector("#startDate").value);
         let endDateMillis = convertDateToMillis(document.querySelector("#endDate").value);
-        if(e.target.getAttribute("name") === "startDate"){
+        if (e.target.getAttribute("name") === "startDate") {
             document.querySelector("#endDate").setAttribute("min", e.target.value);
         }
         showAgenda(groupingTask, startDateMillis, endDateMillis);
@@ -36,8 +34,8 @@ function showAgenda(data, startDateMillis, endDateMillis) {
             </div>
             <ul class="task-list">
                 ${map2(data[_], v =>
-            v ?
-                `<li class="task-card border rounded alert alert-info m-0 mb-2 p-3" data="${"id"}">
+                    v ?
+                    `<li class="task-card border rounded alert alert-info m-0 mb-2 p-3" data="${"id"}">
                         <div>
                             <div class="d-flex justify-content-between row">
                                 <div class="title col-sm-6 p-0">${v.task.service.serviceName}: ${v.task.service.variant}</div>
@@ -58,12 +56,12 @@ function showAgenda(data, startDateMillis, endDateMillis) {
                             </div>
                         </div>
                     </li>`:
-                `<li class="task-card alert">
+                    `<li class="task-card alert">
                         <div class="d-flex justify-content-between">
                             <div class="title small">Tidak ada agenda</div>
                         </div>
                     </li>`
-        )}
+                )}
             </ul>
         </li>`
         document.querySelector(".agenda").appendChild(createElementFromString(taskElement));

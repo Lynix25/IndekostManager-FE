@@ -158,7 +158,7 @@ function addRequest(room, taskObject, elementId) {
     task.setAttribute("data", taskObject.id);
     task.classList.add("row", "d-flex", "align-items-center");
     task.setAttribute("style", "cursor: pointer");
-
+    
     let [color, status] = statusToString(taskObject.status);
     APIGet(ServiceURL.Service.getById(taskObject.service.id)).then(res => {
 
