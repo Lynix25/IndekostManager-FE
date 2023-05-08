@@ -160,7 +160,7 @@ function addRequest(room, taskObject, elementId) {
     task.setAttribute("style", "cursor: pointer");
 
     let [color, status] = statusToString(taskObject.status);
-    APIGet(ServiceURL.Service.getById(taskObject.serviceId)).then(res => {
+    APIGet(ServiceURL.Service.getById(taskObject.service.id)).then(res => {
 
         task.innerHTML = `
         <div class="col p-0 d-flex align-items-center">

@@ -57,11 +57,11 @@ export function APIGet(resource) {
         let intervalId = setInterval(() => {
             try {
                 axios.get(END_POINT + resource, headers()).then(result => {
-                    clearInterval(intervalId);
                     resolve(result);
                 }).catch(result => {
                     reject(result.response);
                 })
+                clearInterval(intervalId);
             } catch { }
         }, 50);
     })
