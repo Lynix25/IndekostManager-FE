@@ -1,7 +1,7 @@
 import { APIGet, APIPost } from "./api.js";
 import { ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { addCustomEventListener, filter, forEach, getFormValue, getFormValueV2, getUpdateFormValue, goBack, handleFormSubmited, listenChangedInput, numberWithThousandsSeparators, UNIXtimeConverter } from "./utils.js";
+import { UNIXtimeConverter, filter, getFormValueV2, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 
 APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
     let data = res.data;
@@ -70,9 +70,11 @@ APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
 })
 
 handleFormSubmited(e => {
-    let data = getFormValueV2(e.target);
+    let data = filter(getFormValueV2(e.target), (k, v) =>
+        v === true ? k : undefined
+    );
 
-    APIPost(ServiceURL.Payment.create + "?amount=10001").then(res => {
+    APIPost(ServiceURL.Transaction.pay, { "serviceItemIds": data }).then(res => {
         window.snap.pay(res.data, {
             onSuccess: function (result) { alert('success'); console.log(result); },
             onPending: function (result) { alert('pending'); console.log(result); },
@@ -80,10 +82,6 @@ handleFormSubmited(e => {
             onClose: function () { alert('customer closed the popup without finishing the payment'); }
         });
     })
-    
-    // console.log(filter(data, (k, v) =>
-    //     v === true ? k : undefined
-    // ));
 });
 
 document.querySelector("#back").addEventListener("click", e => {

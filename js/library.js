@@ -20,6 +20,11 @@ styleCSS.setAttribute("rel", "stylesheet");
 styleCSS.setAttribute("href", "css/style.css");
 document.head.appendChild(styleCSS);
 
+let navbarCss = document.createElement("link");
+navbarCss.setAttribute("rel", "stylesheet");
+navbarCss.setAttribute("href", "css/navbar.css");
+document.head.appendChild(navbarCss);
+
 let toastCss = document.createElement("link");
 toastCss.setAttribute("rel", "stylesheet");
 toastCss.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css");

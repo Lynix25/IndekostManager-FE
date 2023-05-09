@@ -8,6 +8,7 @@ import { addCustomEventListener, getParamOnURL, getUserID, goTo, numberWithThous
 
 APIGet(ServiceURL.Room.getById(getParamOnURL("id"))).then(res => {
     let room = res.data.data;
+    console.log(room)
     document.querySelector(".name").innerHTML = room.room.name;
     document.querySelector(".allotment").innerHTML = room.room.allotment;
     document.querySelector(".floor").innerHTML = 'Lantai ' + room.room.floor;

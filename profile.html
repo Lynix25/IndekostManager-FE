@@ -15,10 +15,12 @@
         .input-group-text {
             min-width: 100px;
         }
-        .font-italic{
+
+        .font-italic {
             font-style: italic;
             font-size: smaller;
         }
+
         h7 {
             font-weight: bolder;
         }
@@ -47,10 +49,14 @@
                 <a class="mx-auto my-2" href="/editprofile.html">Ubah Profil</a>
                 <div>
                     <hr class="my-2">
-                    <a href="/changepassword.html" class="d-flex justify-content-between align-items-center">Ubah Password
+                    <a href="/changepassword.html" class="d-flex justify-content-between align-items-center">Ubah
+                        Password
                         <i class="fa-solid fa-angle-right"></i></a>
                     <hr class="my-2">
                     <a href="/settings.html" class="d-flex justify-content-between align-items-center">Pengaturan <i
+                            class="fa-solid fa-angle-right"></i></a>
+                    <hr class="my-2">
+                    <a href="/ktp.html" class="d-flex justify-content-between align-items-center">Kartu Identitas <i
                             class="fa-solid fa-angle-right"></i></a>
                     <hr class="my-2">
                     <a class="d-flex justify-content-between align-items-center">Bantuan <i
@@ -81,7 +87,7 @@
                     <div class="p-3 rounded-top title" style="background-color: var(--primary-color);">
                         Data Diri
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-6">
                         <div class="m-1">
                             <div class="title">Email</div>
                             <div id="email">email</div>
@@ -99,7 +105,7 @@
                             <div id="gender">gender</div>
                         </div>
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-6">
                         <div class="m-1">
                             <div class="title">Status</div>
                             <div id="status">status</div>
@@ -111,11 +117,6 @@
                         <div class="m-1">
                             <div class="title">Keterangan Lain</div>
                             <div id="description">description</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="m-1" id="identity-image">
-                            <div class="title">Kartu Identitas</div>
                         </div>
                     </div>
                 </div>
@@ -189,10 +190,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="input-group px-1">
-                        <lable class="input-group-text input-group-text-lable">Deskripsi</lable>
-                        <div class="description form-control"></div>
-                    </div> -->
                     <hr>
                     <h7 class="m-0 mt-2">Spesifikasi dan Fasilitas Kamar</h7>
                     <div class="d-flex flex-wrap row align-items-start my-2 gap-3" id="category-group1">
@@ -307,4 +304,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
+
 </html>

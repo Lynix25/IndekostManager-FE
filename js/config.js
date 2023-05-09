@@ -1,5 +1,6 @@
 export const END_POINT = "http://localhost:8123";
 export const SECRET = "indekossecret";
+export const SERVICE_WORKER = "/serviceworker.js"
 
 // ====================================== CONSTANT =======================================
 export const Event = {
@@ -178,5 +179,11 @@ export const ServiceURL = {
     },
     Transaction: {
         unpaid: (id) => `/transaction/unpaid/${id}`,
+        pay: "/transaction"
+    },
+    Notification:{
+        getKey: "/notification/key",
+        subs: "/notification/subscribe",
+        unsub: (id) => `/notification/${id}`
     }
 }

@@ -123,7 +123,7 @@ if (!noNavbarPage.includes(currentPath)) {
                 </div>
             </div>
         </nav>` :
-        `<nav class="row card fixed-bottom rounded border-0 mt-4">
+        `<nav class="row bottom-navbar-card fixed-bottom rounded border-0 mt-4">
             <a href="./announcementmenu.html" class="menu hover-text">
                 <span class="tooltip-text tooltip-top">Kelola Pengumuman</span>
                 <i class="fa-solid fa-newspaper"></i>

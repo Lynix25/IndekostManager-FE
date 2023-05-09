@@ -1,6 +1,6 @@
 import { APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { Constant, Event, PAGE, ServiceURL } from "./config.js";
+import { Constant, Event, PAGE, SERVICE_WORKER, ServiceURL } from "./config.js";
 import { deleteCookie, getCookie } from "./cookiemanagement.js";
 import { goTo } from "./utils.js";
 
@@ -34,61 +34,37 @@ export function logoutWithoutToast() {
     });
 }
 
-// window.addEventListener('load', (e) => {
-    // console.log(form.elementes[0]);
-    // document.querySelector('#login_form').addEventListener('submit', (e) => {
-        // const formData = new FormData(e.target);
-        // console.log(e)
-        // Now you can use formData.get('foo'), for example.
-        // Don't forget e.preventDefault() if you want to stop normal form .submission
-    //     e.preventDefault()
-    //   });
-// })
+registerServiceWorker()
 
-// function login(e) {
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register(SERVICE_WORKER).then(registration => {
+            console.log("Service worker registration successful with scope : ", registration.scope);
+            if (registration.installing) {
+                console.log('Service worker installing');
+            } else if (registration.waiting) {
+                console.log('Service worker installed');
+            } else if (registration.active) {
+                console.log('Service worker active');
+            }
+        }).catch(err => {
+            console.log("Service worker registration failed: ", err);
+        });
+    } else {
+        console.log('Service workers aren\'t supported in this browser.');
+    }
+}
 
-// fetch("https://my-json-server.typicode.com/Lynix25/pwaapi/modul").then(res => res.json()).then(res => {
-//     console.log(res);
-// })
-
-//     console.log(e);
-    // axios.post(END_POINT+"account/login", {
-    //     "username": "kamar1",
-    //     "password": "kamar1"
-    // }).then(res => {
-    //     if(res.status == 200){
-    //         console.log(res.data);
-    //         goTo('./index.html');
-    //     }
-    // })
-
-    // axios.get("http://localhost:8080/user/all").then(res => {
-    //     console.log(res);
-    // })
-
-
-    // fetch(API, {
-    //     method: 'GET',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: {
-    //         "username": "kamar1",
-    //         "password": "kamar1"
-    //     }
-    // }).then(res => res.json).then(res => console.log(res))
-// }
-
-// console.log("unregis serviceworker")
-// if ("serviceWorker" in navigator) {
-//     navigator.serviceWorker.getRegistrations()
-//         .then(function (registrations) {
-//             for (let registration of registrations) {
-//                 registration.unregister();
-//             }
-//         });
-// }
-
+function unregisterServiceWorker() {
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistrations()
+            .then(function (registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+    }
+}
 
 // Notification.requestPermission().then(result => {
 //     if (result === "granted") {
