@@ -45,6 +45,7 @@ if(isOwnerOrAdmin()) {
     APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
         let data = res.data;
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
+        console.log("Max due date", data.maxDueDate);
         document.querySelector(".due-date").innerHTML = UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY");
     }).catch(err => {
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(0);
@@ -141,10 +142,11 @@ APIGet(ServiceURL.Task.getAll(taskOrRequestParamRequestorId)).then(res => {
 
         let count = 0;
         data.forEach(task => {
-            if (count > 0)
+            console.log(task);
+            if (count > 0 && task.task.status != "Diterima")
                 document.querySelector("#list-taskOrRequest").appendChild(document.createElement("hr"));
 
-            addRequest(task.user.roomName, task.task, "#list-taskOrRequest");
+            if (task.task.status != "Diterima")addRequest(task.user.roomName, task.task, "#list-taskOrRequest");
             count++;
         });
     }
