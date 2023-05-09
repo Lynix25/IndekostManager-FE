@@ -66,8 +66,8 @@ self.addEventListener('push', function (event) {
     if (event.data) response = event.data.json();
 
     debug(response);
-    response.icon = "asset/image/Logo.png";
-    response.badge = "asset/image/Logo.png";
+    response.icon = "asset/image/Logo-simple.png";
+    response.badge = "asset/image/Logo-simple.png";
 
     self.clickTarget = response.redirect;
     
