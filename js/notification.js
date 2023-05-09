@@ -1,0 +1,43 @@
+import { APIGet } from "./api.js";
+import { ServiceURL } from "./config.js";
+import { getCookie } from "./cookiemanagement.js";
+import { UNIXtimeConverter, createElementFromString, goBack } from "./utils.js";
+
+APIGet(ServiceURL.Notification.getAll(getCookie("id"))).then(res => {
+    let notifications = res.data.data;
+    
+    notifications.forEach(notification => {
+        let notificationElement = `
+        <li class="border rounded d-flex p-2 mb-2">
+            <div class="d-flex justify-content-center align-items-center" style="margin-left: 2%; margin-right: 2%;">
+                <i class="fad fa-bullhorn fs-3"></i>
+            </div>
+            <div style="overflow: auto; width: 100%;">
+                <div class="d-flex justify-content-between" style="font-size: 0.8rem;">
+                    <div>
+                        ${notification.category}
+                    </div>
+                    <div>
+                        ${UNIXtimeConverter(notification.createdDate, "D/M/YYYY")}
+                    </div>
+                </div>
+                <div>
+                    <div class="title fs-5">
+                        ${notification.title}
+                    </div>
+                    <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                        ${notification.body}
+                    </div>
+                </div>
+            </div>
+        </li>`
+
+        
+        document.querySelector(".notificationList").appendChild(createElementFromString(notificationElement));
+    });
+
+})
+
+document.querySelector("#back").addEventListener("click", e => {
+    goBack();
+});

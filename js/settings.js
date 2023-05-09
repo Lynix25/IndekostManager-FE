@@ -52,6 +52,7 @@ function unregisterServiceWorker() {
     }
     
     unsubscribe();
+    location.reload();
 }
 
 document.querySelector("form").addEventListener("change", e => {
