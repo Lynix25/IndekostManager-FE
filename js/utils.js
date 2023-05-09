@@ -390,6 +390,8 @@ export function statusToString(statusCode) {
     if (statusCode === Constant.serviceRequestStatus.COMPLETED) {
         return ["badge-green", Constant.serviceRequestStatus.COMPLETED];
     }
+
+    return ["badge-grey", `Invalid Status Code : ${statusCode}`]
 }
 
 export function getUserID() {

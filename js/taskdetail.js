@@ -32,7 +32,7 @@ function reloadData(dataTask) {
     document.querySelector("#notes").setAttribute("value", data.notes);
     document.querySelector("#summary").innerHTML = data.summary;
     
-    APIGet(ServiceURL.Service.getById(data.serviceId)).then(res => {
+    APIGet(ServiceURL.Service.getById(data.service.id)).then(res => {
 
         let serviceName = res.data.serviceName;
         if(serviceName === Constant.serviceCategory.LAUNDRY) {
