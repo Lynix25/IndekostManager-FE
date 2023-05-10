@@ -1,8 +1,6 @@
-import { forEach, getCurrentPath, goTo } from "./utils.js";
-import { getCookie, setCookie } from "./cookiemanagement.js"
-import { Constant, PAGE, ServiceURL, TOKENS } from "./config.js";
-import { APIPost } from "./api.js";
-import { Toast } from "./component/toast.js";
+import { PAGE, TOKENS } from "./config.js";
+import { getCookie } from "./cookiemanagement.js";
+import { getCurrentPath, goTo } from "./utils.js";
 
 roustes();
 

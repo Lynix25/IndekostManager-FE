@@ -2,11 +2,33 @@ import { APIGet } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { UNIXtimeConverter, numberWithThousandsSeparators, goTo, statusToString, createElementFromString, isOwnerOrAdmin } from "./utils.js";
+import { UNIXtimeConverter, forEach, goTo, isOwnerOrAdmin, numberWithThousandsSeparators, statusToString } from "./utils.js";
+
+if (isOwnerOrAdmin()) {
+    document.querySelector(".summary").setAttribute("hidden", "");
+    document.querySelector("#announcement-content").setAttribute("hidden", "");
+    document.querySelector(".menu-tenant").setAttribute("hidden", "");
+
+    document.querySelector(".taskOrRequest-label").innerHTML = "Yuk, segera selesaikan pekerjaan berikut!";
+} else {
+    document.querySelector(".menu-admin").setAttribute("hidden", "");
+    document.querySelector(".chart").setAttribute("hidden", "");
+    document.querySelector(".taskOrRequest-label").innerHTML = "Ini daftar layanan terbaru yang kamu ajukan";
+
+    APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
+        let data = res.data;
+        document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
+        console.log("Max due date", data.maxDueDate);
+        document.querySelector(".due-date").innerHTML = UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY");
+    }).catch(err => {
+        document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(0);
+    });
+}
 
 APIGet(ServiceURL.User.getById(getCookie("id"))).then(res => {
     let data = res.data.data;
-    if(isOwnerOrAdmin()) {
+
+    if (isOwnerOrAdmin()) {
         document.querySelector(".greetings2").setAttribute("hidden", "");
     } else {
         document.querySelector(".greetings1").innerHTML = `Halo, ${data.user.name}!`;
@@ -28,37 +50,13 @@ APIGet(ServiceURL.MasterData.getIndekos).then(res => {
     }
 });
 
-let taskOrRequestParamRequestorId = "";
-if(isOwnerOrAdmin()) {
-    document.querySelector(".summary").setAttribute("hidden", "");
-    document.querySelector("#announcement-content").setAttribute("hidden", "");
-    document.querySelector(".menu-tenant").setAttribute("hidden", "");
-
-    document.querySelector(".taskOrRequest-label").innerHTML = "Yuk, segera selesaikan pekerjaan berikut!";
-} else {
-    document.querySelector(".menu-admin").setAttribute("hidden", "");
-    document.querySelector(".chart").setAttribute("hidden", "");
-    document.querySelector(".taskOrRequest-label").innerHTML = "Ini daftar layanan terbaru yang kamu ajukan";
-
-    taskOrRequestParamRequestorId = getCookie("id");
-    
-    APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
-        let data = res.data;
-        document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
-        console.log("Max due date", data.maxDueDate);
-        document.querySelector(".due-date").innerHTML = UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY");
-    }).catch(err => {
-        document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(0);
-    });
-}
-
 APIGet(ServiceURL.Announcement.getAll).then(res => {
     let announcements = res.data.data;
 
     document.querySelector("#carousel-offline").setAttribute("hidden", "");
     document.querySelector("#carousel").removeAttribute("hidden");
 
-    if(announcements.length == 0) {
+    if (announcements.length == 0) {
         let announcementCarousel = document.createElement("div");
         announcementCarousel.classList.add("carousel-indicators", "align-items-end");
         announcementCarousel.innerHTML = `
@@ -77,15 +75,15 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
         let announcementCarousel = document.createElement("div");
         announcementCarousel.classList.add("carousel-indicators", "align-items-end");
         announcementCarousel.setAttribute("id", "carousel-indicators")
-        for(let i=0; i < announcements.length; i++) {
-            if(i==0) {
+        for (let i = 0; i < announcements.length; i++) {
+            if (i == 0) {
                 announcementCarousel.innerHTML += `
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to=${i} class="active"
-                        aria-current="true" aria-label="Slide ${i+1}"></button>`;
+                        aria-current="true" aria-label="Slide ${i + 1}"></button>`;
             } else {
                 announcementCarousel.innerHTML += `
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to=${i} 
-                        aria-label="Slide ${i+1}"></button>`;
+                        aria-label="Slide ${i + 1}"></button>`;
             }
         }
         document.querySelector("#announcement-list").appendChild(announcementCarousel);
@@ -96,10 +94,10 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
             let announcement = document.createElement("div");
             let src;
             let image = data.image;
-            if(image == null || image.trim() === "") src = "asset/no_image.png"
+            if (image == null || image.trim() === "") src = "asset/no_image.png"
             else src = `data:image/png;base64,${image}`;
 
-            if(count == 0) {
+            if (count == 0) {
                 announcement.classList.add("carousel-item", "active");
                 announcement.innerHTML = `
                     <figcaption>${data.title}</figcaption>
@@ -113,13 +111,13 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
             `;
             }
             count++;
-            
+
             announcement.addEventListener("click", e => {
                 goTo("./announcementdetail.html?id=" + data.id);
             });
             document.querySelector("#announcement-list").appendChild(announcement);
         });
-        if(count > 1) {
+        if (count > 1) {
             let carouselButton = document.createElement("div");
             carouselButton.innerHTML = `
                 <button class="carousel-control-prev ml-2" type="button" data-bs-target="#carousel" data-bs-slide="prev">
@@ -134,33 +132,104 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
     }
 });
 
-APIGet(ServiceURL.Task.getAll(taskOrRequestParamRequestorId)).then(res => {
+APIGet(ServiceURL.Task.getAll(getCookie("id"))).then(res => {
     let data = res.data.data;
-    if(data.length > 0) {
+    if (data.length > 0) {
         document.querySelector("#no-taskOrRequest").setAttribute("hidden", "");
         document.querySelector("#list-taskOrRequest").removeAttribute("hidden");
 
         let count = 0;
         data.forEach(task => {
-            console.log(task);
             if (count > 0 && task.task.status != "Diterima")
                 document.querySelector("#list-taskOrRequest").appendChild(document.createElement("hr"));
 
-            if (task.task.status != "Diterima")addRequest(task.user.roomName, task.task, "#list-taskOrRequest");
+            if (task.task.status != "Diterima") addRequest(task.user.roomName, task.task, "#list-taskOrRequest");
             count++;
         });
+    }
+
+    if (isOwnerOrAdmin()) {
+        let tasks = [];
+        forEach(data, v => {
+            tasks.push(v.task);
+        })
+        let taskChart = document.createElement("canvas");
+
+        let filteredTasks = tasks.filter(task => UNIXtimeConverter(task.taskDate, "MM") === UNIXtimeConverter(Date.now(), "MM"))
+
+        let chartData = {}
+        forEach(filteredTasks, v => {
+            if (!(v.service.serviceName in chartData)) {
+                chartData[v.service.serviceName] = 0;
+            }
+            chartData[v.service.serviceName]++;
+        })
+
+        new Chart(taskChart, {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    data: Object.values(chartData)
+                }],
+                labels: Object.keys(chartData)
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Custom Chart Title'
+                    }
+                },
+                aspectRatio: 2 / 1
+            }
+        });
+
+        document.querySelector(".task-chart").appendChild(taskChart);
+        
+        let processedData = {}
+        forEach(filteredTasks, v => {
+            if (!(v.status in processedData)) {
+                processedData[v.status] = 0;
+            }
+            processedData[v.status]++;
+        })
+
+        let processedChart = document.createElement("canvas");
+        new Chart(processedChart, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: Object.values(processedData)
+                }],
+                labels: Object.keys(processedData)
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        document.querySelector(".processed-chart").appendChild(processedChart);
     }
 });
 
 function addRequest(room, taskObject, elementId) {
-    
+
     let requestList = document.querySelector(elementId);
-    
+
     let task = document.createElement("li");
     task.setAttribute("data", taskObject.id);
     task.classList.add("row", "d-flex", "align-items-center");
     task.setAttribute("style", "cursor: pointer");
-    
+
     let [color, status] = statusToString(taskObject.status);
     APIGet(ServiceURL.Service.getById(taskObject.service.id)).then(res => {
 
