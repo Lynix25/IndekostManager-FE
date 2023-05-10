@@ -68,7 +68,7 @@ if (!noNavbarPage.includes(currentPath)) {
                 <li><a class="dropdown-item" href="/paymenthistory.html">Lihat Histori Pembayaran</a></li>
             </ul>
         </li>`;
-    
+
     let adminMobile = `
         <nav class="row bottom-navbar-card fixed-bottom rounded border-0 mt-4">
             <a href="./home.html" class="menu hover-text">
