@@ -1,5 +1,5 @@
 import { APIGet } from "./api.js";
-import { ServiceURL } from "./config.js";
+import { Constant, ServiceURL } from "./config.js";
 import { UNIXtimeConverter, UNIXtimeRemoveTime, convertDateToMillis, createElementFromString, forEach, getDateRange, goBack, map2 } from "./utils.js";
 
 APIGet(ServiceURL.Task.getAll('')).then(res => {
@@ -41,17 +41,17 @@ function showAgenda(data, startDateMillis, endDateMillis) {
                                 <div class="title col-sm-6 p-0">${v.task.service.serviceName}: ${v.task.service.variant}</div>
                                 <div class="col-sm-6 p-0 info">
                                     <span class="badge badge-green">Nama Kamar</span>
-                                    <span class="badge badge-blue">Status</span>
+                                    <span class="badge badge-blue">${v.task.status}</span>
                                 </div>
                             </div>
                             <div class="description">${v.task.notes}</div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="time">${UNIXtimeConverter(v.task.taskDate, "hh:mm")}</div>
                                 <div class="text-end">
-                                    <button type="reject" class="btn btn-sm btn-danger">Tolak</button>
-                                    <button type="process" class="btn btn-sm btn-primary">Terima</button>
-                                    <button type="update" class="btn btn-sm btn-warning">Perbaharui Info</button>
-                                    <button type="finish" class="btn btn-sm btn-success">Selesai</button>
+                                    ${v.task.status === Constant.serviceRequestStatus.SUBMITTED ? `<button type="reject" class="btn btn-sm btn-danger">Tolak</button>
+                                    <button type="process" class="btn btn-sm btn-primary">Terima</button>` : 
+                                    v.task.status === Constant.serviceRequestStatus.ACCEPTED ? `<button type="update" class="btn btn-sm btn-warning">Perbaharui Info</button>
+                                    <button type="finish" class="btn btn-sm btn-success">Selesai</button>` : ""} 
                                 </div>
                             </div>
                         </div>
