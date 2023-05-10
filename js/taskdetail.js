@@ -68,7 +68,6 @@ function reloadData(dataTask) {
         else if (task.status === Constant.serviceRequestStatus.ACCEPTED) {
             // Show only button update & finish
             document.querySelector("[type='reject']").setAttribute("hidden", "");
-            document.querySelector("[type='accept']").setAttribute("hidden", "");
             document.querySelector("[type='update']").removeAttribute("hidden", "");
             document.querySelector("[type='process']").setAttribute("hidden", "");
             document.querySelector("[type='finish']").removeAttribute("hidden", "");
@@ -94,10 +93,9 @@ document.querySelector(".quantity").addEventListener("change", e => {
 })
 
 addCustomEventListener("reject", e => {
-    APIPut(ServiceURL.Task.update(getURLParam('id')), {
+    APIPut(ServiceURL.Task.update(getParamOnURL('id')), {
         "status": Constant.serviceRequestStatus.REJECTED,
         "notes": notes.value,
-        "additionalCharge": additionalCharge.value
     }).then(response => {
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
         reloadData(response.data.data);
@@ -107,10 +105,9 @@ addCustomEventListener("reject", e => {
 }, document.querySelector("[type='reject']"));
 
 addCustomEventListener("process", e => {
-    APIPut(ServiceURL.Task.update(getURLParam('id')), {
+    APIPut(ServiceURL.Task.update(getParamOnURL('id')), {
         "status": Constant.serviceRequestStatus.ACCEPTED,
         "notes": notes.value,
-        "additionalCharge": additionalCharge.value
     }).then(response => {
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
@@ -121,10 +118,9 @@ addCustomEventListener("process", e => {
 }, document.querySelector("[type='process']"))
 
 addCustomEventListener("update", e => {
-    APIPut(ServiceURL.Task.update(getURLParam('id')), {
+    APIPut(ServiceURL.Task.update(getParamOnURL('id')), {
         "status": Constant.serviceRequestStatus.ACCEPTED,
         "notes": notes.value,
-        "additionalCharge": additionalCharge.value
     }).then(response => {
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
@@ -135,10 +131,9 @@ addCustomEventListener("update", e => {
 }, document.querySelector("[type='update']"));
 
 addCustomEventListener("finish", e => {
-    APIPut(ServiceURL.Task.update(getURLParam('id')), {
+    APIPut(ServiceURL.Task.update(getParamOnURL('id')), {
         "status": Constant.serviceRequestStatus.COMPLETED,
         "notes": notes.value,
-        "additionalCharge": additionalCharge.value
     }).then(response => {
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
