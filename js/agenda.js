@@ -25,7 +25,7 @@ APIGet(ServiceURL.Task.getAll('')).then(res => {
 
 function showAgenda(data, startDateMillis, endDateMillis) {
     document.querySelector(".agenda").innerHTML = "";
-    let d = getDateRange(startDateMillis, endDateMillis);//.reduce((a, key) => Object.assign(a, { [key]: [] }), {});
+    let d = getDateRange(startDateMillis, endDateMillis);
     d.forEach(_ => {
         let taskElement = `
         <li class="task card-as-container-static p-3 mb-2">
