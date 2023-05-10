@@ -1,7 +1,7 @@
 import { APIGet, APIPost, APIPut } from "./api.js";
 import { PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { UNIXtimeConverter, filter, forEach, getFormValueV2, goBack, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
+import { UNIXtimeConverter, createElementFromString, filter, forEach, getFormValueV2, goBack, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 
 APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
     let data = res.data;
@@ -16,36 +16,34 @@ APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
         unpaidItem.removeAttribute("hidden");
 
         rentItems.forEach(rent => {
-            let item = document.createElement("li");
-            item.classList.add("border-bottom", "mb-1");
-            item.innerHTML = `<div class="d-flex align-items-center">
+            let itemElement = `
+            <li class="border-bottom mb-1">
+                <div class="d-flex align-items-center">
                     <input class="form-check-input m-2 fs-4" type="checkbox" name="${rent.id}" data-price=${rent.price}>
                     <div>
                         <div>Biaya Kos Bulan ${rent.month}</div>
                         <div>Batas bayar: ${UNIXtimeConverter(rent.dueDate, "DD/M/YYYY")}</div>
                     </div>
                 </div>
-            <div class="text-end">Rp ${numberWithThousandsSeparators(rent.price)}</div>
+                <div class="text-end">Rp ${numberWithThousandsSeparators(rent.price)}</div>
+            </li>
             `
-            unpaidItem.appendChild(item);
+            unpaidItem.appendChild(createElementFromString(itemElement));
         });
 
         taskItems.forEach(taskItem => {
-
             let task = taskItem.task;
             let service = taskItem.service;
-            let requestor = taskItem.requestor;
-            let item = document.createElement("li");
-            item.classList.add("border-bottom", "mb-1");
-            item.innerHTML = `<div class="d-flex align-items-center">
-                    <input class="form-check-input m-2 fs-4" type="checkbox" name="${task.id}" data-price=${task.charge + task.additionalCharge}>
-                    <div>
-                        <div>${service.serviceName}: ${service.variant}</div>
-                    </div>
+            let taskElement = `
+            <li class="border-bottom mb-1">
+                <div class="d-flex align-items-center">
+                <input class="form-check-input m-2 fs-4" type="checkbox" name="${task.id}" data-price=${task.charge + task.additionalCharge}>
+                    <div>${service.serviceName}: ${service.variant}</div>
                 </div>
-            <div class="text-end">Rp ${numberWithThousandsSeparators(task.charge + task.additionalCharge)}</div>
+                <div class="text-end">Rp ${numberWithThousandsSeparators(task.charge + task.additionalCharge)}</div>
+            </li>
             `
-            unpaidItem.appendChild(item);
+            unpaidItem.appendChild(createElementFromString(taskElement));
         });
 
         unpaidItem.addEventListener("change", e => {
@@ -73,7 +71,7 @@ handleFormSubmited(e => {
     let data = filter(getFormValueV2(e.target), (k, v) =>
         v === true ? k : undefined
     );
-
+    
     APIPost(ServiceURL.Transaction.pay, { "taskItemIds": data }).then(res => {
         forEach(res.data.taskItems, (v) => {
             APIPut(ServiceURL.Task.update(v.id), {transactionId : res.data.id}).then(e => {
