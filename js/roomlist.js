@@ -4,12 +4,8 @@ import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getUserID, goTo, isOwnerOrAdmin } from "./utils.js";
 
-if(isOwnerOrAdmin()) {
-    document.querySelector("#room-page-title").innerHTML = "Kelola Ruang Kamar";
-} else {
+if(!isOwnerOrAdmin())
     document.querySelector("#add-room-toggle").setAttribute("hidden", "");
-    document.querySelector("#room-page-title").innerHTML = "Daftar Ruang Kamar";
-}
 
 APIGet(ServiceURL.Room.getAll).then(res => {
     let roomList = res.data.data;
@@ -30,44 +26,47 @@ APIGet(ServiceURL.Room.getAll).then(res => {
             </div>
         `;
 
-        let roomActionContainer = document.createElement("div");
-        roomActionContainer.classList.add("d-flex");
+        
+        if(isOwnerOrAdmin()) {
+            let roomActionContainer = document.createElement("div");
+            roomActionContainer.classList.add("d-flex");
 
-        let editToggle = document.createElement("div");
-        editToggle.classList.add("hover-text");
-        editToggle.innerHTML = `
-            <span class="tooltip-text tooltip-bottom">Ubah Data</span>
-            <span><button type="edit" class="btn p-0 px-1"><i class="fad fa-edit"></i></button></span>
-        `;
-        editToggle.addEventListener("click", e => {
-            goTo(PAGE.ROOMDETAIL + data.id);
-        });
-        roomActionContainer.appendChild(editToggle)
-
-        let deleteToggle = document.createElement("div");
-        deleteToggle.classList.add("hover-text");
-        deleteToggle.innerHTML = `
-            <span class="tooltip-text tooltip-bottom">Hapus Data</span>
-            <span><button type="delete" class="btn p-0 px-1" data-bs-toggle="modal" data-bs-target="#confirmation"><i class="fad fa-trash"></i></button></span>
-        `;
-        deleteToggle.addEventListener("click", e => {
-            showModalConfirmation(
-                Constant.modalType.DELETECONFIRMATION, 
-                'Hapus Data Kamar', 
-                'Anda yakin ingin menghapus data kamar ini?', 
-                'Hapus', 'Batal', () => {
-                    APIDelete(ServiceURL.Room.delete(data.id, getUserID())).then(response => {
-                        Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                        setTimeout(function() { goTo(PAGE.ROOMLIST)}, Event.timeout);
-                    }).catch(err => {
-                        if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
-                        else Toast(Constant.httpStatus.ERROR, err.data.message);
-                    });
-                }
-            );
-        });
-        roomActionContainer.appendChild(deleteToggle);
-        roomItem.appendChild(roomActionContainer);
+            let editToggle = document.createElement("div");
+            editToggle.classList.add("hover-text");
+            editToggle.innerHTML = `
+                <span class="tooltip-text tooltip-bottom">Ubah Data</span>
+                <span><button type="edit" class="btn p-0 px-1"><i class="fad fa-edit"></i></button></span>
+            `;
+            editToggle.addEventListener("click", e => {
+                goTo(PAGE.ROOMDETAIL + data.id);
+            });
+            roomActionContainer.appendChild(editToggle)
+    
+            let deleteToggle = document.createElement("div");
+            deleteToggle.classList.add("hover-text");
+            deleteToggle.innerHTML = `
+                <span class="tooltip-text tooltip-bottom">Hapus Data</span>
+                <span><button type="delete" class="btn p-0 px-1" data-bs-toggle="modal" data-bs-target="#confirmation"><i class="fad fa-trash"></i></button></span>
+            `;
+            deleteToggle.addEventListener("click", e => {
+                showModalConfirmation(
+                    Constant.modalType.DELETECONFIRMATION, 
+                    'Hapus Data Kamar', 
+                    'Anda yakin ingin menghapus data kamar ini?', 
+                    'Hapus', 'Batal', () => {
+                        APIDelete(ServiceURL.Room.delete(data.id, getUserID())).then(response => {
+                            Toast(Constant.httpStatus.SUCCESS, response.data.message);
+                            setTimeout(function() { goTo(PAGE.ROOMLIST)}, Event.timeout);
+                        }).catch(err => {
+                            if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+                            else Toast(Constant.httpStatus.ERROR, err.data.message);
+                        });
+                    }
+                );
+            });
+            roomActionContainer.appendChild(deleteToggle);
+            roomItem.appendChild(roomActionContainer);
+        }
 
         // const roomElement = createElementFromString(room);
         // addCustomEventListener("click", e => {

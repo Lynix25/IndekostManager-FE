@@ -33,6 +33,7 @@ if (!noNavbarPage.includes(currentPath)) {
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="/agenda.html">Lihat Agenda</a></li>
+                <li><a class="dropdown-item" href="/requesthistory.html">Lihat Histori Pengajuan Layanan</a></li>
                 <li><a class="dropdown-item" href="/service.html">Tambah Layanan Baru</a></li>
             </ul>
         </li>

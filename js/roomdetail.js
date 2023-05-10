@@ -4,18 +4,36 @@ import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { showModalFormPrice } from "./setroomprice.js";
 import { showModalFormFacility } from "./setroomfacility.js";
 import { showModalConfirmation } from "./component/modal.js"
-import { addCustomEventListener, getParamOnURL, getUserID, goTo, numberWithThousandsSeparators } from "./utils.js";
+import { addCustomEventListener, getParamOnURL, getUserID, goTo, isOwnerOrAdmin, numberWithThousandsSeparators } from "./utils.js";
+
+if(!isOwnerOrAdmin()) {
+    document.querySelector("#edit").setAttribute("hidden", "");
+    document.querySelector("#add-facility").setAttribute("hidden", "");
+    document.querySelector("[type='add-facility-detail-1']").setAttribute("hidden", "");
+    document.querySelector("[type='add-facility-detail-2']").setAttribute("hidden", "");
+    document.querySelector("[type='add-facility-detail-3']").setAttribute("hidden", "");
+    document.querySelector("[type='add-facility-detail-4']").setAttribute("hidden", "");
+    document.querySelector("[type='add-facility-detail-5']").setAttribute("hidden", "");
+    document.querySelector("[type='add-price-detail']").setAttribute("hidden", "");
+    document.querySelector(".aksi").setAttribute("hidden", "");
+    document.querySelector("[type='delete']").setAttribute("hidden", "");
+}
 
 APIGet(ServiceURL.Room.getById(getParamOnURL("id"))).then(res => {
     let room = res.data.data;
-    console.log(room)
     document.querySelector(".name").innerHTML = room.room.name;
     document.querySelector(".allotment").innerHTML = room.room.allotment;
     document.querySelector(".floor").innerHTML = 'Lantai ' + room.room.floor;
     document.querySelector(".description").innerHTML = room.room.description;
 
-    document.querySelector(".status").classList.add((room.status === Constant.roomStatus.KOSONG || room.status === Constant.roomStatus.TERSEDIA) ? "text-success" : "text-danger");
+    let roomAvailable = (room.status === Constant.roomStatus.KOSONG || room.status === Constant.roomStatus.TERSEDIA) ? true : false;
+    document.querySelector(".status").classList.add(roomAvailable ? "text-success" : "text-danger");
     document.querySelector(".status").innerHTML = `Kamar ${room.status} (${room.totalTenants}/${room.room.quota})`;
+
+
+    if(!isOwnerOrAdmin() && roomAvailable) {
+        document.querySelector("[type='changeRoom']").removeAttribute("hidden");
+    }
 
     // Room Details
     let details = room.room.details;
@@ -31,30 +49,33 @@ APIGet(ServiceURL.Room.getById(getParamOnURL("id"))).then(res => {
         itemContainerInContainer.classList.add("d-flex", "align-items-center");
         itemContainerInContainer.innerHTML = `<li class="w-100">${detail.name}</li>`;
 
-        let deleteCategoryToggle = document.createElement("div");
-        deleteCategoryToggle.classList.add("hover-text");
-        deleteCategoryToggle.innerHTML = `
-            <span class="tooltip-text tooltip-top-toggle">Hapus</span>
-            <i class="fa fa-times-circle" style="cursor: pointer"></i>
-        `;
+        if(isOwnerOrAdmin()) {
 
-        deleteCategoryToggle.addEventListener("click", e => {
-            showModalConfirmation(
-                Constant.modalType.DELETECONFIRMATION, 
-                'Hapus Data Fasilitas', 
-                'Anda yakin ingin menghapus data fasilitas/ spesifikasi ini?', 
-                'Hapus', 'Batal', () => {
-                    APIDelete(ServiceURL.Room.removeDetail(getParamOnURL('id'), detail.id, getUserID())).then(response => {
-                        Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                        setTimeout(function() { goTo(PAGE.ROOMDETAIL + getParamOnURL('id'))}, Event.timeout);
-                    }).catch(err => {
-                        if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
-                        else Toast(Constant.httpStatus.ERROR, err.data.message);
-                    });
-                }
-            );
-        })
-        itemContainerInContainer.appendChild(deleteCategoryToggle);
+            let deleteCategoryToggle = document.createElement("div");
+            deleteCategoryToggle.classList.add("hover-text");
+            deleteCategoryToggle.innerHTML = `
+                <span class="tooltip-text tooltip-top-toggle">Hapus</span>
+                <i class="fa fa-times-circle" style="cursor: pointer"></i>
+            `;
+    
+            deleteCategoryToggle.addEventListener("click", e => {
+                showModalConfirmation(
+                    Constant.modalType.DELETECONFIRMATION, 
+                    'Hapus Data Fasilitas', 
+                    'Anda yakin ingin menghapus data fasilitas/ spesifikasi ini?', 
+                    'Hapus', 'Batal', () => {
+                        APIDelete(ServiceURL.Room.removeDetail(getParamOnURL('id'), detail.id, getUserID())).then(response => {
+                            Toast(Constant.httpStatus.SUCCESS, response.data.message);
+                            setTimeout(function() { goTo(PAGE.ROOMDETAIL + getParamOnURL('id'))}, Event.timeout);
+                        }).catch(err => {
+                            if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+                            else Toast(Constant.httpStatus.ERROR, err.data.message);
+                        });
+                    }
+                );
+            })
+            itemContainerInContainer.appendChild(deleteCategoryToggle);
+        }
         itemContainer.appendChild(itemContainerInContainer);
         
         if(detail.description != null && detail.description !== "") {
@@ -89,50 +110,53 @@ APIGet(ServiceURL.Room.getById(getParamOnURL("id"))).then(res => {
     let prices = room.room.prices;
     prices.forEach(price => {
 
-        let toggleEdit = document.createElement("td");
-        toggleEdit.classList.add("text-center", "hover");
-        toggleEdit.innerHTML = `
-            <div class="hover-text">
-                <span class="tooltip-text tooltip-top-toggle">Ubah</span>
-                <span><i class="fa-solid fa-pencil"></i></span>
-            </div>`;
-            
-        let toggleDelete = document.createElement("td");
-        toggleDelete.classList.add("text-center", "hover");
-        toggleDelete.innerHTML = `
-            <div class="hover-text">
-                <span class="tooltip-text tooltip-top-toggle">Hapus</span>
-                <span><i class="fa-solid fa-trash"></i></span>
-            </div>`;
-
         let item = document.createElement("tr");
         item.innerHTML = `
             <td>${price.capacity} orang</td>
             <td>Rp ${numberWithThousandsSeparators(price.price)}</td>
         `;
 
-        toggleEdit.addEventListener("click", e => {
-            showModalFormPrice(Constant.modalType.FORM, "Update", getParamOnURL('id'), price, 'Ubah Harga Kamar', 'Simpan');
-        });
-        item.appendChild(toggleEdit);
+        if(isOwnerOrAdmin()) {
 
-        toggleDelete.addEventListener("click", e => {
-            showModalConfirmation(
-                Constant.modalType.DELETECONFIRMATION, 
-                'Hapus Data Harga', 
-                'Anda yakin ingin menghapus data harga ini?', 
-                'Hapus', 'Batal', () => {
-                    APIDelete(ServiceURL.Room.removePrice(getParamOnURL('id'), price.id, getUserID())).then(response => {
-                        Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                        setTimeout(function() { goTo(PAGE.ROOMDETAIL + getParamOnURL('id'))}, Event.timeout);
-                    }).catch(err => {
-                        if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
-                        else Toast(Constant.httpStatus.ERROR, err.data.message);
-                    });
-                }
-            );
-        });
-        item.appendChild(toggleDelete);
+            let toggleEdit = document.createElement("td");
+            toggleEdit.classList.add("text-center", "hover");
+            toggleEdit.innerHTML = `
+                <div class="hover-text">
+                    <span class="tooltip-text tooltip-top-toggle">Ubah</span>
+                    <span><i class="fa-solid fa-pencil"></i></span>
+                </div>`;
+                
+            let toggleDelete = document.createElement("td");
+            toggleDelete.classList.add("text-center", "hover");
+            toggleDelete.innerHTML = `
+                <div class="hover-text">
+                    <span class="tooltip-text tooltip-top-toggle">Hapus</span>
+                    <span><i class="fa-solid fa-trash"></i></span>
+                </div>`;
+    
+            toggleEdit.addEventListener("click", e => {
+                showModalFormPrice(Constant.modalType.FORM, "Update", getParamOnURL('id'), price, 'Ubah Harga Kamar', 'Simpan');
+            });
+            item.appendChild(toggleEdit);
+    
+            toggleDelete.addEventListener("click", e => {
+                showModalConfirmation(
+                    Constant.modalType.DELETECONFIRMATION, 
+                    'Hapus Data Harga', 
+                    'Anda yakin ingin menghapus data harga ini?', 
+                    'Hapus', 'Batal', () => {
+                        APIDelete(ServiceURL.Room.removePrice(getParamOnURL('id'), price.id, getUserID())).then(response => {
+                            Toast(Constant.httpStatus.SUCCESS, response.data.message);
+                            setTimeout(function() { goTo(PAGE.ROOMDETAIL + getParamOnURL('id'))}, Event.timeout);
+                        }).catch(err => {
+                            if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+                            else Toast(Constant.httpStatus.ERROR, err.data.message);
+                        });
+                    }
+                );
+            });
+            item.appendChild(toggleDelete);
+        }
         document.querySelector("#price-data").appendChild(item);
     });
 
@@ -196,4 +220,8 @@ addCustomEventListener("delete", e => {
             });
         }
     );
+});
+
+addCustomEventListener("changeRoom", e => {
+    alert('hi there')
 });
