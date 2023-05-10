@@ -44,7 +44,7 @@ function showAgenda(data, startDateMillis, endDateMillis) {
                                     <span class="badge badge-blue">Status</span>
                                 </div>
                             </div>
-                            <div class="description">${v.task.notes}</div>
+                            <div class="description">${v.task.notes != null ? v.task.notes : "-"}</div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="time">${UNIXtimeConverter(v.task.taskDate, "hh:mm")}</div>
                                 <div class="text-end">
