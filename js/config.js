@@ -86,7 +86,8 @@ export const PAGE = {
     ROOMDETAIL: './roomdetail.html?id=',
     EDITROOM: './editroom.html?id=',
 
-    PAYMENT: "./payment.html"
+    PAYMENT: "./payment.html",
+    PAYMENTDETAIL: (paymentId) => `./paymentdetails.html?id=${paymentId}`
 };
 
 export const CONTENT_TYPE = {
@@ -179,7 +180,9 @@ export const ServiceURL = {
     },
     Transaction: {
         unpaid: (id) => `/transaction/unpaid/${id}`,
-        pay: "/transaction"
+        pay: "/transaction",    
+        getAll: (id) => `/transaction/${id}`,
+        check: (id) => `/transaction/check/${id}`
     },
     Notification:{
         getKey: "/notification/key",
