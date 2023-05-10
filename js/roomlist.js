@@ -2,7 +2,7 @@ import { APIDelete, APIGet } from "./api.js";
 import { showModalConfirmation } from "./component/modal.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
-import { addCustomEventListener, createElementFromString, getParamOnURL, getUserID, goTo, isOwnerOrAdmin, setAttributes } from "./utils.js";
+import { getUserID, goTo, isOwnerOrAdmin } from "./utils.js";
 
 if(isOwnerOrAdmin()) {
     document.querySelector("#room-page-title").innerHTML = "Kelola Ruang Kamar";

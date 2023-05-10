@@ -171,12 +171,21 @@ function isObjectEmpty(object) {
 }
 
 export function map(array, callback) {
-    let temp = array.map(callback);
     let result = "";
+    let temp = array.map(callback);
     for (let i = 0; i < temp.length; i++) {
         result += temp[i];
     }
 
+    return result;
+}
+
+export function map2(object, callback) {
+    let result = "";
+    forEach(object, v => {
+        let callbackResult = callback(v);
+        result += callbackResult;
+    });
     return result;
 }
 /*
@@ -381,6 +390,8 @@ export function statusToString(statusCode) {
     if (statusCode === Constant.serviceRequestStatus.COMPLETED) {
         return ["badge-green", Constant.serviceRequestStatus.COMPLETED];
     }
+
+    return ["badge-grey", `Invalid Status Code : ${statusCode}`]
 }
 
 export function getUserID() {
@@ -444,6 +455,24 @@ function getCurrentWeekList(dateFormat) {
     }
 
     return weekList;
+}
+
+export function getDateRange(startDateMillis, endDateMillis) {
+    endDateMillis = isNum(endDateMillis) || endDateMillis > startDateMillis ? endDateMillis : startDateMillis + (6 * dayInMillis);
+    let dateList = [];
+
+    for (let i = startDateMillis; i <= endDateMillis; i += dayInMillis)
+        // dateList[UNIXtimeConverter(i, dateFormat)] = [];
+        dateList.push(i);
+
+    return dateList;
+}
+
+export function isInSameDay(day1InMillis, day2InMillis) {
+    let date1 = new Date(day1InMillis).toDateString();
+    let date2 = new Date(day2InMillis).toDateString();
+
+    return date1 == date2 ? true : false;
 }
 
 export function UNIXtimeConverter(UNIXTimestamp, format = "MM/DD/YYYY hh:mm:ss UTZ", language = "id") {
@@ -512,6 +541,24 @@ export function UNIXtimeConverter(UNIXTimestamp, format = "MM/DD/YYYY hh:mm:ss U
     })
 
     return format;
+}
+
+export function UNIXtimeRemoveTime(UNIXTimestamp) {
+    let year = new Date(UNIXTimestamp).getFullYear();
+    let month = new Date(UNIXTimestamp).getMonth();
+    let date = new Date(UNIXTimestamp).getDate();
+
+    let dateNoTime = new Date(year, month, date);
+    dateNoTime.setUTCHours(0);
+    dateNoTime.setUTCMinutes(0);
+    dateNoTime.setUTCSeconds(0);
+
+    return dateNoTime.getTime();
+}
+
+export function convertDateToMillis(dateString) {
+    let currentDate = new Date(dateString);
+    return currentDate.getTime();
 }
 
 /**

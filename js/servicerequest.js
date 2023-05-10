@@ -3,43 +3,6 @@ import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { addCustomEventListener, createElementFromString, getFormValue, getUserID, goBack, goTo, handleFormSubmited, isOwnerOrAdmin, numberWithThousandsSeparators } from "./utils.js";
 import { Toast } from "./component/toast.js";
 
-// $(document).ready(() => {
-// $('.date')
-// // document.getElementsByClassName('date')
-// // document.getElementById("datepicker")
-// // document.querySelector('.date')
-// // document.querySelector('#datepicker')
-// .datepicker({
-//     format: "dd/mm/yyyy",
-//     // format: {
-//     //     toDisplay: function (date, format, language) {
-//     //         var d = new Date(date);
-//     //         console.log("toDisplay " + d.getTime())
-
-//     //         d.setDate(d.getDate() - 7);
-//     //         return d;
-//     //     },
-//     //     toValue : function (date, format, language) {
-//     //         console.log("toValue " + date)
-//     //         var d = new Date(date);
-//     //         d.setDate(d.getDate() + 7);
-//     //         // return new Date(d);
-//     //         return date;
-//     //     }
-//     // },
-//     todayHighlight: true,
-//     todayBtn: "linked",
-//     autoclose: true,
-//     changeDate: (e) => {
-//         console.log(e);
-//     }
-// })
-// .on("hide", function (e) {
-//     console.log(e)
-// }).on("changeDate", e => {
-//     console.log(e);
-// })
-
 let listOfServiceId = {};
 handleFormSubmited((e) => {
     let data = getFormValue(e.target);

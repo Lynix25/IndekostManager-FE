@@ -16,8 +16,7 @@ APIGet(ServiceURL.Task.getAll(paramGetTask)).then(res => {
     if(data.length > 0) {
 
         document.querySelector(".no-data").setAttribute("hidden", "");
-        data.forEach(service => {
-            // console.log(service);
+        data.forEach(service => {   
             addRequest(service);
         });
     }
@@ -35,7 +34,7 @@ function addRequest(data) {
     task.classList.add("item");
     task.setAttribute("style", "cursor: pointer")
     let [color, status] = statusToString(taskObject.status);
-    APIGet(ServiceURL.Service.getById(taskObject.serviceId)).then(res => {
+    APIGet(ServiceURL.Service.getById(taskObject.service.id)).then(res => {
 
         let roomInfo = "";
         if(isOwnerOrAdmin())

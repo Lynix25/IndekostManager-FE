@@ -55,17 +55,6 @@ function registerServiceWorker() {
     }
 }
 
-function unregisterServiceWorker() {
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.getRegistrations()
-            .then(function (registrations) {
-                for (let registration of registrations) {
-                    registration.unregister();
-                }
-            });
-    }
-}
-
 // Notification.requestPermission().then(result => {
 //     if (result === "granted") {
 //         console.log("granted");

@@ -2,7 +2,7 @@ import { APIDelete, APIGet, APIPost, APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { getFormValueV2, urlB64ToUint8Array } from "./utils.js";
+import { addCustomEventListener, getFormValueV2, urlB64ToUint8Array } from "./utils.js";
 
 APIGet(ServiceURL.User.getUserSetting(getCookie("id"))).then(res => {
     let userSettings = res.data.data;
@@ -32,10 +32,28 @@ APIGet(ServiceURL.User.getUserSetting(getCookie("id"))).then(res => {
                 console.log(err);
             });
         } else {
-            unsubscribe();
+            unsubscribe(e.target.parentElement);
         }
     })
 })
+
+addCustomEventListener("remove-serviceworker", e => {
+    unregisterServiceWorker();
+})
+
+function unregisterServiceWorker() {
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistrations()
+            .then(function (registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+    }
+    
+    unsubscribe();
+    location.reload();
+}
 
 document.querySelector("form").addEventListener("change", e => {
     let data = getFormValueV2(e.currentTarget);
@@ -107,16 +125,7 @@ function unsubscribe() {
 }
 
 function removeSubscriptionFromServer() {
-    APIDelete(ServiceURL.Notification.unsub(getCookie('id')).then(res => {
+    APIDelete(ServiceURL.Notification.unsub(getCookie('id'))).then(res => {
         console.log(res);
-    }))
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: 'http://localhost:8123/test/unsubscribe',
-    //         data: { notificationEndPoint: endpoint },
-    //         success: function (response) {
-    //             console.log('Unsubscribed successfully! ' + JSON.stringify(response));
-    //         },
-    //         dataType: 'json'
-    //     });
+    });
 }
