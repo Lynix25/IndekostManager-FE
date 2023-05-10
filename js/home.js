@@ -28,6 +28,7 @@ APIGet(ServiceURL.MasterData.getIndekos).then(res => {
 });
 
 let taskOrRequestParamRequestorId = "";
+let typeList = "";
 if(isOwnerOrAdmin()) {
     document.querySelector(".summary").setAttribute("hidden", "");
     document.querySelector(".menu-tenant").setAttribute("hidden", "");
@@ -37,6 +38,7 @@ if(isOwnerOrAdmin()) {
     else document.querySelector(".chart").setAttribute("hidden", "");
 
     document.querySelector(".taskOrRequest-label").innerHTML = "Yuk, segera selesaikan pekerjaan berikut!";
+    typeList = Constant.requestListType.TODO;
 } else {
     document.querySelector(".menu-admin").setAttribute("hidden", "");
     document.querySelector(".chart").setAttribute("hidden", "");
@@ -46,9 +48,9 @@ if(isOwnerOrAdmin()) {
     
     APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
         let data = res.data;
+        console.log(data)
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
-        console.log("Max due date", data.maxDueDate);
-        document.querySelector(".due-date").innerHTML = UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY");
+        document.querySelector(".due-date").innerHTML = data.maxDueDate == -1 ? "-" : UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY");
     }).catch(err => {
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(0);
     });
@@ -136,7 +138,7 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
     }
 });
 
-APIGet(ServiceURL.Task.getAll(taskOrRequestParamRequestorId)).then(res => {
+APIGet(ServiceURL.Task.getAll(taskOrRequestParamRequestorId, typeList)).then(res => {
     let data = res.data.data;
     if(data.length > 0) {
         document.querySelector("#no-taskOrRequest").setAttribute("hidden", "");
@@ -144,11 +146,9 @@ APIGet(ServiceURL.Task.getAll(taskOrRequestParamRequestorId)).then(res => {
 
         let count = 0;
         data.forEach(task => {
-            console.log(task);
-            if (count > 0 && task.task.status != "Diterima")
+            if (count > 0)
                 document.querySelector("#list-taskOrRequest").appendChild(document.createElement("hr"));
-
-            if (task.task.status != "Diterima")addRequest(task.user.roomName, task.task, "#list-taskOrRequest");
+            addRequest(task.user.roomName, task.task, "#list-taskOrRequest");
             count++;
         });
     }

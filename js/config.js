@@ -63,6 +63,9 @@ export const Constant = {
         PENUH: "Penuh",
         RESERVED: "Disewa Pribadi",
         FAMILY_RESERVERED: "Disewa Pasutri"
+    }, 
+    requestListType: {
+        TODO: "ToDO"
     }
 }
 
@@ -164,7 +167,7 @@ export const ServiceURL = {
     Task: {
         create: "/task",
         update: (id) => `/task/${id}`,
-        getAll: (status) => `/task?requestor=${status}`,
+        getAll: (requestor, type) => `/task?requestor=${requestor}&type=${type}`,
         getById: (id) => `/task/${id}`,
     },
     Payment: {
