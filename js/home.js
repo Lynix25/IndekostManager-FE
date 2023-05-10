@@ -48,7 +48,6 @@ if(isOwnerOrAdmin()) {
     
     APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
         let data = res.data;
-        console.log(data)
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
         document.querySelector(".due-date").innerHTML = data.maxDueDate == -1 ? "-" : UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY");
     }).catch(err => {
