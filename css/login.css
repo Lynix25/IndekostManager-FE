@@ -91,3 +91,25 @@ footer {
 }
 
 /* Bootstrap Overwrite */
+
+
+@media screen and (max-width: 999px) {
+    body {
+        background-size: cover;
+        object-fit: contain;
+    }
+}
+
+@media screen and (max-width: 999px) {
+    body {
+        background-size: cover;
+        object-fit: cover;
+    }
+}
+
+@media screen and (max-width: 746px) {
+    body {
+        background-size: fill 100%;
+        object-fit: cover;
+    }
+}
