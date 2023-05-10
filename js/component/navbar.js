@@ -9,7 +9,7 @@ if (!noNavbarPage.includes(currentPath)) {
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                Kelola Pengumuman 
+                Pengumuman 
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="/announcementmenu.html">Lihat Daftar Pengumuman</a></li>
@@ -19,7 +19,7 @@ if (!noNavbarPage.includes(currentPath)) {
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                Kelola Kamar 
+                Kamar 
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="/roomlist.html">Lihat Daftar Kamar</a></li>
@@ -29,7 +29,7 @@ if (!noNavbarPage.includes(currentPath)) {
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                Kelola Layanan Kos 
+                Layanan Kos 
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="/agenda.html">Lihat Agenda</a></li>
@@ -39,20 +39,11 @@ if (!noNavbarPage.includes(currentPath)) {
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                Kelola Penyewa 
+                Penghuni 
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="/listuser.html">Lihat Daftar Penyewa</a></li>
-                <li><a class="dropdown-item" href="/registeruser.html">Tambah Data Penyewa</a></li>
-            </ul>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-                Kelola Transaksi
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="/report.html">Lihat Rekap Laporan</a></li>
+                <li><a class="dropdown-item" href="/listuser.html">Lihat Daftar Penghuni</a></li>
+                <li><a class="dropdown-item" href="/registeruser.html">Daftarkan Penghuni</a></li>
             </ul>
         </li>`;
 
@@ -64,7 +55,7 @@ if (!noNavbarPage.includes(currentPath)) {
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="/servicerequest.html">Ajukan Layanan</a></li>
-                <li><a class="dropdown-item" href="/requesthistory.html">Lihat History Pengajuan</a></li>
+                <li><a class="dropdown-item" href="/requesthistory.html">Lihat Histori Pengajuan</a></li>
             </ul>
         </li>
         <li class="nav-item dropdown">
@@ -74,9 +65,47 @@ if (!noNavbarPage.includes(currentPath)) {
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="/payment.html">Bayar Tagihan</a></li>
-                <li><a class="dropdown-item" href="/paymenthistory.html">Lihat History Pembayaran</a></li>
+                <li><a class="dropdown-item" href="/paymenthistory.html">Lihat Histori Pembayaran</a></li>
             </ul>
         </li>`;
+    
+    let adminMobile = `
+        <nav class="row bottom-navbar-card fixed-bottom rounded border-0 mt-4">
+            <a href="./home.html" class="menu hover-text">
+                <span class="tooltip-text tooltip-top">Beranda</span>
+                <i class="fa-solid fa-home"></i>
+            </a>
+            <a href="./announcementmenu.html" class="menu hover-text">
+                <span class="tooltip-text tooltip-top">Pengumuman</span>
+                <i class="fa-solid fa-newspaper"></i>
+            </a>
+            <a href="./roomlist.html" class="menu hover-text">
+                <span class="tooltip-text tooltip-top">Kamar</span>
+                <i class="fa-solid fa-door-open"></i>
+            </a>
+            <a href="./profile.html" class="menu hover-text">
+                <span class="tooltip-text tooltip-top">Profil</span>
+                <i class="fa-solid fa-circle-user"></i>
+            </a>
+        </nav>
+    `;
+
+    let tenantMobile = `
+        <nav class="row bottom-navbar-card fixed-bottom rounded border-0 mt-4">
+            <a href="./announcementmenu.html" class="menu hover-text">
+                <span class="tooltip-text tooltip-top">Pengumuman</span>
+                <i class="fa-solid fa-newspaper"></i>
+            </a>
+            <a href="./home.html" class="menu hover-text">
+                <span class="tooltip-text tooltip-top">Beranda</span>
+                <i class="fa-solid fa-home"></i>
+            </a>
+            <a href="./profile.html" class="menu hover-text">
+                <span class="tooltip-text tooltip-top">Profil</span>
+                <i class="fa-solid fa-circle-user"></i>
+            </a>
+        </nav>
+    `;
 
     const navBar = !isMobileDevice() ? `
         <nav class="navbar navbar-expand-lg sticky-top">
@@ -92,7 +121,7 @@ if (!noNavbarPage.includes(currentPath)) {
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link fw-bolder" aria-current="page" href="/home.html">Home</a>
+                            <a class="nav-link fw-bolder" aria-current="page" href="/home.html">Beranda</a>
                         </li>
                         ${isOwnerOrAdmin() ? adminMenu : tenantMenu}
                         <li class="nav-item dropdown">
@@ -123,28 +152,7 @@ if (!noNavbarPage.includes(currentPath)) {
                 </div>
             </div>
         </nav>` :
-        `<nav class="row bottom-navbar-card fixed-bottom rounded border-0 mt-4">
-            <a href="./announcementmenu.html" class="menu hover-text">
-                <span class="tooltip-text tooltip-top">Kelola Pengumuman</span>
-                <i class="fa-solid fa-newspaper"></i>
-            </a>
-            <a href="./roomlist.html" class="menu hover-text">
-                <span class="tooltip-text tooltip-top">Kelola Kamar</span>
-                <i class="fa-solid fa-door-open"></i>
-            </a>
-            <a href="./service.html" class="menu hover-text">
-                <span class="tooltip-text tooltip-top">Kelola Layanan Kos</span>
-                <i class="fa-solid fa-tasks"></i>
-            </a>
-            <a href="./listuser.html" class="menu hover-text">
-                <span class="tooltip-text tooltip-top">Kelola Penyewa</span>
-                <i class="fa-solid fa-users"></i>
-            </a>
-            <a href="#!" class="menu hover-text">
-                <span class="tooltip-text tooltip-top">Kelola Transaksi</span>
-                <i class="fa-solid fa-money-bill-transfer"></i>
-            </a>
-        </nav>`
+        `${isOwnerOrAdmin() ? adminMobile : tenantMobile}`;
     
     let body = await getElementUntilElementAvailable("body");
     body.insertBefore(createElementFromString(navBar), document.body.firstChild);

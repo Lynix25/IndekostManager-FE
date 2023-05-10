@@ -2,12 +2,12 @@ import { APIGet } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { UNIXtimeConverter, numberWithThousandsSeparators, goTo, statusToString, createElementFromString, isOwnerOrAdmin } from "./utils.js";
+import { UNIXtimeConverter, numberWithThousandsSeparators, goTo, statusToString, createElementFromString, isOwnerOrAdmin, isOwner } from "./utils.js";
 
 APIGet(ServiceURL.User.getById(getCookie("id"))).then(res => {
     let data = res.data.data;
     if(isOwnerOrAdmin()) {
-        document.querySelector(".greetings2").setAttribute("hidden", "");
+        document.querySelector(".greetings2").innerHTML = `<b class="text-muted fs-5">Halo, ${data.user.role.name.toLowerCase()} ${data.user.name.split(" ")[0]}!</b> Yuk kelola kosanmu`;
     } else {
         document.querySelector(".greetings1").innerHTML = `Halo, ${data.user.name}!`;
         document.querySelector(".room-name").innerHTML = data.room.name;
@@ -20,7 +20,6 @@ APIGet(ServiceURL.User.getById(getCookie("id"))).then(res => {
 APIGet(ServiceURL.MasterData.getIndekos).then(res => {
     let data = res.data;
     if (isOwnerOrAdmin()) {
-        document.querySelector(".greetings1").setAttribute("style", "height: 50px");
         document.querySelector(".greetings1").classList.add("d-flex", "align-items-end");
         document.querySelector(".greetings1").innerHTML = `${data.name}`;
     } else {
@@ -31,8 +30,11 @@ APIGet(ServiceURL.MasterData.getIndekos).then(res => {
 let taskOrRequestParamRequestorId = "";
 if(isOwnerOrAdmin()) {
     document.querySelector(".summary").setAttribute("hidden", "");
-    document.querySelector("#announcement-content").setAttribute("hidden", "");
     document.querySelector(".menu-tenant").setAttribute("hidden", "");
+    
+    if(isOwner())
+        document.querySelector("#announcement-content").setAttribute("hidden", "");
+    else document.querySelector(".chart").setAttribute("hidden", "");
 
     document.querySelector(".taskOrRequest-label").innerHTML = "Yuk, segera selesaikan pekerjaan berikut!";
 } else {

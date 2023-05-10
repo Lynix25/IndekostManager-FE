@@ -35,6 +35,7 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     object-fit: cover;
+    margin: 0px !important;
 }
 
 div>img {
