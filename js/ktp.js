@@ -1,7 +1,7 @@
-import { APIGet } from "./api.js";
+import { APIGet, APIPut } from "./api.js";
 import { ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { getFormValueV2, addCustomEventListener, convertImage64ToSrc, handleFormSubmited } from "./utils.js";
+import { addCustomEventListener, convertImage64ToSrc, getFormValueV2, handleFormSubmited } from "./utils.js";
 
 APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     let user = res.data.data.user;
@@ -11,7 +11,10 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
 
 handleFormSubmited(e => {
     let data = getFormValueV2(e.target);
-    console.log(data);
+    
+    APIPut(ServiceURL.User.update(getCookie("id")), data, {"Content-Type": "multipart/form-data"}).then(e => {
+        console.log(e);
+    })
 })
 
 document.querySelector("#identityCardImage").addEventListener("change", event => {
