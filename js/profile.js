@@ -179,9 +179,9 @@ function getRoomData(roomId) {
                     description = `<div class="font-italic">${detail.description}</div>`;
 
                 itemList.innerHTML = `
-                    <div class="w-100">
+                    <div>
                         <div class="d-flex align-items-center">
-                            <li class="w-100">${detail.name}</li>
+                            <li class="fw-semibold">${detail.name}</li>
                         </div>
                         ${description}
                     </div>
@@ -197,9 +197,9 @@ function getRoomData(roomId) {
                     description = `<div class="font-italic">${detail.description}</div>`;
 
                 itemList.innerHTML = `
-                    <div class="w-100">
+                    <div>
                         <div class="d-flex align-items-center">
-                            <li class="w-100">${detail.name}</li>
+                            <li class="fw-semibold">${detail.name}</li>
                         </div>
                         ${description}
                     </div>
@@ -215,9 +215,9 @@ function getRoomData(roomId) {
                     description = `<div class="font-italic">${detail.description}</div>`;
 
                 itemList.innerHTML = `
-                    <div class="w-100">
+                    <div>
                         <div class="d-flex align-items-center">
-                            <li class="w-100">${detail.name}</li>
+                            <li class="fw-semibold">${detail.name}</li>
                         </div>
                         ${description}
                     </div>
@@ -233,9 +233,9 @@ function getRoomData(roomId) {
                     description = `<div class="font-italic">${detail.description}</div>`;
 
                 itemList.innerHTML = `
-                    <div class="w-100">
+                    <div>
                         <div class="d-flex align-items-center">
-                            <li class="w-100">${detail.name}</li>
+                            <li class="fw-semibold">${detail.name}</li>
                         </div>
                         ${description}
                     </div>
@@ -255,9 +255,9 @@ function getRoomData(roomId) {
                     description = `<div class="font-italic">${detail.description}</div>`;
 
                 itemList.innerHTML = `
-                    <div class="w-100">
+                    <div>
                         <div class="d-flex align-items-center">
-                            <li class="w-100">${detail.name}</li>
+                            <li class="fw-semibold">${detail.name}</li>
                         </div>
                         ${description}
                     </div>
