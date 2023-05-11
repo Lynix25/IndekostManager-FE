@@ -133,20 +133,6 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
 
 APIGet(ServiceURL.Task.getAll("","")).then(res => {
     let data = res.data.data;
-    console.log(data);
-    if (data.length > 0) {
-        document.querySelector("#no-taskOrRequest").setAttribute("hidden", "");
-        document.querySelector("#list-taskOrRequest").removeAttribute("hidden");
-
-        let count = 0;
-        data.forEach(task => {
-            if (count > 0 && task.task.status != "Diterima")
-                document.querySelector("#list-taskOrRequest").appendChild(document.createElement("hr"));
-
-            if (task.task.status != "Diterima") addRequest(task.user.roomName, task.task, "#list-taskOrRequest");
-            count++;
-        });
-    }
 
     if (isOwnerOrAdmin()) {
         let tasks = [];
@@ -218,6 +204,24 @@ APIGet(ServiceURL.Task.getAll("","")).then(res => {
         });
 
         document.querySelector(".processed-chart").appendChild(processedChart);
+    }
+});
+
+APIGet(ServiceURL.Task.getAll(getCookie("id"),"")).then(res => {
+    let data = res.data.data;
+    
+    if (data.length > 0) {
+        document.querySelector("#no-taskOrRequest").setAttribute("hidden", "");
+        document.querySelector("#list-taskOrRequest").removeAttribute("hidden");
+
+        let count = 0;
+        data.forEach(task => {
+            if (count > 0 && task.task.status != "Diterima")
+                document.querySelector("#list-taskOrRequest").appendChild(document.createElement("hr"));
+
+            if (task.task.status != "Diterima") addRequest(task.user.roomName, task.task, "#list-taskOrRequest");
+            count++;
+        });
     }
 });
 
