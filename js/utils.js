@@ -411,6 +411,16 @@ export function isOwnerOrAdmin() {
     else return false;
 }
 
+export function isOwner() {
+    if (getRoleOfUser() === Constant.role.OWNER) return true;
+    else return false;
+}
+
+export function isAdmin() {
+    if (getRoleOfUser() === Constant.role.ADMIN) return true;
+    else return false;
+}
+
 export function createElementFromString(htmlString) {
     var div = document.createElement('div');
     div.innerHTML = htmlString.trim();

@@ -43,15 +43,15 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
     document.querySelector("#joinedOn").innerText = UNIXtimeConverter(user.joinedOn, 'DD MMMM YYYY');
     document.querySelector("#description").innerText = (user.description == null || user.description === "") ? "-" : user.description;
 
-    let identityImage = document.createElement("div");
-    let src = (user.identityCardImage == null || user.identityCardImage === "") ?
-                "./asset/no_image.png" : `data:image/png;base64,${user.identityCardImage}`;
-    identityImage.innerHTML = `
-        <a href="#" onclick="openImageInNewWindow(this)">
-            <img src="${src}" alt="KTP">
-        </a>
-    `;
-    document.querySelector("#identity-image").appendChild(identityImage);
+    // let identityImage = document.createElement("div");
+    // let src = (user.identityCardImage == null || user.identityCardImage === "") ?
+    //             "./asset/no_image.png" : `data:image/png;base64,${user.identityCardImage}`;
+    // identityImage.innerHTML = `
+    //     <a href="#" onclick="openImageInNewWindow(this)">
+    //         <img src="${src}" alt="KTP">
+    //     </a>
+    // `;
+    // document.querySelector("#identity-image").appendChild(identityImage);
 
     let contactables = user.contactAblePersons;
     if(contactables.length == 0) {

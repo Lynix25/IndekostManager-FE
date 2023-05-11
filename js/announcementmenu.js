@@ -4,12 +4,9 @@ import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { addCustomEventListener, goBack, goTo, isOwnerOrAdmin } from "./utils.js";
 
-if(isOwnerOrAdmin()) {
-    document.querySelector("#announcement-page-title").innerHTML = "Kelola Pengumuman";
-} else {
+if(!isOwnerOrAdmin())
     document.querySelector("#add-announcement-toggle").setAttribute("hidden", "");
-    document.querySelector("#announcement-page-title").innerHTML = "Pengumuman";
-}
+    
 
 const searchBox = document.getElementById("search");
 let announcementList = []

@@ -4,6 +4,7 @@ import { getCookie } from "./cookiemanagement.js";
 import { UNIXtimeConverter, createElementFromString, filter, forEach, getFormValueV2, goBack, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 
 APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
+    console.log(res);
     let data = res.data;
     let rentItems = data.rentItem;
     let taskItems = data.taskItem;
@@ -42,10 +43,10 @@ APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
             let taskElement = `
             <li class="border-bottom mb-1">
                 <div class="d-flex align-items-center">
-                <input class="form-check-input m-2 fs-4" type="checkbox" name="${task.id}" value=${task.charge + task.additionalCharge}>
+                <input class="form-check-input m-2 fs-4" type="checkbox" name="${task.id}" value=${task.charge}>
                     <div>${service.serviceName}: ${service.variant}</div>
                 </div>
-                <div class="text-end">Rp ${numberWithThousandsSeparators(task.charge + task.additionalCharge)}</div>
+                <div class="text-end">Rp ${numberWithThousandsSeparators(task.charge)}</div>
             </li>
             `
             tasksElements.appendChild(createElementFromString(taskElement));

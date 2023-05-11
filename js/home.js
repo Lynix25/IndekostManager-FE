@@ -18,8 +18,8 @@ if (isOwnerOrAdmin()) {
     APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
         let data = res.data;
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
-        console.log("Max due date", data.maxDueDate);
-        document.querySelector(".due-date").innerHTML = UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY");
+        
+        document.querySelector(".due-date").innerHTML = data.maxDueDate > 0 ? `Bayar sebelum: ${UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY")}` : "";
     }).catch(err => {
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(0);
     });
@@ -29,7 +29,7 @@ APIGet(ServiceURL.User.getById(getCookie("id"))).then(res => {
     let data = res.data.data;
 
     if (isOwnerOrAdmin()) {
-        document.querySelector(".greetings2").setAttribute("hidden", "");
+        document.querySelector(".greetings2").innerHTML = `<b class="text-muted fs-5">Halo, ${data.user.role.name.toLowerCase()} ${data.user.name.split(" ")[0]}!</b> Yuk kelola kosanmu`;
     } else {
         document.querySelector(".greetings1").innerHTML = `Halo, ${data.user.name}!`;
         document.querySelector(".room-name").innerHTML = data.room.name;
@@ -42,7 +42,6 @@ APIGet(ServiceURL.User.getById(getCookie("id"))).then(res => {
 APIGet(ServiceURL.MasterData.getIndekos).then(res => {
     let data = res.data;
     if (isOwnerOrAdmin()) {
-        document.querySelector(".greetings1").setAttribute("style", "height: 50px");
         document.querySelector(".greetings1").classList.add("d-flex", "align-items-end");
         document.querySelector(".greetings1").innerHTML = `${data.name}`;
     } else {
@@ -132,8 +131,9 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
     }
 });
 
-APIGet(ServiceURL.Task.getAll(getCookie("id"))).then(res => {
+APIGet(ServiceURL.Task.getAll("","")).then(res => {
     let data = res.data.data;
+    console.log(data);
     if (data.length > 0) {
         document.querySelector("#no-taskOrRequest").setAttribute("hidden", "");
         document.querySelector("#list-taskOrRequest").removeAttribute("hidden");

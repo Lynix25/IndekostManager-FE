@@ -50,33 +50,24 @@ function passwordShowHide(inputTarget, showIcon, hideIcon) {
 
 function login(e) {
     let data = getFormValue(e.target);
+    APIPost(ServiceURL.User.login, data).then(response => {
+        if (response.status == 200) {
 
-    APIGet(ServiceURL.Account.getByUsername(data.username)).then(res => {
-        let currLoginAccount = res.data.data;
-        if (currLoginAccount == null) {
-            Toast(Constant.httpStatus.ERROR, "User tidak terdaftar");
-        } else {
-            let currLoginId = currLoginAccount.user.id
-            if (document.cookie.length > 0 && currLoginId === getCookie('id')) {
+            let cachedItem = response.data.data.cached;
+            if(getCookie('id') === cachedItem.id) {
                 Toast(Constant.httpStatus.WARNING, "User sudah login");
-                setTimeout(function () { goTo('./home.html') }, Event.timeout);
+                setTimeout(function () { goTo(PAGE.HOME) }, Event.timeout);
             } else {
-                APIPost(ServiceURL.User.login, data).then(response => {
-                    if (response.status == 200) {
-                        let cachedItem = response.data.data.cached;
-                        forEach(cachedItem, (k, v) => {
-                            setCookie(k, v, k === TOKENS.REMEMBERME ? 24 * 365 : undefined);
-                        });
-
-                        Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                        setTimeout(function () { goTo(PAGE.HOME) }, Event.timeout);
-                    }
-                }).catch(err => {
-                    if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
-                    else Toast(Constant.httpStatus.ERROR, err.data.message);
+                forEach(cachedItem, (k, v) => {
+                    setCookie(k, v, k === TOKENS.REMEMBERME ? 24 * 365 : undefined);
                 });
+
+                Toast(Constant.httpStatus.SUCCESS, response.data.message);
+                setTimeout(function () { goTo(PAGE.HOME) }, Event.timeout);
             }
         }
+    }).catch(err => {
+        if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
+        else Toast(Constant.httpStatus.ERROR, err.data.message);
     });
-
 }

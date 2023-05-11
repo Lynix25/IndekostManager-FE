@@ -23,10 +23,10 @@ export function Toast(status, message) {
         return toastr.error(message, status.toUpperCase());
       
       case "success":
-        return toastr.success(message, status.toUpperCase());
+        return toastr.success(message, "SUKSES");
     
       case "warning":
-        return toastr.warning(message, status.toUpperCase());
+        return toastr.warning(message, "PERHATIAN");
 
       default:
         return toastr.info(message, status.toUpperCase());

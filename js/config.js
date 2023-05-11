@@ -63,6 +63,9 @@ export const Constant = {
         PENUH: "Penuh",
         RESERVED: "Disewa Pribadi",
         FAMILY_RESERVERED: "Disewa Pasutri"
+    }, 
+    requestListType: {
+        TODO: "ToDO"
     }
 }
 
@@ -71,6 +74,11 @@ export const PAGE = {
     LOGIN: "/login.html",
     PROFILE: "./profile.html",
     
+    ROOMLIST: './listuser.html',
+    CREATEUSER: './registeruser.html',
+    EDITUSER: './edituser.html?id=',
+    USERDETAIL: './userdetail.html?id=',
+
     ANNOUNCEMENTMENU: "./announcementmenu.html", 
     ANNOUNCEMENTDETAIL: "./announcementdetail.html?id=",
     
@@ -113,11 +121,11 @@ export const ServiceURL = {
         getByUsername: (username) => `/account?username=${username}`
     },
     User: {
-        getAll: "/user?room=",
+        getAll: (roomId) => `/user?room=${roomId}`,
         getById: (id) => `/user/${id}`,
         register: "/user",
         update: (id) => `/user/${id}`,
-        delete: (id) => `/user/${id}`,
+        delete: (id, requester) => `/user/${id}?requester=${requester}`,
 
         // User account
         login: "/user/login",
@@ -165,7 +173,7 @@ export const ServiceURL = {
     Task: {
         create: "/task",
         update: (id) => `/task/${id}`,
-        getAll: (status) => `/task?requestor=${status}`,
+        getAll: (requestor, type) => `/task?requestor=${requestor}&type=${type}`,
         getById: (id) => `/task/${id}`,
     },
     Payment: {
