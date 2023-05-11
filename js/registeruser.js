@@ -1,21 +1,22 @@
 import { APIGet, APIPost } from "./api.js";
-import { ServiceURL } from "./config.js";
+import { Toast } from "./component/toast.js";
+import { Constant, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { getFormValue, getFormValueV2, handleFormSubmited } from "./utils.js";
+import { getFormValueV2, goBack, goTo, handleFormSubmited } from "./utils.js";
 
 handleFormSubmited(e => {
     let data = getFormValueV2(e.target);
     
     APIPost(ServiceURL.User.register, data, {"Requester-ID" : getCookie("id"), "Content-Type": "multipart/form-data"}).then(res => {
-        console.log(res);
+        Toast(Constant.httpStatus.SUCCESS, res.data.message)
+        goTo(PAGE.USERLIST);
     }).catch(err => {
         console.log(err);
     })
 
 })
 
-APIGet("/room").then(res => {
-    console.log(res.data.data)
+APIGet(ServiceURL.Room.getAll).then(res => {
     addOptions("#room", res.data.data, "name");
 })
 
@@ -48,3 +49,7 @@ document.querySelector("#identityCardImage").addEventListener("change", event =>
         reader.readAsDataURL(file);
     }
 })
+
+document.getElementById("back").addEventListener("click", e => {
+    goBack();
+});

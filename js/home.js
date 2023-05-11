@@ -114,7 +114,7 @@ if (isOwnerOrAdmin()) {
         console.log(data);
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
 
-        document.querySelector(".due-date").innerHTML = data.maxDueDate > 0 ? `Bayar sebelum: <span class="${isUnderOneWeek(data.maxDueDate) ? "" : "text-danger"} payment-label fa-solid fw-bold">${UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY")}</span>` : "";
+        document.querySelector(".due-date").innerHTML = data.maxDueDate > 0 ? `Bayar sebelum: <span class="${isUnderOneWeek(data.maxDueDate) ? "" : "text-danger"} fw-bold">${UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY")}</span>` : "";
         if (data.maxDueDate < 0) document.querySelector(".payment-label-2").innerHTML = "Belum ada tagihan";
     }).catch(err => {
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(0);

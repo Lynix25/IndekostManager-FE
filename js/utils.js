@@ -1,4 +1,4 @@
-import { Constant, END_POINT, SECRET } from "./config.js"
+import { Constant, END_POINT, Event, SECRET } from "./config.js"
 import { getCookie } from "./cookiemanagement.js";
 
 /**
@@ -325,11 +325,11 @@ export function forEach(data, callback, keySort = "none") {
     }
 }
 
-export function goTo(path) {
+export function goTo(path, timeout) {
     // / Absolute
     // ./ relative
     if (getCurrentPath() === path) return;
-    window.location.href = path;
+    setTimeout(e => { window.location.href = path }, timeout ? timeout : Event.timeout);
 }
 
 export function goBack() {
