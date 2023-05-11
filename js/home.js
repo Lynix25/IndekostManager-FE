@@ -19,9 +19,9 @@ if (isOwnerOrAdmin()) {
         let data = res.data;
         console.log(data);
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
-        
-        document.querySelector(".due-date").innerHTML = data.maxDueDate > 0 ? `Bayar sebelum: <span class="${isUnderOneWeek(data.maxDueDate) ? "" : "text-danger" } payment-label fa-solid fw-bold">${UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY")}</span>` : "";
-        if(data.maxDueDate < 0) document.querySelector(".payment-label-2").innerHTML = "Belum ada tagihan";
+
+        document.querySelector(".due-date").innerHTML = data.maxDueDate > 0 ? `Bayar sebelum: <span class="${isUnderOneWeek(data.maxDueDate) ? "" : "text-danger"} payment-label fa-solid fw-bold">${UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY")}</span>` : "";
+        if (data.maxDueDate < 0) document.querySelector(".payment-label-2").innerHTML = "Belum ada tagihan";
     }).catch(err => {
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(0);
     });
@@ -133,7 +133,60 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
     }
 });
 
-APIGet(ServiceURL.Task.getAll("","")).then(res => {
+let taskCanvas = document.createElement("canvas");
+document.querySelector(".task-chart").appendChild(taskCanvas);
+let taskChart = new Chart(taskCanvas, {
+    type: 'bar',
+    data: {
+        labels: [
+            'Red',
+            'Blue',
+            'Yellow'
+        ],
+        datasets: [{ data: [300, 50, 100] }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: 'Custom Chart Title'
+            },
+            colors: {
+                forceOverride: true
+            }
+        },
+        aspectRatio: 2 / 1
+    }
+});
+
+let processedCanvas = document.createElement("canvas");
+document.querySelector(".processed-chart").appendChild(processedCanvas);
+let processedChart = new Chart(processedCanvas, {
+    type: 'pie',
+    data: {
+        labels: [],
+        datasets: [{ data: [] }]
+    },
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Proces Custom Chart Title'
+            },
+            colors: {
+                forceOverride: true
+            }
+        },
+        aspectRatio: 2 / 1
+    }
+});
+
+APIGet(ServiceURL.Task.getAll("", "")).then(res => {
     let data = res.data.data;
 
     if (isOwnerOrAdmin()) {
@@ -141,7 +194,7 @@ APIGet(ServiceURL.Task.getAll("","")).then(res => {
         forEach(data, v => {
             tasks.push(v.task);
         })
-        let taskChart = document.createElement("canvas");
+        // let taskChart = document.createElement("canvas");
 
         let filteredTasks = tasks.filter(task => UNIXtimeConverter(task.taskDate, "MM") === UNIXtimeConverter(Date.now(), "MM"))
 
@@ -153,32 +206,12 @@ APIGet(ServiceURL.Task.getAll("","")).then(res => {
             chartData[v.service.serviceName]++;
         })
 
-        new Chart(taskChart, {
-            type: 'bar',
-            data: {
-                datasets: [{
-                    data: Object.values(chartData)
-                }],
-                labels: Object.keys(chartData)
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Custom Chart Title'
-                    }
-                },
-                aspectRatio: 2 / 1
-            }
-        });
+        // taskChart.data.labels.push(...Object.keys(chartData))
+        // taskChart.data.datasets.forEach((dataset) => {
+        //     dataset.data.push(...Object.values(chartData));
+        // })
+        // taskChart.update();
 
-        document.querySelector(".task-chart").appendChild(taskChart);
-        
         let processedData = {}
         forEach(filteredTasks, v => {
             if (!(v.status in processedData)) {
@@ -187,31 +220,18 @@ APIGet(ServiceURL.Task.getAll("","")).then(res => {
             processedData[v.status]++;
         })
 
-        let processedChart = document.createElement("canvas");
-        new Chart(processedChart, {
-            type: 'pie',
-            data: {
-                datasets: [{
-                    data: Object.values(processedData)
-                }],
-                labels: Object.keys(processedData)
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+        processedChart.data.labels.push(...Object.keys(processedData))
+        processedChart.data.datasets.forEach((dataset) => {
+            dataset.data.push(...Object.values(processedData));
+        })
+        processedChart.update();
 
-        document.querySelector(".processed-chart").appendChild(processedChart);
     }
 });
 
-APIGet(ServiceURL.Task.getAll(getCookie("id"),"")).then(res => {
+APIGet(ServiceURL.Task.getAll(getCookie("id"), "")).then(res => {
     let data = res.data.data;
-    
+
     if (data.length > 0) {
         document.querySelector("#no-taskOrRequest").setAttribute("hidden", "");
         document.querySelector("#list-taskOrRequest").removeAttribute("hidden");
