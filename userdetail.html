@@ -13,13 +13,88 @@
 </head>
 
 <body>
-    <div class="frame">
-        <h1 class="text-center">Profile Detail</h1>
-        <div>
-            <div></div>
-            <span></span>
+    <form class="frame card p-4 mx-auto my-4" action="" method="post">
+        <div class="page-title my-4 align-items-center">
+            <div class="hover-text">
+                <span class="tooltip-text tooltip-top-title">Kembali</span>
+                <span id="back"><i class="fa fa-chevron-left"></i></span>
+            </div>
+            <h5 class="text-center m-0 w-100">Detail Data User</h5>
+        </div>
+        <hr/>
+        <div class="row mb-2">
+            <div class="col px-1">
+                <label class="form-label" for="name">Nama</label>
+                <input disabled class="form-control" type="text" name="name" id="name" minlength="2" placeholder="Nama lengkap" required>
+            </div>
+            <div class="col px-1">
+                <label class="form-label" for="alias">Panggilan</label>
+                <input disabled class="form-control" type="text" name="alias" id="alias" placeholder="Nama panggilan">
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col px-1">
+                <label class="form-label" for="email">Email</label>
+                <input disabled class="form-control" type="email" name="email" id="email" placeholder="Email">
+            </div>
+            <div class="col px-1">
+                <label class="form-label" for="phone">No. Telepon</label>
+                <input disabled class="form-control" type="number" name="phone" id="phone" minlength="10" placeholder="Nomor telepon" required>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col px-1">
+                <label class="form-label" for="gender">Gender</label>
+                <select disabled class="form-select" name="gender" id="gender" required>
+                    <option>Laki-laki</option>
+                    <option>Perempuan</option>
+                </select>
+            </div>
+            <div class="col px-1">
+                <label class="form-label" for="married">Status</label>
+                <select disabled class="form-select" name="married" id="married" required>
+                    <option>Lajang</option>
+                    <option>Menikah</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col px-1">
+                <label class="form-label" for="job">Profesi</label>
+                <input disabled class="form-control" type="text" name="job" id="job" placeholder="Profesi" required>
+            </div>
+            <div class="col p-0 px-1">
+                <label class="form-label" for="role">Role</label>
+                <select disabled class="form-select" name="role" id="role" required>
+                    <option>Tenant</option>
+                    <option id="adminOption">Admin</option>
+                    <option hidden>Owner</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="px-1 room">
+                <label class="form-label" for="room">Kamar</label>
+                <select disabled class="form-select" name="room" id="room"></select>
+            </div>
+            <div class="px-1">
+                <label class="form-label" for="description">Deskripsi</label>
+                <textarea disabled class="form-control" type="text" name="description" id="description" placeholder="Penjelasan singkat mengenai user"></textarea>
+            </div>
+        </div>
+        <div class="mb-2">
+            <label class="form-label" for="identityCardImage">Foto KTP</label>
+            <img id="image" class="d-block m-auto" style="width: 70%;">
+        </div>
+
+        <div class="card-footer text-center mt-4">
+            <button id="edit" class="btn btn-primary">Ubah</button>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
 
 </html>

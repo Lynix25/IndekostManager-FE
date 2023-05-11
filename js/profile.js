@@ -23,7 +23,7 @@ if(isOwnerOrAdmin()) {
 } else {
     document.querySelector(".user-info").innerHTML = "<b>Biodata</b>";
     document.querySelector(".roomOrAddress-info").innerHTML = "<b>Info Kamar</b>";
-    document.querySelector(".report").setAttribute("hidden", "");
+    // document.querySelector(".report").setAttribute("hidden", "");
     document.querySelector("#room-info").removeAttribute("hidden");
     document.querySelector("#address-info").setAttribute("hidden", "");
     document.querySelector(".title").innerHTML = "Data Kamar";

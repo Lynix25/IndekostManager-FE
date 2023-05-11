@@ -1,59 +1,79 @@
 import { APIGet, APIPut } from "./api.js";
-import { getUpdateFormValue, getParamOnURL, handleFormSubmited } from "./utils.js";
+import { ServiceURL } from "./config.js";
+import { getUpdateFormValue, getParamOnURL, handleFormSubmited, goBack } from "./utils.js";
 
-APIGet("/user/" + getParamOnURL("id")).then(res => {
-    let user = res.data;
-    reloadData(user)
-    // console.log(user);
-    // let nameInput = document.querySelector("#name");
-    // nameInput.setAttribute("value", user.name);
+APIGet(ServiceURL.User.getById(getParamOnURL("id"))).then(res => {
+    let data = res.data.data
+    reloadData(data);
+});
 
-    // let aliasInput = document.querySelector("#alias");
-    // aliasInput.setAttribute("value", user.alias);
+function reloadData(data){
 
-    // let roomInput = document.querySelector("#room");
-    // roomInput.setAttribute("value", user.roomId);
-    // roomInput.setAttribute("disabled", "");
+    let user = data.user;
+    let room = data.room;
 
-    // let emailInput = document.querySelector("#email");
-    // emailInput.setAttribute("value", user.email);
-
-    // let jobInput = document.querySelector("#job");
-    // jobInput.setAttribute("value", user.job);
-
-    // let phoneInput = document.querySelector("#phone");
-    // phoneInput.setAttribute("value", user.phone);
-
-    // let genderInput = document.querySelector("#gender");
-    // genderInput.setAttribute("value", user.gender == "Male" ? "Laki - laki" : "Perempuan");
-    // genderInput.setAttribute("disabled", "");
-
-    // let identityCardShow = document.getElementById("identityCardImageTag");
-    // identityCardShow.src = convertImage64ToSrc(user.identityCardImage);
-})
-
-function reloadData(user){
     let nameInput = document.querySelector("#name");
     nameInput.setAttribute("value", user.name);
 
     let aliasInput = document.querySelector("#alias");
     aliasInput.setAttribute("value", user.alias);
 
-    let roomInput = document.querySelector("#room");
-    roomInput.setAttribute("value", user.roomId);
-
     let emailInput = document.querySelector("#email");
     emailInput.setAttribute("value", user.email);
-
-    let jobInput = document.querySelector("#job");
-    jobInput.setAttribute("value", user.job);
 
     let phoneInput = document.querySelector("#phone");
     phoneInput.setAttribute("value", user.phone);
 
     let genderInput = document.querySelector("#gender");
-    genderInput.setAttribute("value", user.gender == "Male" ? "Laki - laki" : "Perempuan");
+    setSelected(genderInput, user.gender);
 
+    let statusInput = document.querySelector("#married");
+    statusInput.setAttribute("value", user.married == true ? Constant.userAttribute.maritalStatus.MARRIED : Constant.userAttribute.maritalStatus.SINGLE);
+    
+    let jobInput = document.querySelector("#job");
+    jobInput.setAttribute("value", user.job);
+
+    let roleInput = document.querySelector("#role");
+    setSelected(roleInput, user.role.name);
+
+    if(room != null) {
+        let roomInput = document.querySelector("#room");
+        roomInput.setAttribute("value", room.name);
+    }
+
+    let descriptionInput = document.querySelector("#description");
+    descriptionInput.innerHTML = (user.description != null ? user.description : "-");
+
+    let image = user.identityCardImage;
+    let src;
+    if(image == null || image.trim() === "") src = "asset/no_image.png"
+    else src = `data:image/png;base64,${image}`;
+
+    let identityCardImageOutput = document.querySelector("#image");
+    identityCardImageOutput.setAttribute("src", src);
+
+}
+
+function setSelected(listOption, selectedValue) {
+    for(let i=0; i < listOption.options.length; i++) {
+        if(listOption.options[i].text === selectedValue) {
+            listOption.options[i].selected = true;
+        }
+    }
+}
+
+function setSelectedMarried(listOption, selectedValue) {
+    for(let i=0; i < listOption.options.length; i++) {
+        if(selectedValue == true) {
+            if(listOption.options[i].text === Constant.userAttribute.maritalStatus.MARRIED) {
+                listOption.options[i].selected = true;
+            }
+        } else {
+            if(listOption.options[i].text === Constant.userAttribute.maritalStatus.SINGLE) {
+                listOption.options[i].selected = true;
+            }
+        }
+    }
 }
 
 handleFormSubmited(e => {
@@ -67,4 +87,8 @@ handleFormSubmited(e => {
 
 document.addEventListener("change", e => {
     e.target.setAttribute("changed", "");
-})
+});
+
+document.querySelector("#back").addEventListener("click", e => {
+    goBack();
+});

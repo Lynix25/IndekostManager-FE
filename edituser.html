@@ -14,54 +14,91 @@
 
 <body>
     <form class="frame card p-4 mx-auto my-4" action="" method="post">
-        <h5 class="text-center">Ubah Data User</h5>
+        <div class="page-title my-4 align-items-center">
+            <div class="hover-text">
+                <span class="tooltip-text tooltip-top-title">Kembali</span>
+                <span id="back"><i class="fa fa-chevron-left"></i></span>
+            </div>
+            <h5 class="text-center m-0 w-100">Ubah Data User</h5>
+        </div>
         <hr/>
-        <div class="row">
-            <div class="col ps-0">
+        <div class="row mb-2">
+            <div class="col px-1">
                 <label class="form-label" for="name">Nama</label>
-                <input class="form-control" type="text" name="name" id="name">
+                <input class="form-control" type="text" name="name" id="name" minlength="2" placeholder="Nama lengkap" required>
             </div>
-    
-            <div class="col pe-0">
-                <label class="form-label" for="alias">Alias</label>
-                <input class="form-control" type="text" name="alias" id="alias">
+            <div class="col px-1">
+                <label class="form-label" for="alias">Panggilan</label>
+                <input class="form-control" type="text" name="alias" id="alias" placeholder="Nama panggilan">
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col px-1">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-control" type="email" name="email" id="email" placeholder="Email">
+            </div>
+            <div class="col px-1">
+                <label class="form-label" for="phone">No. Telepon</label>
+                <input class="form-control" type="number" name="phone" id="phone" minlength="10" placeholder="Nomor telepon" required>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col px-1">
+                <label class="form-label" for="gender">Gender</label>
+                <select class="form-select" name="gender" id="gender" required>
+                    <option>Laki-laki</option>
+                    <option>Perempuan</option>
+                </select>
+            </div>
+            <div class="col px-1">
+                <label class="form-label" for="married">Status</label>
+                <select class="form-select" name="married" id="married" required>
+                    <option>Lajang</option>
+                    <option>Menikah</option>
+                </select>
             </div>
         </div>
 
-        <div>
-            <label class="form-label" for="email">Email</label>
-            <input class="form-control" type="email" name="email" id="email">
+        <div class="row mb-2">
+            <div class="col px-1">
+                <label class="form-label" for="job">Profesi</label>
+                <input class="form-control" type="text" name="job" id="job" placeholder="Profesi" required>
+            </div>
+            <div class="col p-0 px-1">
+                <label class="form-label" for="role">Role</label>
+                <select class="form-select" name="role" id="role" required disabled>
+                    <option>Tenant</option>
+                    <option id="adminOption">Admin</option>
+                    <option hidden>Owner</option>
+                </select>
+            </div>
         </div>
 
-        <div>
-            <label class="form-label" for="room">Kamar</label>
-            <input class="form-control" type="text" id="room" disabled>
+        <div class="row mb-2">
+            <div class="px-1 room">
+                <label class="form-label" for="room">Kamar</label>
+                <select class="form-select" name="room" id="room"></select>
+            </div>
+            <div class="px-1">
+                <label class="form-label" for="description">Deskripsi</label>
+                <textarea class="form-control" type="text" name="description" id="description" placeholder="Penjelasan singkat mengenai user"></textarea>
+            </div>
         </div>
-
-        <div>
-            <label class="form-label" for="phone">No Telfon</label>
-            <input class="form-control" type="tel" name="phone" id="phone">
-        </div>
-
-        <div>
-            <label class="form-label" for="gender">Gender</label>
-            <input class="form-control" type="text" id="gender" disabled>
-        </div>
-
-        <div>
-            <label class="form-label" for="job">Pekerjaan</label>
-            <input class="form-control" type="text" name="job" id="job">
-        </div>
-
-        <div>
+        <div class="mb-2">
             <label class="form-label" for="identityCardImage">Foto KTP</label>
-            <input class="form-control" type="file" name="identityCardImage" id="identityCardImage" accept=".jpg, .png, .jpeg">
-            <!-- <img id="identityCardImageTag" style="display: block; margin: auto; width: 70%;"> -->
+            <input class="form-control" type="file" name="identityCardImage" id="identityCardImage" accept=".jpg, .png, .jpeg" required>
+            <div class="text-center">
+                <i class="fa fa-spinner fa-spin" hidden></i>
+            </div>
+            <img id="image" class="d-block m-auto" style="width: 70%;">
         </div>
-        <div>
-            <button type="submit" class="btn btn-primary">Save</button>
+
+        <div class="card-footer text-center mt-4">
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
 
 </html>

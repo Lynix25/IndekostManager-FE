@@ -7,13 +7,12 @@ import { addCustomEventListener, getUserID, goTo } from "./utils.js";
 
 APIGet(ServiceURL.User.getAll('')).then(res => {
     let users = res.data.data;
-    let countTenant = 0, countAdmin = 0;
+    let countTenant = 0, countAdmin = 0, countOwner = 0;
     users.forEach(data => {
         let user = document.createElement("li");
         user.classList.add("item", "d-flex", "justify-content-between", "align-items-center", "m-0");
-        console.log(data)
+        
         let role = data.user.role.name;
-
         let userDetail = document.createElement("div");
         userDetail.classList.add("d-flex");
         userDetail.setAttribute("style", "cursor: pointer")
@@ -22,7 +21,7 @@ APIGet(ServiceURL.User.getAll('')).then(res => {
                 <i class="fad fa-user me-3 my-auto"></i>
                 <div>
                     <div>${data.user.name}</div>
-                    <div>${role}</div>
+                    <small>${data.account.username}</small>
                 </div>
             </div>`;
         userDetail.addEventListener("click", e => {
@@ -33,10 +32,12 @@ APIGet(ServiceURL.User.getAll('')).then(res => {
         user.appendChild(userDetail);
         
         if(role === Constant.role.OWNER) {
+            countOwner++;
             document.querySelector("#owner-list").appendChild(user);
         } else {
 
-            if(getCookie('role') === Constant.role.OWNER) {
+            if(getCookie('role') === Constant.role.OWNER || 
+                (getCookie('role') === Constant.role.ADMIN && role === Constant.role.TENANT)) {
 
                 let buttonContainer = document.createElement("div");
             
@@ -71,7 +72,7 @@ APIGet(ServiceURL.User.getAll('')).then(res => {
                         'Hapus', 'Batal', () => {
                             APIDelete(ServiceURL.User.delete(data.user.id, getUserID())).then(response => {
                                 Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                                setTimeout(function() { goTo(PAGE.ROOMLIST)}, Event.timeout);
+                                setTimeout(function() { goTo(PAGE.USERLIST)}, Event.timeout);
                             }).catch(err => {
                                 if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
                                 else Toast(Constant.httpStatus.ERROR, err.data.message);
@@ -92,6 +93,18 @@ APIGet(ServiceURL.User.getAll('')).then(res => {
             }
         }
     });
-    if(countAdmin == 0) document.querySelector("#separator1").setAttribute("hidden", "");
-    if(countTenant == 0) document.querySelector("#separator2").setAttribute("hidden", "");
+    if(countAdmin == 0) {
+        document.querySelector("#admin-list").setAttribute("hidden", "");
+        document.querySelector("#separator1").setAttribute("hidden", "");
+    } else {
+        document.querySelector("#admin-list").removeAttribute("hidden", "");
+        document.querySelector("#separator1").removeAttribute("hidden", "");
+    }
+    if(countTenant == 0) {
+        document.querySelector("#tenant-list").setAttribute("hidden", "");
+        document.querySelector("#separator2").setAttribute("hidden", "");
+    } else {
+        document.querySelector("#tenant-list").removeAttribute("hidden", "");
+        document.querySelector("#separator2").removeAttribute("hidden", "");
+    }
 });
