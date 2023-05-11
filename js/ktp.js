@@ -1,5 +1,6 @@
 import { APIGet, APIPut } from "./api.js";
-import { ServiceURL } from "./config.js";
+import { Toast } from "./component/toast.js";
+import { Constant, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 import { addCustomEventListener, convertImage64ToSrc, getFormValueV2, handleFormSubmited } from "./utils.js";
 
@@ -12,8 +13,10 @@ APIGet(ServiceURL.User.getById(getCookie('id'))).then(res => {
 handleFormSubmited(e => {
     let data = getFormValueV2(e.target);
     
-    APIPut(ServiceURL.User.update(getCookie("id")), data, {"Content-Type": "multipart/form-data"}).then(e => {
-        console.log(e);
+    APIPut(ServiceURL.User.update(getCookie("id")), data, {"Content-Type": "multipart/form-data"}).then(res => {
+        Toast(Constant.httpStatus.SUCCESS, res.data.message);
+    }).catch(err => {
+        Toast(Constant.httpStatus.ERROR, err.message);
     })
 })
 

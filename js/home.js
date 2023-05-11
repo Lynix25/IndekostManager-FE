@@ -2,17 +2,111 @@ import { APIGet } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { UNIXtimeConverter, forEach, goTo, isOwnerOrAdmin, isUnderOneWeek, numberWithThousandsSeparators, statusToString } from "./utils.js";
+import { UNIXtimeConverter, forEach, goTo, isOwner, isOwnerOrAdmin, isUnderOneWeek, numberWithThousandsSeparators, statusToString } from "./utils.js";
 
 if (isOwnerOrAdmin()) {
     document.querySelector(".summary").setAttribute("hidden", "");
-    document.querySelector("#announcement-content").setAttribute("hidden", "");
     document.querySelector(".menu-tenant").setAttribute("hidden", "");
 
     document.querySelector(".taskOrRequest-label").innerHTML = "Yuk, segera selesaikan pekerjaan berikut!";
+
+    let taskCanvas = document.querySelector(".task-chart");
+    let taskChart = new Chart(taskCanvas, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{ label: 'Pengajuan Layanan', data: [] }],
+            borderWidth: 1
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Frekuensi Pengajuan Layanan Bulanan'
+                }
+            },
+            aspectRatio: 2 / 1
+        }
+    });
+
+    let processedCanvas = document.querySelector(".processed-chart");
+    let processedChart = new Chart(processedCanvas, {
+        type: 'pie',
+        data: {
+            labels: [],
+            datasets: [{ data: [] }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Performa Pengerjaan Layanan Bulanan'
+                },
+                colors: {
+                    forceOverride: true
+                }
+            },
+            aspectRatio: 2 / 1
+        }
+    });
+
+    APIGet(ServiceURL.Task.getAll("", "")).then(res => {
+        let data = res.data.data;
+
+        if (isOwner()) {
+            document.querySelector("#announcement-content").setAttribute("hidden", "");
+            let tasks = [];
+            forEach(data, v => {
+                tasks.push(v.task);
+            })
+
+            let filteredTasks = tasks.filter(task => UNIXtimeConverter(task.taskDate, "MM") === UNIXtimeConverter(Date.now(), "MM"))
+
+            let chartData = {}
+            forEach(filteredTasks, v => {
+                if (!(v.service.serviceName in chartData)) {
+                    chartData[v.service.serviceName] = 0;
+                }
+                chartData[v.service.serviceName]++;
+            })
+
+            taskChart.data.labels.push(...Object.keys(chartData))
+            taskChart.data.datasets.forEach((dataset) => {
+                dataset.data.push(...Object.values(chartData));
+            })
+            taskChart.update();
+
+            let processedData = {}
+            forEach(filteredTasks, v => {
+                if (!(v.status in processedData)) {
+                    processedData[v.status] = 0;
+                }
+                processedData[v.status]++;
+            })
+
+            processedChart.data.labels.push(...Object.keys(processedData))
+            processedChart.data.datasets.forEach((dataset) => {
+                dataset.data.push(...Object.values(processedData));
+            })
+            processedChart.update();
+
+        }
+        else {
+            taskCanvas.parentElement.setAttribute("hidden", "")
+            processedCanvas.parentElement.setAttribute("hidden", "")
+        }
+    });
 } else {
     document.querySelector(".menu-admin").setAttribute("hidden", "");
     document.querySelector(".chart").setAttribute("hidden", "");
+    document.querySelector(".processed-chart").setAttribute("hidden", "");
+    document.querySelector(".task-chart").setAttribute("hidden", "");
+
     document.querySelector(".taskOrRequest-label").innerHTML = "Ini daftar layanan terbaru yang kamu ajukan";
 
     APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
@@ -133,103 +227,7 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
     }
 });
 
-let taskCanvas = document.createElement("canvas");
-document.querySelector(".task-chart").appendChild(taskCanvas);
-let taskChart = new Chart(taskCanvas, {
-    type: 'bar',
-    data: {
-        labels: [
-            'Red',
-            'Blue',
-            'Yellow'
-        ],
-        datasets: [{ data: [300, 50, 100] }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        },
-        plugins: {
-            title: {
-                display: true,
-                text: 'Custom Chart Title'
-            },
-            colors: {
-                forceOverride: true
-            }
-        },
-        aspectRatio: 2 / 1
-    }
-});
-
-let processedCanvas = document.createElement("canvas");
-document.querySelector(".processed-chart").appendChild(processedCanvas);
-let processedChart = new Chart(processedCanvas, {
-    type: 'pie',
-    data: {
-        labels: [],
-        datasets: [{ data: [] }]
-    },
-    options: {
-        plugins: {
-            title: {
-                display: true,
-                text: 'Proces Custom Chart Title'
-            },
-            colors: {
-                forceOverride: true
-            }
-        },
-        aspectRatio: 2 / 1
-    }
-});
-
 APIGet(ServiceURL.Task.getAll("", "")).then(res => {
-    let data = res.data.data;
-
-    if (isOwnerOrAdmin()) {
-        let tasks = [];
-        forEach(data, v => {
-            tasks.push(v.task);
-        })
-        // let taskChart = document.createElement("canvas");
-
-        let filteredTasks = tasks.filter(task => UNIXtimeConverter(task.taskDate, "MM") === UNIXtimeConverter(Date.now(), "MM"))
-
-        let chartData = {}
-        forEach(filteredTasks, v => {
-            if (!(v.service.serviceName in chartData)) {
-                chartData[v.service.serviceName] = 0;
-            }
-            chartData[v.service.serviceName]++;
-        })
-
-        // taskChart.data.labels.push(...Object.keys(chartData))
-        // taskChart.data.datasets.forEach((dataset) => {
-        //     dataset.data.push(...Object.values(chartData));
-        // })
-        // taskChart.update();
-
-        let processedData = {}
-        forEach(filteredTasks, v => {
-            if (!(v.status in processedData)) {
-                processedData[v.status] = 0;
-            }
-            processedData[v.status]++;
-        })
-
-        processedChart.data.labels.push(...Object.keys(processedData))
-        processedChart.data.datasets.forEach((dataset) => {
-            dataset.data.push(...Object.values(processedData));
-        })
-        processedChart.update();
-
-    }
-});
-
-APIGet(ServiceURL.Task.getAll(getCookie("id"), "")).then(res => {
     let data = res.data.data;
 
     if (data.length > 0) {
