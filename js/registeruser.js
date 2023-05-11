@@ -19,17 +19,12 @@ APIGet("/room").then(res => {
     addOptions("#room", res.data.data, "name");
 })
 
-APIGet("/account").then(res => {
-    addOptions("#account", res.data.data, "username");
-})
-
-
 function addOptions(selector, arrayOfObjectOptions, innerHTMLKey, valueKey = "id") {
     let selection = document.querySelector(selector);
 
     arrayOfObjectOptions.forEach(object => {
         let option = document.createElement("option");
-        option.innerHTML = object[innerHTMLKey];
+        option.innerHTML = object.room.name;
         option.setAttribute('value', object[valueKey]);
         selection.appendChild(option);
     });
