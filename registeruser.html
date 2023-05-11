@@ -14,8 +14,14 @@
 
 <body>
     <form class="frame card p-4 mx-auto my-4" action="" method="post">
-        <h5 class="text-center">Tambahkan User</h5>
-        <hr/>
+        <div class="page-title my-4 align-items-center">
+            <div class="hover-text">
+                <span class="tooltip-text tooltip-top-title">Kembali</span>
+                <span id="back"><i class="fa fa-chevron-left"></i></span>
+            </div>
+            <h5 class="text-center m-0 w-100">Tambah Data User</h5>
+        </div>
+        <hr />
         <div class="row">
             <div class="col ps-0">
                 <label class="form-label" for="name">Nama</label>
@@ -45,7 +51,7 @@
             <select class="form-select" name="roomId" id="room">
             </select>
         </div>
-<!-- 
+        <!-- 
         <div>
             <label class="form-label" for="account">Akun</label>
             <select class="form-select" name="accountId" id="account">
@@ -77,7 +83,8 @@
 
         <div>
             <label class="form-label" for="identityCardImage">Foto KTP</label>
-            <input class="form-control" type="file" name="identityCardImage" id="identityCardImage" accept=".jpg, .png, .jpeg">
+            <input class="form-control" type="file" name="identityCardImage" id="identityCardImage"
+                accept=".jpg, .png, .jpeg">
             <div class="text-center">
                 <i class="fa fa-spinner fa-spin" hidden></i>
             </div>
