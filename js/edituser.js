@@ -1,46 +1,28 @@
 import { APIGet, APIPut } from "./api.js";
-import { getUpdateFormValue, getParamOnURL, handleFormSubmited } from "./utils.js";
+import { ServiceURL } from "./config.js";
+import { getCookie } from "./cookiemanagement.js";
+import { getUpdateFormValue, getParamOnURL, handleFormSubmited, isOwnerOrAdmin, getFormValueV2 } from "./utils.js";
 
-APIGet("/user/" + getParamOnURL("id")).then(res => {
-    let user = res.data;
-    reloadData(user)
-    // console.log(user);
-    // let nameInput = document.querySelector("#name");
-    // nameInput.setAttribute("value", user.name);
-
-    // let aliasInput = document.querySelector("#alias");
-    // aliasInput.setAttribute("value", user.alias);
-
-    // let roomInput = document.querySelector("#room");
-    // roomInput.setAttribute("value", user.roomId);
-    // roomInput.setAttribute("disabled", "");
-
-    // let emailInput = document.querySelector("#email");
-    // emailInput.setAttribute("value", user.email);
-
-    // let jobInput = document.querySelector("#job");
-    // jobInput.setAttribute("value", user.job);
-
-    // let phoneInput = document.querySelector("#phone");
-    // phoneInput.setAttribute("value", user.phone);
-
-    // let genderInput = document.querySelector("#gender");
-    // genderInput.setAttribute("value", user.gender == "Male" ? "Laki - laki" : "Perempuan");
-    // genderInput.setAttribute("disabled", "");
-
-    // let identityCardShow = document.getElementById("identityCardImageTag");
-    // identityCardShow.src = convertImage64ToSrc(user.identityCardImage);
+APIGet(ServiceURL.User.getById(getParamOnURL("id")) ).then(res => {
+    reloadData(res.data)
 })
 
-function reloadData(user){
+function reloadData(res){
+    let user = res.data.user;
+    let room = res.data.room;
+
     let nameInput = document.querySelector("#name");
     nameInput.setAttribute("value", user.name);
 
     let aliasInput = document.querySelector("#alias");
     aliasInput.setAttribute("value", user.alias);
 
-    let roomInput = document.querySelector("#room");
-    roomInput.setAttribute("value", user.roomId);
+    let roomInput = document.querySelector("#room");    
+    if(user.role.name === "Tenant"){
+        roomInput.setAttribute("value", room.name);
+    }else{
+        roomInput.parentElement.setAttribute("hidden", "");
+    }
 
     let emailInput = document.querySelector("#email");
     emailInput.setAttribute("value", user.email);
@@ -57,13 +39,11 @@ function reloadData(user){
 }
 
 handleFormSubmited(e => {
-    let data = getUpdateFormValue(e.target);
-    console.log(data);
-    // APIPut("/user/" + getParamOnURL("id"), data,  {"Requester-ID" : getCookie("tokens"), "Content-Type": "multipart/form-data"}).then(res => {
-    //     console.log(res);
-    //     reloadData(res.data.data);
-    // })
-})
+    let data = getFormValueV2(e.target);
+    APIPut(ServiceURL.User.update(getParamOnURL("id")), data,  {"Requester-ID" : getCookie("id"), "Content-Type": "multipart/form-data"}).then(res => {
+        reloadData(res.data);
+    })
+}, undefined, true)
 
 document.addEventListener("change", e => {
     e.target.setAttribute("changed", "");

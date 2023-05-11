@@ -26,7 +26,6 @@ APIGet(ServiceURL.User.getAll('')).then(res => {
                 </div>
             </div>`;
         userDetail.addEventListener("click", e => {
-
             if(role === getCookie('role')) goTo(PAGE.PROFILE);
             else goTo(PAGE.USERDETAIL + data.user.id);
         });
