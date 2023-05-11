@@ -13,34 +13,28 @@
 </head>
 
 <body>
-    <div class="frame card p-4 mx-auto my-4">
+    <div class="row d-flex justify-content-center align-items-center m-4">
         <div class="page-title my-4">
             <div class="hover-text">
                 <span class="tooltip-text tooltip-top-title">Kembali</span>
-                <span><a href="./home.html"><i class="fa fa-chevron-left"></i></a></span>
+                <span id="back"><a href="./home.html"><i class="fa fa-chevron-left"></i></a></span>
             </div>
-            <h5 class="text-center m-0 w-100">List User</h5>
-            <div class="hover-text">
-                <span class="tooltip-text tooltip-top-title">Tambah user</span>
+            <h4 class="m-0">User</h4>
+            <div class="hover-text" id="add-room-toggle">
+                <span class="tooltip-text tooltip-top-title">Tambah User</span>
                 <span id="add-new"><a href="./registeruser.html"><i class="fa fa-plus"></i></a></span>
             </div>
         </div>
-        <hr/>
-        <ul id="user-list">
-            <!-- <li class="item d-flex justify-content-between align-items-center">
-                <div class="d-flex">
-                    <i class="fad fa-user me-3 my-auto" style="font-size: 2.2rem;"></i>
-                    <div>
-                        <div>Nama</div>
-                        <div>Role</div>
-                    </div>
-                </div>
-                <button type="edit" class="btn">
-                    <i class="fad fa-edit" style="font-size: 2.2rem;"></i>
-                </button>
-            </li> -->
-        </ul>
+        <div class="frame card mx-auto p-4">
+            <ul id="owner-list"></ul>
+            <hr id="separator1">
+            <ul id="admin-list"></ul>
+            <hr id="separator2">
+            <ul id="tenant-list"></ul>
+        </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
-
+</body>
 </html>

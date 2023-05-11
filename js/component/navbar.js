@@ -40,11 +40,11 @@ if (!noNavbarPage.includes(currentPath)) {
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                Penghuni 
+                User 
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="/listuser.html">Lihat Daftar Penghuni</a></li>
-                <li><a class="dropdown-item" href="/registeruser.html">Daftarkan Penghuni</a></li>
+                <li><a class="dropdown-item" href="/listuser.html">Lihat Daftar User</a></li>
+                <li><a class="dropdown-item" href="/registeruser.html">Daftarkan User</a></li>
             </ul>
         </li>`;
 

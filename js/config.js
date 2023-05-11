@@ -74,6 +74,11 @@ export const PAGE = {
     LOGIN: "/login.html",
     PROFILE: "./profile.html",
     
+    ROOMLIST: './listuser.html',
+    CREATEUSER: './registeruser.html',
+    EDITUSER: './edituser.html?id=',
+    USERDETAIL: './userdetail.html?id=',
+
     ANNOUNCEMENTMENU: "./announcementmenu.html", 
     ANNOUNCEMENTDETAIL: "./announcementdetail.html?id=",
     
@@ -115,11 +120,11 @@ export const ServiceURL = {
         getByUsername: (username) => `/account?username=${username}`
     },
     User: {
-        getAll: "/user?room=",
+        getAll: (roomId) => `/user?room=${roomId}`,
         getById: (id) => `/user/${id}`,
         register: "/user",
         update: (id) => `/user/${id}`,
-        delete: (id) => `/user/${id}`,
+        delete: (id, requester) => `/user/${id}?requester=${requester}`,
 
         // User account
         login: "/user/login",
