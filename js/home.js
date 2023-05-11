@@ -2,7 +2,7 @@ import { APIGet } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { UNIXtimeConverter, forEach, goTo, isOwnerOrAdmin, numberWithThousandsSeparators, statusToString } from "./utils.js";
+import { UNIXtimeConverter, forEach, goTo, isOwnerOrAdmin, isUnderOneWeek, numberWithThousandsSeparators, statusToString } from "./utils.js";
 
 if (isOwnerOrAdmin()) {
     document.querySelector(".summary").setAttribute("hidden", "");
@@ -17,9 +17,11 @@ if (isOwnerOrAdmin()) {
 
     APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
         let data = res.data;
+        console.log(data);
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
         
-        document.querySelector(".due-date").innerHTML = data.maxDueDate > 0 ? `Bayar sebelum: ${UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY")}` : "";
+        document.querySelector(".due-date").innerHTML = data.maxDueDate > 0 ? `Bayar sebelum: <span class="${isUnderOneWeek(data.maxDueDate) ? "" : "text-danger" } payment-label fa-solid fw-bold">${UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY")}</span>` : "";
+        if(data.maxDueDate < 0) document.querySelector(".payment-label-2").innerHTML = "Belum ada tagihan";
     }).catch(err => {
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(0);
     });

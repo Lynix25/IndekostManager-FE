@@ -485,6 +485,11 @@ export function isInSameDay(day1InMillis, day2InMillis) {
     return date1 == date2 ? true : false;
 }
 
+export function isUnderOneWeek(timeInMillis) {
+    console.log(timeInMillis, Date.now(), timeInMillis - Date.now(), (timeInMillis - Date.now()) / dayInMillis);
+    return (timeInMillis - Date.now()) / dayInMillis > 7 ? true : false;
+}
+
 export function UNIXtimeConverter(UNIXTimestamp, format = "MM/DD/YYYY hh:mm:ss UTZ", language = "id") {
     let a = new Date(UNIXTimestamp),
         months = {
