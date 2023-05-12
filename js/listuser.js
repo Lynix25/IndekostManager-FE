@@ -3,7 +3,7 @@ import { showModalConfirmation } from "./component/modal.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { addCustomEventListener, getUserID, goTo } from "./utils.js";
+import { addCustomEventListener, getUserID, goTo, isOwner } from "./utils.js";
 
 APIGet(ServiceURL.User.getAll('')).then(res => {
     let users = res.data.data;
@@ -11,7 +11,7 @@ APIGet(ServiceURL.User.getAll('')).then(res => {
     users.forEach(data => {
         let user = document.createElement("li");
         user.classList.add("item", "d-flex", "justify-content-between", "align-items-center", "m-0");
-        console.log(data)
+        
         let role = data.user.role.name;
 
         let userDetail = document.createElement("div");
@@ -35,7 +35,7 @@ APIGet(ServiceURL.User.getAll('')).then(res => {
             document.querySelector("#owner-list").appendChild(user);
         } else {
 
-            if(getCookie('role') === Constant.role.OWNER) {
+            if(isOwner()) {
 
                 let buttonContainer = document.createElement("div");
             

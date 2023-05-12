@@ -6,17 +6,14 @@ import { getUserID, goBack, goTo, isOwnerOrAdmin, statusToString, UNIXtimeConver
     Pending: Search
 */
 let paramGetTask = "";
-if(isOwnerOrAdmin()) {
-} else {
-    paramGetTask = getUserID();
-}
+if (!isOwnerOrAdmin()) paramGetTask = getUserID();
 
-APIGet(ServiceURL.Task.getAll(paramGetTask)).then(res => {
+APIGet(ServiceURL.Task.getAll(paramGetTask, "all")).then(res => {
     let data = res.data.data;
-    if(data.length > 0) {
+    if (data.length > 0) {
 
         document.querySelector(".no-data").setAttribute("hidden", "");
-        data.forEach(service => {   
+        data.forEach(service => {
             addRequest(service);
         });
     }
@@ -30,14 +27,13 @@ function addRequest(data) {
     let requestList = document.querySelector("#request-list");
     let task = document.createElement("li");
     task.setAttribute("data", taskObject.id);
-    task.classList.add("item-card", "p-3");
-    task.classList.add("item");
+    task.classList.add("item-card", "p-3", "item");
     task.setAttribute("style", "cursor: pointer")
     let [color, status] = statusToString(taskObject.status);
     APIGet(ServiceURL.Service.getById(taskObject.service.id)).then(res => {
 
         let roomInfo = "";
-        if(isOwnerOrAdmin())
+        if (isOwnerOrAdmin())
             roomInfo = `<div><span class="badge-green p-1 small fw-bold rounded" style="font-size: x-small;">${userObject.roomName}</span></div>`;
 
         task.innerHTML = `
@@ -76,7 +72,7 @@ function addRequest(data) {
     task.addEventListener("click", e => {
         goTo(PAGE.TASKDETAIL + e.currentTarget.getAttribute("data"));
     });
-    
+
     requestList.appendChild(task);
 }
 
