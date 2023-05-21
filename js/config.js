@@ -77,7 +77,7 @@ export const PAGE = {
     ROOMLIST: '/listuser.html',
     CREATEUSER: '/registeruser.html',
     USERLIST:'/listuser.html',
-    EDITUSER: '/edituser.html?id=',
+    EDITUSER: (userId) => `/edituser.html?id=${userId}`,
     USERDETAIL: '/userdetail.html?id=',
 
     ANNOUNCEMENTMENU: "/announcementmenu.html", 

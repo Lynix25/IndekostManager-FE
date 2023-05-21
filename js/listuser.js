@@ -49,7 +49,7 @@ APIGet(ServiceURL.User.getAll('')).then(res => {
                 `;
                 editButton.classList.add("btn");
                 editButton.addEventListener("click", e => {
-                    goTo(PAGE.EDITUSER + data.user.id)
+                    goTo(PAGE.EDITUSER(data.user.id))
                 });
                 buttonContainer.appendChild(editButton);
         
