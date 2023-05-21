@@ -1,13 +1,14 @@
 let CACHE_NAME = "indkost-cache-v1";
 let urlsToCache = [];
 let DEBUG_MODE = false;
+let OFFILINE_PAGE = "/offline.html"
 
 function debug(...data) {
-    if (DEBUG_MODE) console.log(data);
+    if (DEBUG_MODE) console.log(...data);
 }
 
 self.addEventListener('install', event => {
-    debug('Service worker install triggered')
+    debug('Service worker install triggered');
 
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -37,20 +38,31 @@ self.addEventListener('activate', event => {
 self.addEventListener("fetch", event => {
     debug("Service worker fetch triggered")
 
+    let request = event.request;
+    let url = new URL(request.url);
+
     event.respondWith(
-        caches.match(event.request).then(response => {
-            return fetch(event.request).then(res => {
-                debug(`Get ${event.request.url} from Network`)
+        caches.match(request).then(response =>
+            fetch(request).then(res => {
+                debug(`Get ${url} from Network`)
                 return res;
             }).catch(err => {
                 if (response) {
-                    debug(`Get ${event.request.url} from Cache`)
+                    debug(`Get ${url} from Cache`)
                     return response
                 } else {
-                    debug(`Fail to fetch ${event.request.url}`);
+                    debug(`Fail to fetch ${url}`);
+                    if (url.toString().includes(".html")) {
+                        // const cache = await caches.open(CACHE_NAME);
+                        // const cachedResponse = await cache.match(OFFILINE_PAGE);
+                        // return cachedResponse;
+                        return caches.open(CACHE_NAME).then(cache =>
+                            cache.match(OFFILINE_PAGE).then(offlinePage => offlinePage)
+                        )
+                    }
                 }
-            });
-        })
+            })
+        )
     )
 })
 
@@ -70,7 +82,7 @@ self.addEventListener('push', function (event) {
     response.badge = "asset/image/Logo-simple.png";
 
     self.clickTarget = response.redirect;
-    
+
     event.waitUntil(self.registration.showNotification(response.title, response));
 });
 
