@@ -4,16 +4,12 @@ import { Constant, ServiceURL } from "./config.js";
 import { addCustomEventListener, getParamOnURL, getTicketRequest, isOwnerOrAdmin, numberWithThousandsSeparators, statusToString, UNIXtimeConverter } from "./utils.js";
 
 APIGet(ServiceURL.Task.getById(getParamOnURL("id"))).then(res => {
-    let data = res.data.data;
-    reloadData(data);
+    let task = res.data.data;
+    reloadData(task);
 });
 
-function reloadData(dataTask) {
-
-    let task = dataTask.task;
-    let dataDetail = dataTask.user;
-
-    console.log(task)
+function reloadData(task) {
+    let dataDetail = task.user;
 
     document.querySelector(".id").innerHTML = `Kode pengajuan: ${getTicketRequest(task.id, task.createdDate)}`;
 

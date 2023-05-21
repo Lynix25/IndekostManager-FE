@@ -38,15 +38,13 @@ APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
         let tasksElements = document.createElement("span");
         tasksElements.setAttribute("group-name", "taskItemIds");
         taskItems.forEach(taskItem => {
-            let task = taskItem.task;
-            let service = taskItem.service;
             let taskElement = `
             <li class="border-bottom mb-1">
                 <div class="d-flex align-items-center">
-                <input class="form-check-input m-2 fs-4" type="checkbox" name="${task.id}" value=${task.charge}>
-                    <div>${service.serviceName}: ${service.variant}</div>
+                <input class="form-check-input m-2 fs-4" type="checkbox" name="${taskItem.id}" value=${taskItem.charge}>
+                    <div>${taskItem.service.serviceName}: ${taskItem.service.variant}</div>
                 </div>
-                <div class="text-end">Rp ${numberWithThousandsSeparators(task.charge)}</div>
+                <div class="text-end">Rp ${numberWithThousandsSeparators(taskItem.charge)}</div>
             </li>
             `
             tasksElements.appendChild(createElementFromString(taskElement));

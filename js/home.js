@@ -117,6 +117,7 @@ if (isOwnerOrAdmin()) {
         document.querySelector(".due-date").innerHTML = data.maxDueDate > 0 ? `Bayar sebelum: <span class="${isUnderOneWeek(data.maxDueDate) ? "" : "text-danger"} fw-bold">${UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY")}</span>` : "";
         if (data.maxDueDate < 0) document.querySelector(".payment-label-2").innerHTML = "Belum ada tagihan";
     }).catch(err => {
+        console.log(err);
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(0);
     });
 }
@@ -236,10 +237,10 @@ APIGet(ServiceURL.Task.getAll("", "")).then(res => {
 
         let count = 0;
         data.forEach(task => {
-            if (count > 0 && task.task.status != "Diterima")
+            if (count > 0 && task.status != "Diterima")
                 document.querySelector("#list-taskOrRequest").appendChild(document.createElement("hr"));
 
-            if (task.task.status != "Diterima") addRequest(task.user.roomName, task.task, "#list-taskOrRequest");
+            if (task.status != "Diterima") addRequest(task.user.roomName, task, "#list-taskOrRequest");
             count++;
         });
     }
