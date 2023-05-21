@@ -111,7 +111,7 @@ if (isOwnerOrAdmin()) {
 
     APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
         let data = res.data;
-        console.log(data);
+        
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
 
         document.querySelector(".due-date").innerHTML = data.maxDueDate > 0 ? `Bayar sebelum: <span class="${isUnderOneWeek(data.maxDueDate) ? "" : "text-danger"} fw-bold">${UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY")}</span>` : "";
@@ -247,7 +247,7 @@ APIGet(ServiceURL.Task.getAll("", "")).then(res => {
 });
 
 function addRequest(room, taskObject, elementId) {
-
+    console.log(taskObject);
     let requestList = document.querySelector(elementId);
 
     let task = document.createElement("li");
@@ -270,7 +270,7 @@ function addRequest(room, taskObject, elementId) {
         </div>
         <div class="col-sm-6 p-2 pe-0 text-end">
             <div><span class="${color} p-1 small fw-bold rounded" style="font-size: x-small;">${status}</span></div>
-            <div><span class="badge-green p-1 small fw-bold rounded" style="font-size: x-small;">${room}</span></div>
+            <div><span class="p-1 small fw-bold rounded" style="font-size: x-small;">${room}</span></div>
         </div>`;
     });
     task.addEventListener("click", e => {

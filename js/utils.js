@@ -394,6 +394,23 @@ export function statusToString(statusCode) {
     return ["badge-grey", `Invalid Status Code : ${statusCode}`]
 }
 
+export function paymentStatusToString(paymentStatus){
+    if (paymentStatus === "settlement") {
+        return ["badge-green", "Berhasil Dibayar"];
+    }
+    else if (paymentStatus === "pending") {
+        return ["badge-blue", "Menunggu Pembayaran"];
+    }
+    else if (paymentStatus === "not_selected") {
+        return ["badge-yellow", "Menunggu Pembayaran"];
+    }
+    else if (paymentStatus === "cancel") {
+        return ["badge-red", "Dibatalkan"];
+    }
+
+    return ["badge-grey", `Invalid Status Code : ${paymentStatus}`]
+}
+
 export function getUserID() {
     let cookie = getCookie("id");
     if (cookie == undefined) return undefined;
@@ -431,6 +448,10 @@ export function createElementFromString(htmlString) {
 export function getTicketRequest(id, date) {
     let uniqueCode = id.split('-')[2];
     return `T-${UNIXtimeConverter(date, "DD/MM/YY")}-${uniqueCode}`;
+}
+
+export function getInvoiceNumber(id, date){
+    return `INV/${UNIXtimeConverter(date, "YYYYMMDD")}/MPL/${id.substring(0, 8).toUpperCase()}`
 }
 
 // ====================================== DATE ======================================
@@ -486,7 +507,6 @@ export function isInSameDay(day1InMillis, day2InMillis) {
 }
 
 export function isUnderOneWeek(timeInMillis) {
-    console.log(timeInMillis, Date.now(), timeInMillis - Date.now(), (timeInMillis - Date.now()) / dayInMillis);
     return (timeInMillis - Date.now()) / dayInMillis > 7 ? true : false;
 }
 

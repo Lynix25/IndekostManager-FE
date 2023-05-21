@@ -190,8 +190,8 @@ export const ServiceURL = {
     Transaction: {
         unpaid: (id) => `/transaction/unpaid/${id}`,
         pay: "/transaction",    
-        getAll: (id) => `/transaction/${id}`,
-        check: (id) => `/transaction/check/${id}`
+        getAll: (id) => `/transaction?requestor=${id}`,
+        get: (id) => `/transaction/${id}`
     },
     Notification:{
         getKey: "/notification/key",

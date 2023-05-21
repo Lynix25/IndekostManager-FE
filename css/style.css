@@ -7,10 +7,12 @@
     --badge-yellow-color: #FFF1B4;
     --badge-green-color: #D7FEE0;
     --badge-red-color: #FFE7ED;
+    --badge-grey-color: #c2c2c2;
     --badge-text-blue-color: #3532E1;
     --badge-text-yellow-color: #E56028;
     --badge-text-green-color: #1DA42C;
     --badge-text-red-color: #C62852;
+    --badge-text-grey-color: white;
     
     --body-color: #f7f7f7;
 
@@ -149,6 +151,11 @@ ul {
 .badge-yellow{
     color: var(--badge-text-yellow-color);
     background-color: var(--badge-yellow-color);
+}
+
+.badge-grey{
+    color: var(--badge-text-grey-color);
+    background-color: var(--badge-grey-color);
 }
 
 .row{
