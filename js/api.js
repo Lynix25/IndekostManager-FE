@@ -1,82 +1,56 @@
 import { END_POINT } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 
+export function APIPut(resource, body, headers) {
+    if (body != null || body != undefined) body.requesterId = getCookie("id");
+    return request("put", resource, body, undefined, headers);
+}
+
+export function APIPost(resource, body, headers) {
+    if (body != null || body != undefined) body.requesterId = getCookie("id");
+    return request("post", resource, body, undefined, headers);
+}
+
+export function APIGet(resource, params) {
+    return request("get", resource, undefined, params);
+}
+
+export function APIDelete(resource, params) {
+    return request("delete", resource, undefined, params);
+}
+
 /**
  * 
  * @requires AXIOS
+ * @param {String} method
  * @param {*} resource 
- * @param {JSON} requestBody 
+ * @param {JSON} body 
+ * @param {JSON} params 
+ * @param {JSON} headers 
  * @returns 
  */
 
-function headers(aditionalConfig) {
-    let defaultConfig = {
+function request(method = 'get', resource, body, params, headers) {
+    let config = {
+        method: method,
+        url: END_POINT + resource,
         headers: {
+            "ngrok-skip-browser-warning": true,
             "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
         }
+    };
+
+    if (method != 'get' || body) config.data = body;
+    if (params) config.params = params;
+    if (headers) {
+        config.headers = Object.assign(config.headers, headers);
     }
 
-    return Object.assign(defaultConfig, { "headers": aditionalConfig });
-}
-
-export function APIPut(resource, requestBody, requestHeader) {
-    if (requestBody != null || requestBody != undefined) requestBody.requesterId = getCookie("id");
-    return new Promise((resolve, reject) => {
-        let intervalId = setInterval(() => {
-            if (axios) {
-                clearInterval(intervalId)
-                axios.put(END_POINT + resource, requestBody, headers(requestHeader)).then(result => {
-                    resolve(result);
-                }).catch(result => {
-                    reject(result.response);
-                })
-            }
-        })
-    })
-}
-
-export function APIPost(resource, requestBody, requestHeader) {
-    if (requestBody != null || requestBody != undefined) requestBody.requesterId = getCookie("id");
     return new Promise((resolve, reject) => {
         let intervalId = setInterval(() => {
             if (axios) {
                 clearInterval(intervalId);
-                axios.post(END_POINT + resource, requestBody, headers(requestHeader)).then(result => {
-                    resolve(result)
-                }).catch(result => {
-                    reject(result.response)
-                })
-            }
-        })
-    })
-}
-
-export function APIGet(resource) {
-    return new Promise((resolve, reject) => {
-        let intervalId = setInterval(() => {
-            try {
-                axios.get(END_POINT + resource, headers()).then(result => {
-                    resolve(result);
-                }).catch(result => {
-                    reject(result.response);
-                })
-                clearInterval(intervalId);
-            } catch { }
-        }, 50);
-    })
-}
-
-export function APIDelete(resource) {
-    return new Promise((resolve, reject) => {
-        let intervalId = setInterval(() => {
-            if (axios) {
-                clearInterval(intervalId);
-                axios.delete(END_POINT + resource, headers()).then(result => {
-                    resolve(result)
-                }).catch(result => {
-                    reject(result.response)
-                })
+                axios(config).then(result => resolve(result)).catch(err => reject(err));
             }
         }, 50);
     })
