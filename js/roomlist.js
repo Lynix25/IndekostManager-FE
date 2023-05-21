@@ -2,7 +2,8 @@ import { APIDelete, APIGet } from "./api.js";
 import { showModalConfirmation } from "./component/modal.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
-import { getUserID, goTo, isOwnerOrAdmin } from "./utils.js";
+import { addCustomEventListener } from "./utils.js";
+import { createElementFromString, getUserID, goTo, isOwnerOrAdmin } from "./utils.js";
 
 if(!isOwnerOrAdmin())
     document.querySelector("#add-room-toggle").setAttribute("hidden", "");
@@ -68,10 +69,10 @@ APIGet(ServiceURL.Room.getAll).then(res => {
             roomItem.appendChild(roomActionContainer);
         }
 
-        // const roomElement = createElementFromString(room);
-        // addCustomEventListener("click", e => {
-        //     goTo(PAGE.ROOMDETAIL + data.id);
-        // }, roomElement)
+        const roomElement = roomItem;//createElementFromString(room);
+        addCustomEventListener("click", e => {
+            goTo(PAGE.ROOMDETAIL + data.id);
+        }, roomElement)
 
         // addCustomEventListener("edit", e => {
         //     goTo(PAGE.EDITROOM + data.id);
@@ -81,7 +82,7 @@ APIGet(ServiceURL.Room.getAll).then(res => {
         //     document.querySelector("#room-name").innerHTML = data.name;
         //     setAttributes(document.querySelector("[type='confirm-delete']"), { "data": data.id, "data-room-name": data.name });
         // }, roomElement, ...Array(3), true);
-        document.querySelector("#room-list").appendChild(roomItem);
+        // document.querySelector("#room-list").appendChild(roomItem);
     });
 }).catch(e => {
     console.log(e);
