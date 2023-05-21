@@ -19,7 +19,6 @@ function reloadData(task, room) {
     document.querySelector(".roomUser").innerHTML = room.name;
     document.querySelector(".createdDate").innerHTML = UNIXtimeConverter(task.createdDate, "DD MMMM YYYY hh:mm");
     document.querySelector(".taskDate").innerHTML = UNIXtimeConverter(task.taskDate, "DD MMMM YYYY hh:mm");
-    // console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
 
     // document.querySelector(".quantity").setAttribute("value", data.additionalCharge);
     // document.querySelector(".quantity").innerHTML = data.additionalCharge;
@@ -31,7 +30,7 @@ function reloadData(task, room) {
     let serviceName = task.service.serviceName;
     if (serviceName === Constant.serviceCategory.LAUNDRY) {
         // document.querySelector("#quantity-container").removeAttribute("hidden");
-        document.querySelector(".quantity").value = task.requestedQuantity;
+        document.querySelector(".quantity").outerHTML = task.requestedQuantity;
     }
 
     document.querySelector(".service").innerHTML = serviceName;
@@ -67,7 +66,6 @@ function reloadData(task, room) {
             document.querySelector("[type='finish']").removeAttribute("hidden", "");
         }
     } else {
-        document.querySelector(".quantity").setAttribute("readonly", "");
         document.querySelector(".card-footer").setAttribute("hidden", "");
         if (task.notes == null || task.notes === "")
             document.querySelector("#notes").setAttribute("placeholder", "");
