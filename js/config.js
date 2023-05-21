@@ -70,33 +70,33 @@ export const Constant = {
 }
 
 export const PAGE = {
-    HOME: "./home.html",
+    HOME: "/home.html",
     LOGIN: "/login.html",
-    PROFILE: "./profile.html",
+    PROFILE: "/profile.html",
     
-    ROOMLIST: './listuser.html',
-    CREATEUSER: './registeruser.html',
-    USERLIST:'./listuser.html',
-    EDITUSER: './edituser.html?id=',
-    USERDETAIL: './userdetail.html?id=',
+    ROOMLIST: '/listuser.html',
+    CREATEUSER: '/registeruser.html',
+    USERLIST:'/listuser.html',
+    EDITUSER: '/edituser.html?id=',
+    USERDETAIL: '/userdetail.html?id=',
 
-    ANNOUNCEMENTMENU: "./announcementmenu.html", 
-    ANNOUNCEMENTDETAIL: "./announcementdetail.html?id=",
+    ANNOUNCEMENTMENU: "/announcementmenu.html", 
+    ANNOUNCEMENTDETAIL: "/announcementdetail.html?id=",
     
-    CREATEANNOUNCEMENT: "./createannouncement.html",
-    EDITANNOUNCEMENT: "./editannouncement.html?id=",
-    EDITCONTACTABLE: "./editcontactable.html?id=",
+    CREATEANNOUNCEMENT: "/createannouncement.html",
+    EDITANNOUNCEMENT: "/editannouncement.html?id=",
+    EDITCONTACTABLE: "/editcontactable.html?id=",
     
-    SERVICEREQUEST: "./servicerequest.html",
-    REQUESTHISTORY: "./requesthistory.html",
-    TASKDETAIL: (taskId) => `./taskdetail.html?id=${taskId}`,
+    SERVICEREQUEST: "/servicerequest.html",
+    REQUESTHISTORY: "/requesthistory.html",
+    TASKDETAIL: (taskId) => `/taskdetail.html?id=${taskId}`,
 
-    ROOMLIST: './roomlist.html',
-    ROOMDETAIL: './roomdetail.html?id=',
-    EDITROOM: './editroom.html?id=',
+    ROOMLIST: '/roomlist.html',
+    ROOMDETAIL: '/roomdetail.html?id=',
+    EDITROOM: '/editroom.html?id=',
 
-    PAYMENT: "./payment.html",
-    PAYMENTDETAIL: (paymentId) => `./paymentdetails.html?id=${paymentId}`
+    PAYMENT: "/payment.html",
+    PAYMENTDETAIL: (paymentId) => `/paymentdetails.html?id=${paymentId}`
 };
 
 export const CONTENT_TYPE = {

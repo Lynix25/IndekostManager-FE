@@ -7,7 +7,7 @@ roustes();
 function roustes() {
     let currentPath = getCurrentPath();
 
-    if (isUserAlreadyLogin()) return;
+    if (isUserAlreadyLogin() && currentPath === PAGE.LOGIN) { goTo(PAGE.HOME); return; }
 
     if (!allowedPageNoLogin(currentPath)) { goTo(PAGE.LOGIN); return; }
 }
@@ -19,6 +19,7 @@ function isUserAlreadyLogin() {
 }
 
 function allowedPageNoLogin(page) {
+    if (isUserAlreadyLogin()) return true;
     const whiteListPage = ["initialdata", "forgotpassword"].map(item => `/${item}.html`)
     if (whiteListPage.includes(page)) return true;
 
