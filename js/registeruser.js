@@ -7,7 +7,7 @@ import { getFormValueV2, goBack, goTo, handleFormSubmited } from "./utils.js";
 handleFormSubmited(e => {
     let data = getFormValueV2(e.target);
     
-    APIPost(ServiceURL.User.register, data, {"Requester-ID" : getCookie("id"), "Content-Type": "multipart/form-data"}).then(res => {
+    APIPost(ServiceURL.User.register, data, { "Requester-ID": getCookie("id"), "Content-Type": "multipart/form-data" }).then(res => {
         Toast(Constant.httpStatus.SUCCESS, res.data.message)
         goTo(PAGE.USERLIST);
     }).catch(err => {
