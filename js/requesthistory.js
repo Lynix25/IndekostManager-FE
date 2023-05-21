@@ -10,12 +10,11 @@ if (!isOwnerOrAdmin()) paramGetTask = getUserID();
 
 APIGet(ServiceURL.Task.getAll(paramGetTask, "all")).then(res => {
     let data = res.data.data;
-    console.log(data);
-    if (data.length > 0) {
 
+    if (data.length > 0) {
         document.querySelector(".no-data").setAttribute("hidden", "");
-        data.forEach(task => {
-            addRequest(task);
+        data.forEach(taskDTO => {
+            addRequest(taskDTO.task);
         });
     }
 });
@@ -25,7 +24,7 @@ function addRequest(task) {
 
     let requestList = document.querySelector("#request-list");
     let taskElement = document.createElement("li");
-    taskElement.setAttribute("data", task.id);
+    taskElement.setAttribute("data-id", task.id);
     taskElement.classList.add("item-card", "p-3", "item");
     taskElement.setAttribute("style", "cursor: pointer")
     let [color, status] = statusToString(task.status);
@@ -65,7 +64,8 @@ function addRequest(task) {
     </div>`
 
     taskElement.addEventListener("click", e => {
-        goTo(PAGE.TASKDETAIL + e.currentTarget.getAttribute("data"));
+        let taskId = e.currentTarget.getAttribute("data-id");
+        goTo(PAGE.TASKDETAIL(taskId));
     });
 
     requestList.appendChild(taskElement);

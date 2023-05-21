@@ -89,7 +89,7 @@ export const PAGE = {
     
     SERVICEREQUEST: "./servicerequest.html",
     REQUESTHISTORY: "./requesthistory.html",
-    TASKDETAIL: "./taskdetail.html?id=",
+    TASKDETAIL: (taskId) => `./taskdetail.html?id=${taskId}`,
 
     ROOMLIST: './roomlist.html',
     ROOMDETAIL: './roomdetail.html?id=',

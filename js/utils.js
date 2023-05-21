@@ -402,7 +402,7 @@ export function paymentStatusToString(paymentStatus){
         return ["badge-blue", "Menunggu Pembayaran"];
     }
     else if (paymentStatus === "not_selected") {
-        return ["badge-yellow", "Menunggu Pembayaran"];
+        return ["badge-yellow", "Belum Ada Metode Pembayaran"];
     }
     else if (paymentStatus === "cancel") {
         return ["badge-red", "Dibatalkan"];

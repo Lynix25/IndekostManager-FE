@@ -5,27 +5,25 @@ import { addCustomEventListener, getParamOnURL, getTicketRequest, isOwnerOrAdmin
 
 APIGet(ServiceURL.Task.getById(getParamOnURL("id"))).then(res => {
     let task = res.data.data;
-    reloadData(task);
+    reloadData(task.task, task.room);
 });
 
-function reloadData(task) {
-    let dataDetail = task.user;
-
+function reloadData(task, room) {
+    let user = task.user;
     document.querySelector(".id").innerHTML = `Kode pengajuan: ${getTicketRequest(task.id, task.createdDate)}`;
 
     let [color, status] = statusToString(task.status);
     document.querySelector(".status").innerHTML = `<div class="badge ${color}">${status}</div>`;
 
-    document.querySelector(".requesterUser").innerHTML = dataDetail.userName;
-    document.querySelector(".roomUser").innerHTML = dataDetail.roomName;
+    document.querySelector(".requesterUser").innerHTML = user.name;
+    document.querySelector(".roomUser").innerHTML = room.name;
     document.querySelector(".createdDate").innerHTML = UNIXtimeConverter(task.createdDate, "DD MMMM YYYY hh:mm");
     document.querySelector(".taskDate").innerHTML = UNIXtimeConverter(task.taskDate, "DD MMMM YYYY hh:mm");
     // console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
 
     // document.querySelector(".quantity").setAttribute("value", data.additionalCharge);
     // document.querySelector(".quantity").innerHTML = data.additionalCharge;
-    document.querySelector("#notes").innerHTML = task.notes;
-    document.querySelector("#notes").setAttribute("value", task.notes);
+    document.querySelector("#notes").innerHTML = task.notes ? task.notes : "";
     document.querySelector("#summary").innerHTML = task.summary;
 
     // APIGet(ServiceURL.Service.getById(data.service.id)).then(res => {
@@ -69,7 +67,6 @@ function reloadData(task) {
             document.querySelector("[type='finish']").removeAttribute("hidden", "");
         }
     } else {
-        console.log(document.querySelector(".quantity"));
         document.querySelector(".quantity").setAttribute("readonly", "");
         document.querySelector(".card-footer").setAttribute("hidden", "");
         if (task.notes == null || task.notes === "")

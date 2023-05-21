@@ -2,7 +2,7 @@ import { APIGet } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { UNIXtimeConverter, forEach, goTo, isOwner, isOwnerOrAdmin, isUnderOneWeek, numberWithThousandsSeparators, statusToString } from "./utils.js";
+import { UNIXtimeConverter, addCustomEventListener, createElementFromString, forEach, goTo, isOwner, isOwnerOrAdmin, isUnderOneWeek, numberWithThousandsSeparators, statusToString } from "./utils.js";
 
 if (isOwnerOrAdmin()) {
     document.querySelector(".summary").setAttribute("hidden", "");
@@ -111,7 +111,7 @@ if (isOwnerOrAdmin()) {
 
     APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
         let data = res.data;
-        
+
         document.querySelector(".unpaid-total").innerHTML = numberWithThousandsSeparators(data.unpaidTotal);
 
         document.querySelector(".due-date").innerHTML = data.maxDueDate > 0 ? `Bayar sebelum: <span class="${isUnderOneWeek(data.maxDueDate) ? "" : "text-danger"} fw-bold">${UNIXtimeConverter(data.maxDueDate, "DD MMMM YYYY")}</span>` : "";
@@ -229,55 +229,51 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
 });
 
 APIGet(ServiceURL.Task.getAll("", "")).then(res => {
-    let data = res.data.data;
+    let taskList = res.data.data;
 
-    if (data.length > 0) {
+    if (taskList.length > 0) {
         document.querySelector("#no-taskOrRequest").setAttribute("hidden", "");
         document.querySelector("#list-taskOrRequest").removeAttribute("hidden");
 
         let count = 0;
-        data.forEach(task => {
-            if (count > 0 && task.status != "Diterima")
+        taskList.forEach(item => {
+            if (count > 0 && item.status != "Diterima")
                 document.querySelector("#list-taskOrRequest").appendChild(document.createElement("hr"));
 
-            if (task.status != "Diterima") addRequest(task.user.roomName, task, "#list-taskOrRequest");
+            if (item.status != "Diterima") addRequest(item.room.name, item.task, "#list-taskOrRequest");
             count++;
         });
+
+        addCustomEventListener("task-detail", e => {
+            let taskId = e.detail.target.getAttribute("data-id");
+            goTo(PAGE.TASKDETAIL(taskId));
+        })
     }
 });
 
-function addRequest(room, taskObject, elementId) {
-    console.log(taskObject);
+function addRequest(room, task, elementId) {
     let requestList = document.querySelector(elementId);
 
-    let task = document.createElement("li");
-    task.setAttribute("data", taskObject.id);
-    task.classList.add("row", "d-flex", "align-items-center");
-    task.setAttribute("style", "cursor: pointer");
+    let [color, status] = statusToString(task.status);
 
-    let [color, status] = statusToString(taskObject.status);
-    APIGet(ServiceURL.Service.getById(taskObject.service.id)).then(res => {
-
-        task.innerHTML = `
-        <div class="col p-0 d-flex align-items-center">
-            <div class="pe-2">
-                <i class="fa fa-solid fa-bullseye-arrow fs-4"></i>
+    let taskElement = `
+        <li data-id="${task.id}" type="task-detail" class="row d-flex align-items-center", style="cursor: pointer">
+            <div class="col p-0 d-flex align-items-center">
+                <div class="pe-2">
+                    <i class="fa fa-solid fa-bullseye-arrow fs-4"></i>
+                </div>
+                <div>    
+                    <div>${task.service.serviceName}: ${task.service.variant}</div>
+                    <div class="small">Target: ${UNIXtimeConverter(task.taskDate, "DD MMMM YYYY hh:mm")}</div>
+                </div>
             </div>
-            <div>    
-                <div>${res.data.serviceName}: ${res.data.variant}</div>
-                <div class="small">Target: ${UNIXtimeConverter(taskObject.taskDate, "DD MMMM YYYY hh:mm")}</div>
+            <div class="col-sm-6 p-2 pe-0 text-end">
+                <div><span class="${color} p-1 small fw-bold rounded" style="font-size: x-small;">${status}</span></div>
+                <div><span class="p-1 small fw-bold rounded" style="font-size: x-small;">${room}</span></div>
             </div>
-        </div>
-        <div class="col-sm-6 p-2 pe-0 text-end">
-            <div><span class="${color} p-1 small fw-bold rounded" style="font-size: x-small;">${status}</span></div>
-            <div><span class="p-1 small fw-bold rounded" style="font-size: x-small;">${room}</span></div>
-        </div>`;
-    });
-    task.addEventListener("click", e => {
-        goTo('./taskdetail.html?id=' + e.currentTarget.getAttribute("data"));
-    });
+        </li>`;
 
-    requestList.appendChild(task);
+    requestList.appendChild(createElementFromString(taskElement));
 }
 
 document.querySelector(".pay").addEventListener("click", e => {
