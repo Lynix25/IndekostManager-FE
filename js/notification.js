@@ -1,14 +1,16 @@
-import { APIGet } from "./api.js";
+import { APIGet, APIPut } from "./api.js";
 import { ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { UNIXtimeConverter, createElementFromString, goBack } from "./utils.js";
+import { UNIXtimeConverter, createElementFromString, goBack, goTo } from "./utils.js";
 
 APIGet(ServiceURL.Notification.getAll(getCookie("id"))).then(res => {
     let notifications = res.data.data;
+
     if (notifications.length > 0) document.querySelector(".notificationList").innerHTML = "";
+
     notifications.forEach(notification => {
         let notificationElement = `
-        <li class="border rounded d-flex p-2 mb-2">
+        <li class="border rounded d-flex p-2 mb-2 ${notification.readed ? "" : "notif-readed"}">
             <div class="d-flex justify-content-center align-items-center" style="margin-left: 2%; margin-right: 2%;">
                 <i class="fad fa-bullhorn fs-3"></i>
             </div>
@@ -31,9 +33,14 @@ APIGet(ServiceURL.Notification.getAll(getCookie("id"))).then(res => {
                 </div>
             </div>
         </li>`
-
         
-        document.querySelector(".notificationList").appendChild(createElementFromString(notificationElement));
+        notificationElement = createElementFromString(notificationElement);
+        notificationElement.addEventListener("click", e => {
+            APIPut(ServiceURL.Notification.read(notification.id),{});
+            goTo(notification.redirect);
+        })
+
+        document.querySelector(".notificationList").appendChild(notificationElement);
     });
 
 })

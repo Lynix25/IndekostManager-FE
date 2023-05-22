@@ -265,6 +265,11 @@ ul {
     text-align: center;
 }
 
+/* =========== NOTIFICATION =========== */
+.notif-readed{
+    background: var(--primary-color);
+}
+
 /* =============================== */
 
 .has-content {

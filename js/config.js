@@ -197,6 +197,7 @@ export const ServiceURL = {
         getKey: "/notification/key",
         subs: "/notification/subscribe",
         unsub: (id) => `/notification/unsubscribe/${id}`,
-        getAll : (id) => `/notification/${id}`
+        getAll : (id) => `/notification/${id}`,
+        read: (id) => `/notification/${id}`
     }
 }
