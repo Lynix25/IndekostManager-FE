@@ -1,7 +1,7 @@
 import { APIGet, APIPut } from "./api.js";
 import { ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { UNIXtimeConverter, createElementFromString, goBack, goTo } from "./utils.js";
+import { UNIXtimeConverter, createElementFromString, goBack, goTo, timeElapsed } from "./utils.js";
 
 APIGet(ServiceURL.Notification.getAll(getCookie("id"))).then(res => {
     let notifications = res.data.data;
@@ -20,7 +20,7 @@ APIGet(ServiceURL.Notification.getAll(getCookie("id"))).then(res => {
                         ${notification.category}
                     </div>
                     <div>
-                        ${UNIXtimeConverter(notification.createdDate, "D/M/YYYY")}
+                        ${timeElapsed(notification.createdDate)}
                     </div>
                 </div>
                 <div>

@@ -394,7 +394,7 @@ export function statusToString(statusCode) {
     return ["badge-grey", `Invalid Status Code : ${statusCode}`]
 }
 
-export function paymentStatusToString(paymentStatus){
+export function paymentStatusToString(paymentStatus) {
     if (paymentStatus === "settlement") {
         return ["badge-green", "Berhasil Dibayar"];
     }
@@ -450,13 +450,18 @@ export function getTicketRequest(id, date) {
     return `T-${UNIXtimeConverter(date, "DD/MM/YY")}-${uniqueCode}`;
 }
 
-export function getInvoiceNumber(id, date){
+export function getInvoiceNumber(id, date) {
     return `INV/${UNIXtimeConverter(date, "YYYYMMDD")}/MPL/${id.substring(0, 8).toUpperCase()}`
 }
 
 // ====================================== DATE ======================================
 
-export const dayInMillis = 86400000;
+export const minuteInMillis = 60_000;
+export const hourInMillis = 3_600_000;
+export const dayInMillis = 86_400_000;
+export const weekInMillis = 7 * dayInMillis;
+export const monthInMillis = 2_592_000_000; // 30 Days
+export const yearInMillis = 31_536_000_000; //365 Days
 
 export function groupingMillisecondsToSameDate(arrayData, dateKey, dateFormatKey) {
     let grouped = getCurrentWeekList(dateFormatKey);
@@ -594,6 +599,28 @@ export function UNIXtimeRemoveTime(UNIXTimestamp) {
 export function convertDateToMillis(dateString) {
     let currentDate = new Date(dateString);
     return currentDate.getTime();
+}
+
+export function timeElapsed(UNIXTimestamp) {
+    let millisSeconds = Math.floor(+new Date() - UNIXTimestamp);
+
+    let interval = millisSeconds / monthInMillis;
+    if (interval > 1) {
+        return UNIXtimeConverter(UNIXTimestamp, "DD MMMM YYYY");
+    }
+    interval = millisSeconds / dayInMillis;
+    if (interval > 1) {
+        return Math.floor(interval) + " days";
+    }
+    interval = millisSeconds / hourInMillis;
+    if (interval > 1) {
+        return Math.floor(interval) + " hours";
+    }
+    interval = millisSeconds / millisSeconds;
+    if (interval > 1) {
+        return Math.floor(interval) + " minutes";
+    }
+    return Math.floor(millisSeconds/1000) + " seconds";
 }
 
 /**
