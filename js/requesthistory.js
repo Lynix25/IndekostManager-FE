@@ -1,27 +1,19 @@
 import { APIGet } from "./api.js";
 import { PAGE, ServiceURL } from "./config.js";
-import { getUserID, goBack, goTo, isOwnerOrAdmin, statusToString, UNIXtimeConverter } from "./utils.js";
+import { UNIXtimeConverter, getUserID, goBack, goTo, isOwnerOrAdmin, statusToString } from "./utils.js";
 
-/* 
-    Pending: Search
-*/
-let paramGetTask = "";
-if (!isOwnerOrAdmin()) paramGetTask = getUserID();
-
-APIGet(ServiceURL.Task.getAll(paramGetTask, "all")).then(res => {
+APIGet(ServiceURL.Task.getAll(getUserID(), "all")).then(res => {
     let data = res.data.data;
 
     if (data.length > 0) {
         document.querySelector(".no-data").setAttribute("hidden", "");
         data.forEach(taskDTO => {
-            addRequest(taskDTO.task);
+            addRequest(taskDTO.task, taskDTO.room);
         });
     }
 });
 
-function addRequest(task) {
-    let userObject = task.user;
-
+function addRequest(task, room) {
     let requestList = document.querySelector("#request-list");
     let taskElement = document.createElement("li");
     taskElement.setAttribute("data-id", task.id);
@@ -31,7 +23,7 @@ function addRequest(task) {
 
     let roomInfo = "";
     if (isOwnerOrAdmin())
-        roomInfo = `<div><span class="badge-green p-1 small fw-bold rounded" style="font-size: x-small;">${userObject.roomName}</span></div>`;
+        roomInfo = `<div><span class="badge-green p-1 small fw-bold rounded" style="font-size: x-small;">${room.name}</span></div>`;
 
     taskElement.innerHTML = `
     <div class="row d-flex justify-content-between align-items-center">
