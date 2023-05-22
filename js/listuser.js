@@ -3,11 +3,11 @@ import { showModalConfirmation } from "./component/modal.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { addCustomEventListener, getUserID, goTo } from "./utils.js";
+import { addCustomEventListener, getUserID, goTo, isOwner } from "./utils.js";
 
 APIGet(ServiceURL.User.getAll('')).then(res => {
     let users = res.data.data;
-    let countTenant = 0, countAdmin = 0, countOwner = 0;
+    let countTenant = 0, countAdmin = 0;
     users.forEach(data => {
         let user = document.createElement("li");
         user.classList.add("item", "d-flex", "justify-content-between", "align-items-center", "m-0");
@@ -21,23 +21,20 @@ APIGet(ServiceURL.User.getAll('')).then(res => {
                 <i class="fad fa-user me-3 my-auto"></i>
                 <div>
                     <div>${data.user.name}</div>
-                    <small>${data.account.username}</small>
+                    <div>${role}</div>
                 </div>
             </div>`;
         userDetail.addEventListener("click", e => {
-
             if(role === getCookie('role')) goTo(PAGE.PROFILE);
             else goTo(PAGE.USERDETAIL + data.user.id);
         });
         user.appendChild(userDetail);
         
         if(role === Constant.role.OWNER) {
-            countOwner++;
             document.querySelector("#owner-list").appendChild(user);
         } else {
 
-            if(getCookie('role') === Constant.role.OWNER || 
-                (getCookie('role') === Constant.role.ADMIN && role === Constant.role.TENANT)) {
+            if(isOwner()) {
 
                 let buttonContainer = document.createElement("div");
             
@@ -51,7 +48,7 @@ APIGet(ServiceURL.User.getAll('')).then(res => {
                 `;
                 editButton.classList.add("btn");
                 editButton.addEventListener("click", e => {
-                    goTo(PAGE.EDITUSER + data.user.id)
+                    goTo(PAGE.EDITUSER(data.user.id))
                 });
                 buttonContainer.appendChild(editButton);
         
@@ -72,7 +69,7 @@ APIGet(ServiceURL.User.getAll('')).then(res => {
                         'Hapus', 'Batal', () => {
                             APIDelete(ServiceURL.User.delete(data.user.id, getUserID())).then(response => {
                                 Toast(Constant.httpStatus.SUCCESS, response.data.message);
-                                setTimeout(function() { goTo(PAGE.USERLIST)}, Event.timeout);
+                                setTimeout(function() { goTo(PAGE.ROOMLIST)}, Event.timeout);
                             }).catch(err => {
                                 if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
                                 else Toast(Constant.httpStatus.ERROR, err.data.message);
@@ -93,18 +90,20 @@ APIGet(ServiceURL.User.getAll('')).then(res => {
             }
         }
     });
-    if(countAdmin == 0) {
-        document.querySelector("#admin-list").setAttribute("hidden", "");
-        document.querySelector("#separator1").setAttribute("hidden", "");
-    } else {
-        document.querySelector("#admin-list").removeAttribute("hidden", "");
-        document.querySelector("#separator1").removeAttribute("hidden", "");
-    }
-    if(countTenant == 0) {
-        document.querySelector("#tenant-list").setAttribute("hidden", "");
-        document.querySelector("#separator2").setAttribute("hidden", "");
-    } else {
-        document.querySelector("#tenant-list").removeAttribute("hidden", "");
-        document.querySelector("#separator2").removeAttribute("hidden", "");
-    }
+    // if(countAdmin == 0) {
+    //     document.querySelector("#admin-list").setAttribute("hidden", "");
+    //     document.querySelector("#separator1").setAttribute("hidden", "");
+    // } else {
+    //     document.querySelector("#admin-list").removeAttribute("hidden", "");
+    //     document.querySelector("#separator1").removeAttribute("hidden", "");
+    // }
+    // if(countTenant == 0) {
+    //     document.querySelector("#tenant-list").setAttribute("hidden", "");
+    //     document.querySelector("#separator2").setAttribute("hidden", "");
+    // } else {
+    //     document.querySelector("#tenant-list").removeAttribute("hidden", "");
+    //     document.querySelector("#separator2").removeAttribute("hidden", "");
+    // }
+    if(countAdmin == 0) document.querySelector("#separator1").setAttribute("hidden", "");
+    if(countTenant == 0) document.querySelector("#separator2").setAttribute("hidden", "");
 });

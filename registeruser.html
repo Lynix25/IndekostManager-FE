@@ -22,8 +22,8 @@
             <h5 class="text-center m-0 w-100">Tambah Data User</h5>
         </div>
         <hr />
-        <div class="row mb-2">
-            <div class="col px-1">
+        <div class="row">
+            <div class="col ps-0">
                 <label class="form-label" for="name">Nama</label>
                 <input class="form-control" type="text" name="name" id="name" minlength="2" placeholder="Nama lengkap" required>
             </div>
@@ -59,18 +59,11 @@
             </div>
         </div>
 
-        <div class="row mb-2">
-            <div class="col px-1">
-                <label class="form-label" for="job">Profesi</label>
-                <input class="form-control" type="text" name="job" id="job" placeholder="Profesi" required>
-            </div>
-            <div class="col p-0 px-1">
-                <label class="form-label" for="role">Role</label>
-                <select class="form-select" name="role" id="role" required>
-                    <option>Tenant</option>
-                    <option id="adminOption">Admin</option>
-                </select>
-            </div>
+        <div>
+            <label class="form-label" for="role">Peranan</label>
+            <select class="form-select" name="role" id="role">
+                <option value="Tenant">Penyewa</option>
+            </select>
         </div>
 
         <div class="row mb-2">
@@ -83,9 +76,46 @@
                 <textarea class="form-control" type="text" name="description" id="description" placeholder="Penjelasan singkat mengenai user"></textarea>
             </div>
         </div>
-        <div class="mb-2">
+
+        <div>
+            <label class="form-label" for="room">Kamar</label>
+            <select class="form-select" name="roomId" id="room">
+            </select>
+        </div>
+        <!-- 
+        <div>
+            <label class="form-label" for="account">Akun</label>
+            <select class="form-select" name="accountId" id="account">
+            </select>
+        </div> -->
+
+        <div>
+            <label class="form-label" for="phone">No Telepon</label>
+            <input class="form-control" type="tel" name="phone" id="phone">
+        </div>
+
+        <div>
+            <label class="form-label" for="gender">Gender</label>
+            <select class="form-select" name="gender" id="gender">
+                <option value="Male">Laki - Laki</option>
+                <option value="Female">Perempuan</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label" for="job">Pekerjaan</label>
+            <input class="form-control" type="text" name="job" id="job">
+        </div>
+
+        <div>
+            <label class="form-label" for="description">Deskripsi</label>
+            <input class="form-control" type="text" name="description" id="description" maxlength="150">
+        </div>
+
+        <div>
             <label class="form-label" for="identityCardImage">Foto KTP</label>
-            <input class="form-control" type="file" name="identityCardImage" id="identityCardImage" accept=".jpg, .png, .jpeg" required>
+            <input class="form-control" type="file" name="identityCardImage" id="identityCardImage"
+                accept=".jpg, .png, .jpeg">
             <div class="text-center">
                 <i class="fa fa-spinner fa-spin" hidden></i>
             </div>

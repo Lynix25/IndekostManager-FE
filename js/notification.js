@@ -5,7 +5,7 @@ import { UNIXtimeConverter, createElementFromString, goBack } from "./utils.js";
 
 APIGet(ServiceURL.Notification.getAll(getCookie("id"))).then(res => {
     let notifications = res.data.data;
-    
+    if (notifications.length > 0) document.querySelector(".notificationList").innerHTML = "";
     notifications.forEach(notification => {
         let notificationElement = `
         <li class="border rounded d-flex p-2 mb-2">

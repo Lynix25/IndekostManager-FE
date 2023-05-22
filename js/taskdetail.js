@@ -4,32 +4,25 @@ import { Constant, ServiceURL } from "./config.js";
 import { addCustomEventListener, getParamOnURL, getTicketRequest, isOwnerOrAdmin, numberWithThousandsSeparators, statusToString, UNIXtimeConverter } from "./utils.js";
 
 APIGet(ServiceURL.Task.getById(getParamOnURL("id"))).then(res => {
-    let data = res.data.data;
-    reloadData(data);
+    let task = res.data.data;
+    reloadData(task.task, task.room);
 });
 
-function reloadData(dataTask) {
-
-    let task = dataTask.task;
-    let dataDetail = dataTask.user;
-
-    console.log(task)
-
+function reloadData(task, room) {
+    let user = task.user;
     document.querySelector(".id").innerHTML = `Kode pengajuan: ${getTicketRequest(task.id, task.createdDate)}`;
 
     let [color, status] = statusToString(task.status);
     document.querySelector(".status").innerHTML = `<div class="badge ${color}">${status}</div>`;
 
-    document.querySelector(".requesterUser").innerHTML = dataDetail.userName;
-    document.querySelector(".roomUser").innerHTML = dataDetail.roomName;
+    document.querySelector(".requesterUser").innerHTML = user.name;
+    document.querySelector(".roomUser").innerHTML = room.name;
     document.querySelector(".createdDate").innerHTML = UNIXtimeConverter(task.createdDate, "DD MMMM YYYY hh:mm");
     document.querySelector(".taskDate").innerHTML = UNIXtimeConverter(task.taskDate, "DD MMMM YYYY hh:mm");
-    // console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
 
     // document.querySelector(".quantity").setAttribute("value", data.additionalCharge);
     // document.querySelector(".quantity").innerHTML = data.additionalCharge;
-    document.querySelector("#notes").innerHTML = task.notes;
-    document.querySelector("#notes").setAttribute("value", task.notes);
+    document.querySelector("#notes").innerHTML = task.notes ? task.notes : "";
     document.querySelector("#summary").innerHTML = task.summary;
 
     // APIGet(ServiceURL.Service.getById(data.service.id)).then(res => {
@@ -37,7 +30,7 @@ function reloadData(dataTask) {
     let serviceName = task.service.serviceName;
     if (serviceName === Constant.serviceCategory.LAUNDRY) {
         // document.querySelector("#quantity-container").removeAttribute("hidden");
-        document.querySelector(".quantity").value = task.requestedQuantity;
+        document.querySelector(".quantity").outerHTML = task.requestedQuantity;
     }
 
     document.querySelector(".service").innerHTML = serviceName;
@@ -68,14 +61,11 @@ function reloadData(dataTask) {
         else if (task.status === Constant.serviceRequestStatus.ACCEPTED) {
             // Show only button update & finish
             document.querySelector("[type='reject']").setAttribute("hidden", "");
-            document.querySelector("[type='accept']").setAttribute("hidden", "");
             document.querySelector("[type='update']").removeAttribute("hidden", "");
             document.querySelector("[type='process']").setAttribute("hidden", "");
             document.querySelector("[type='finish']").removeAttribute("hidden", "");
         }
     } else {
-        console.log(document.querySelector(".quantity"));
-        document.querySelector(".quantity").setAttribute("readonly", "");
         document.querySelector(".card-footer").setAttribute("hidden", "");
         if (task.notes == null || task.notes === "")
             document.querySelector("#notes").setAttribute("placeholder", "");
@@ -94,10 +84,9 @@ document.querySelector(".quantity").addEventListener("change", e => {
 })
 
 addCustomEventListener("reject", e => {
-    APIPut(ServiceURL.Task.update(getURLParam('id')), {
+    APIPut(ServiceURL.Task.update(getParamOnURL('id')), {
         "status": Constant.serviceRequestStatus.REJECTED,
         "notes": notes.value,
-        "additionalCharge": additionalCharge.value
     }).then(response => {
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
         reloadData(response.data.data);
@@ -107,10 +96,9 @@ addCustomEventListener("reject", e => {
 }, document.querySelector("[type='reject']"));
 
 addCustomEventListener("process", e => {
-    APIPut(ServiceURL.Task.update(getURLParam('id')), {
+    APIPut(ServiceURL.Task.update(getParamOnURL('id')), {
         "status": Constant.serviceRequestStatus.ACCEPTED,
         "notes": notes.value,
-        "additionalCharge": additionalCharge.value
     }).then(response => {
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
@@ -121,10 +109,9 @@ addCustomEventListener("process", e => {
 }, document.querySelector("[type='process']"))
 
 addCustomEventListener("update", e => {
-    APIPut(ServiceURL.Task.update(getURLParam('id')), {
+    APIPut(ServiceURL.Task.update(getParamOnURL('id')), {
         "status": Constant.serviceRequestStatus.ACCEPTED,
         "notes": notes.value,
-        "additionalCharge": additionalCharge.value
     }).then(response => {
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
@@ -135,10 +122,9 @@ addCustomEventListener("update", e => {
 }, document.querySelector("[type='update']"));
 
 addCustomEventListener("finish", e => {
-    APIPut(ServiceURL.Task.update(getURLParam('id')), {
+    APIPut(ServiceURL.Task.update(getParamOnURL('id')), {
         "status": Constant.serviceRequestStatus.COMPLETED,
         "notes": notes.value,
-        "additionalCharge": additionalCharge.value
     }).then(response => {
         reloadData(response.data.data);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);

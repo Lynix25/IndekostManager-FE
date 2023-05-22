@@ -1,4 +1,4 @@
-import { Constant, END_POINT, SECRET } from "./config.js"
+import { Constant, END_POINT, Event, SECRET } from "./config.js"
 import { getCookie } from "./cookiemanagement.js";
 
 /**
@@ -325,11 +325,11 @@ export function forEach(data, callback, keySort = "none") {
     }
 }
 
-export function goTo(path) {
+export function goTo(path, timeout) {
     // / Absolute
     // ./ relative
     if (getCurrentPath() === path) return;
-    window.location.href = path;
+    setTimeout(e => { window.location.href = path }, timeout ? timeout : Event.timeout);
 }
 
 export function goBack() {
@@ -394,6 +394,23 @@ export function statusToString(statusCode) {
     return ["badge-grey", `Invalid Status Code : ${statusCode}`]
 }
 
+export function paymentStatusToString(paymentStatus){
+    if (paymentStatus === "settlement") {
+        return ["badge-green", "Berhasil Dibayar"];
+    }
+    else if (paymentStatus === "pending") {
+        return ["badge-blue", "Menunggu Pembayaran"];
+    }
+    else if (paymentStatus === "not_selected") {
+        return ["badge-yellow", "Belum Ada Metode Pembayaran"];
+    }
+    else if (paymentStatus === "cancel") {
+        return ["badge-red", "Dibatalkan"];
+    }
+
+    return ["badge-grey", `Invalid Status Code : ${paymentStatus}`]
+}
+
 export function getUserID() {
     let cookie = getCookie("id");
     if (cookie == undefined) return undefined;
@@ -431,6 +448,10 @@ export function createElementFromString(htmlString) {
 export function getTicketRequest(id, date) {
     let uniqueCode = id.split('-')[2];
     return `T-${UNIXtimeConverter(date, "DD/MM/YY")}-${uniqueCode}`;
+}
+
+export function getInvoiceNumber(id, date){
+    return `INV/${UNIXtimeConverter(date, "YYYYMMDD")}/MPL/${id.substring(0, 8).toUpperCase()}`
 }
 
 // ====================================== DATE ======================================
@@ -483,6 +504,10 @@ export function isInSameDay(day1InMillis, day2InMillis) {
     let date2 = new Date(day2InMillis).toDateString();
 
     return date1 == date2 ? true : false;
+}
+
+export function isUnderOneWeek(timeInMillis) {
+    return (timeInMillis - Date.now()) / dayInMillis > 7 ? true : false;
 }
 
 export function UNIXtimeConverter(UNIXTimestamp, format = "MM/DD/YYYY hh:mm:ss UTZ", language = "id") {

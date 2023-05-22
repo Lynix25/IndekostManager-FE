@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>In D'Kos</title>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/library.js"></script>
     <link rel="stylesheet" href="css/home.css">
     <script defer type="module" src="js/home.js"></script>
-</head>
+</head> 
 
 <body>
     <div class="row m-4" id="content">
@@ -55,16 +56,18 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-2">
                     <div class="d-flex">
-                        <span class="me-2 payment-label-2">Bayar sebelum: </span>
-                        <div class="due-date payment-label-2">-</div>
+                        <span class="due-date me-2">Bayar sebelum: </span>
                     </div>
                     <button class="btn btn-sm btn-light p-0 px-4 fw-bold pay"
                         style="color: var(--black-color);">Bayar</button>
                 </div>
             </div>
-            <!-- Content 1-2: Owner -->
-            <div class="card-as-container-static chart" style="width: 100%">
-                <img src="./asset/chartDummy.png" alt="chart" width="100%">
+            <!-- Content 1-2: Owner/Admin -->
+            <div class="card-as-container-static chart mb-3">
+                <canvas class="task-chart"></canvas>
+            </div>
+            <div class="card-as-container-static chart">
+                <canvas class="processed-chart"></canvas>
             </div>
         </div>
         <div class="col-lg-6">

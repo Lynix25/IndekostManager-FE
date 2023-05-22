@@ -7,10 +7,12 @@
     --badge-yellow-color: #FFF1B4;
     --badge-green-color: #D7FEE0;
     --badge-red-color: #FFE7ED;
+    --badge-grey-color: #c2c2c2;
     --badge-text-blue-color: #3532E1;
     --badge-text-yellow-color: #E56028;
     --badge-text-green-color: #1DA42C;
     --badge-text-red-color: #C62852;
+    --badge-text-grey-color: white;
     
     --body-color: #f7f7f7;
 
@@ -151,6 +153,11 @@ ul {
     background-color: var(--badge-yellow-color);
 }
 
+.badge-grey{
+    color: var(--badge-text-grey-color);
+    background-color: var(--badge-grey-color);
+}
+
 .row{
     margin-left: 0px;
     margin-right: 0px;
@@ -268,10 +275,16 @@ ul {
     visibility: visible;
 }
 
+/* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .hover {

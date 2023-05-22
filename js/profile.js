@@ -1,16 +1,17 @@
 import { APIDelete, APIGet } from "./api.js";
+import { showModalConfirmation } from "./component/modal.js";
+import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 import { showModalForm } from "./createcontactable.js";
-import { showModalConfirmation } from "./component/modal.js";
-import { UNIXtimeConverter, addCustomEventListener, goTo, map, numberWithThousandsSeparators, range, isOwnerOrAdmin } from "./utils.js";
-import { Toast } from "./component/toast.js";
 import { logout } from "./main.js";
+import { UNIXtimeConverter, addCustomEventListener, goTo, isOwnerOrAdmin, numberWithThousandsSeparators } from "./utils.js";
 
 if(isOwnerOrAdmin()) {
     document.querySelector(".user-info").innerHTML = "<b>Biodata</b>";
     document.querySelector(".roomOrAddress-info").innerHTML = "<b>Info Kos</b>";
     document.querySelector(".about").setAttribute("hidden", "");
+    document.querySelector("#contactable-information").setAttribute("hidden", "");
 
     APIGet(ServiceURL.MasterData.getIndekos).then(res => {
         let data = res.data;
@@ -23,7 +24,6 @@ if(isOwnerOrAdmin()) {
 } else {
     document.querySelector(".user-info").innerHTML = "<b>Biodata</b>";
     document.querySelector(".roomOrAddress-info").innerHTML = "<b>Info Kamar</b>";
-    // document.querySelector(".report").setAttribute("hidden", "");
     document.querySelector("#room-info").removeAttribute("hidden");
     document.querySelector("#address-info").setAttribute("hidden", "");
     document.querySelector(".title").innerHTML = "Data Kamar";
@@ -180,9 +180,9 @@ function getRoomData(roomId) {
                     description = `<div class="font-italic">${detail.description}</div>`;
 
                 itemList.innerHTML = `
-                    <div class="w-100">
+                    <div>
                         <div class="d-flex align-items-center">
-                            <li class="w-100">${detail.name}</li>
+                            <li class="fw-semibold">${detail.name}</li>
                         </div>
                         ${description}
                     </div>
@@ -198,9 +198,9 @@ function getRoomData(roomId) {
                     description = `<div class="font-italic">${detail.description}</div>`;
 
                 itemList.innerHTML = `
-                    <div class="w-100">
+                    <div>
                         <div class="d-flex align-items-center">
-                            <li class="w-100">${detail.name}</li>
+                            <li class="fw-semibold">${detail.name}</li>
                         </div>
                         ${description}
                     </div>
@@ -216,9 +216,9 @@ function getRoomData(roomId) {
                     description = `<div class="font-italic">${detail.description}</div>`;
 
                 itemList.innerHTML = `
-                    <div class="w-100">
+                    <div>
                         <div class="d-flex align-items-center">
-                            <li class="w-100">${detail.name}</li>
+                            <li class="fw-semibold">${detail.name}</li>
                         </div>
                         ${description}
                     </div>
@@ -234,9 +234,9 @@ function getRoomData(roomId) {
                     description = `<div class="font-italic">${detail.description}</div>`;
 
                 itemList.innerHTML = `
-                    <div class="w-100">
+                    <div>
                         <div class="d-flex align-items-center">
-                            <li class="w-100">${detail.name}</li>
+                            <li class="fw-semibold">${detail.name}</li>
                         </div>
                         ${description}
                     </div>
@@ -256,9 +256,9 @@ function getRoomData(roomId) {
                     description = `<div class="font-italic">${detail.description}</div>`;
 
                 itemList.innerHTML = `
-                    <div class="w-100">
+                    <div>
                         <div class="d-flex align-items-center">
-                            <li class="w-100">${detail.name}</li>
+                            <li class="fw-semibold">${detail.name}</li>
                         </div>
                         ${description}
                     </div>

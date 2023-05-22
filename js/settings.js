@@ -2,7 +2,7 @@ import { APIDelete, APIGet, APIPost, APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { addCustomEventListener, getFormValueV2, urlB64ToUint8Array } from "./utils.js";
+import { addCustomEventListener, getFormValueV2, isOwnerOrAdmin, urlB64ToUint8Array } from "./utils.js";
 
 APIGet(ServiceURL.User.getUserSetting(getCookie("id"))).then(res => {
     let userSettings = res.data.data;
@@ -35,6 +35,10 @@ APIGet(ServiceURL.User.getUserSetting(getCookie("id"))).then(res => {
             unsubscribe(e.target.parentElement);
         }
     })
+
+    if(isOwnerOrAdmin()){
+        document.querySelector("#room-settings").setAttribute("hidden", "");
+    }
 })
 
 addCustomEventListener("remove-serviceworker", e => {

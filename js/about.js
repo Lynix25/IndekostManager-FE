@@ -11,7 +11,7 @@ APIGet(ServiceURL.MasterData.getIndekos).then(res => {
     document.querySelector(".postal-code").innerHTML = `Kode pos: ${data.postalCode}`;
 });
 
-APIGet(ServiceURL.User.getAll).then(response => {
+APIGet(ServiceURL.User.getAll("")).then(response => {
     let datas = response.data.data;
     let countOwner = 0, countAdmin = 0;
     datas.forEach(data => {

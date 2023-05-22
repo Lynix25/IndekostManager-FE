@@ -4,6 +4,7 @@ import { getCookie } from "./cookiemanagement.js";
 import { UNIXtimeConverter, createElementFromString, filter, forEach, getFormValueV2, goBack, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 
 APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
+    console.log(res);
     let data = res.data;
     let rentItems = data.rentItem;
     let taskItems = data.taskItem;
@@ -15,11 +16,13 @@ APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
         let unpaidItem = document.querySelector(".cart");
         unpaidItem.removeAttribute("hidden");
 
+        let rentsElements = document.createElement("span");
+        rentsElements.setAttribute("group-name", "rentItemIds");
         rentItems.forEach(rent => {
             let itemElement = `
             <li class="border-bottom mb-1">
                 <div class="d-flex align-items-center">
-                    <input class="form-check-input m-2 fs-4" type="checkbox" name="${rent.id}" data-price=${rent.price}>
+                    <input class="form-check-input m-2 fs-4" type="checkbox" name="${rent.id}" value=${rent.price}>
                     <div>
                         <div>Biaya Kos Bulan ${rent.month}</div>
                         <div>Batas bayar: ${UNIXtimeConverter(rent.dueDate, "DD/M/YYYY")}</div>
@@ -28,34 +31,36 @@ APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
                 <div class="text-end">Rp ${numberWithThousandsSeparators(rent.price)}</div>
             </li>
             `
-            unpaidItem.appendChild(createElementFromString(itemElement));
+            rentsElements.appendChild(createElementFromString(itemElement));
         });
+        unpaidItem.appendChild(rentsElements);
 
+        let tasksElements = document.createElement("span");
+        tasksElements.setAttribute("group-name", "taskItemIds");
         taskItems.forEach(taskItem => {
-            let task = taskItem.task;
-            let service = taskItem.service;
             let taskElement = `
             <li class="border-bottom mb-1">
                 <div class="d-flex align-items-center">
-                <input class="form-check-input m-2 fs-4" type="checkbox" name="${task.id}" data-price=${task.charge + task.additionalCharge}>
-                    <div>${service.serviceName}: ${service.variant}</div>
+                <input class="form-check-input m-2 fs-4" type="checkbox" name="${taskItem.id}" value=${taskItem.charge}>
+                    <div>${taskItem.service.serviceName}: ${taskItem.service.variant}</div>
                 </div>
-                <div class="text-end">Rp ${numberWithThousandsSeparators(task.charge + task.additionalCharge)}</div>
+                <div class="text-end">Rp ${numberWithThousandsSeparators(taskItem.charge)}</div>
             </li>
             `
-            unpaidItem.appendChild(createElementFromString(taskElement));
+            tasksElements.appendChild(createElementFromString(taskElement));
         });
+        unpaidItem.appendChild(tasksElements);
 
         unpaidItem.addEventListener("change", e => {
             let totalPrice = parseInt(document.querySelector(".total-price").getAttribute("data-total-price"));
             let totalSelected = parseInt(document.querySelector(".total-item").getAttribute("data-selected"));
             if (e.target.checked) {
-                totalPrice += parseInt(e.target.getAttribute("data-price"));
+                totalPrice += parseInt(e.target.getAttribute("value"));
                 totalSelected += 1;
 
             }
             else {
-                totalPrice -= parseInt(e.target.getAttribute("data-price"));
+                totalPrice -= parseInt(e.target.getAttribute("value"));
                 totalSelected -= 1;
             }
             document.querySelector(".total-price").setAttribute("data-total-price", totalPrice);
@@ -68,25 +73,18 @@ APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
 })
 
 handleFormSubmited(e => {
-    let data = filter(getFormValueV2(e.target), (k, v) =>
-        v === true ? k : undefined
-    );
-    
-    APIPost(ServiceURL.Transaction.pay, { "taskItemIds": data }).then(res => {
-        forEach(res.data.taskItems, (v) => {
-            APIPut(ServiceURL.Task.update(v.id), {transactionId : res.data.id}).then(e => {
-                console.log(e);
-            }).catch(err => {
-                console.log(err);
+    let formData = getFormValueV2(e.target);
+    let data = { "taskItemIds": [], "rentItemIds": [] };
+
+    forEach(formData, (k, v) => {
+        forEach(v, value => {
+            forEach(value, (itemId, val) => {
+                if(val) data[k].push(itemId);
             })
         })
+    })
 
-        // forEach(res.data.rentItems, (v) => {
-        //     APIPut(ServiceURL.Rent.onlyUpdateTransaction(v.id, res.data.id), {}).then(e => {
-        //         console.log(e);
-        //     })
-        // })
-
+    APIPost(ServiceURL.Transaction.pay, data).then(res => {
         window.snap.pay(res.data.token, {
             onSuccess: function (result) { alert('success'); console.log(result); goTo(PAGE.HOME)},
             onPending: function (result) { alert('pending'); console.log(result); goTo(PAGE.HOME)},
