@@ -1,9 +1,8 @@
 import { APIGet } from "./api.js";
 import { PAGE, ServiceURL } from "./config.js";
-import { getCookie } from "./cookiemanagement.js";
-import { UNIXtimeConverter, addCustomEventListener, getInvoiceNumber, goBack, goTo, map, numberWithThousandsSeparators, paymentStatusToString } from "./utils.js";
+import { UNIXtimeConverter, addCustomEventListener, getInvoiceNumber, getUserID, goBack, goTo, map, numberWithThousandsSeparators, paymentStatusToString } from "./utils.js";
 
-APIGet(ServiceURL.Transaction.getAll(getCookie("id"))).then(res => {
+APIGet(ServiceURL.Transaction.getAll(getUserID() != "Tenant" ? "" : "Tenant", "")).then(res => {
     let transactions = res.data.data;
     console.log(transactions);
 

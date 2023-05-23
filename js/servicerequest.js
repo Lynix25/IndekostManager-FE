@@ -23,9 +23,7 @@ handleFormSubmited((e) => {
                 requestedData['requestedQuantity'] = quantity;
                 requestedData['charge'] = listOfServiceId[variant][1] * parseInt(data[variant]);
                 
-                APIPost(ServiceURL.Task.create, requestedData, {
-                    "requesterId": getUserID()
-                });
+                APIPost(ServiceURL.Task.create, requestedData);
                 totalRequested++;
             }
         });

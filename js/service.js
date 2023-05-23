@@ -1,7 +1,7 @@
 import { APIGet, APIPost } from "./api.js";
-import { Constant, Event, ServiceURL } from "./config.js";
-import { addCustomEventListener, getFormValue, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 import { Toast } from "./component/toast.js";
+import { Constant, Event, PAGE, ServiceURL } from "./config.js";
+import { getFormValue, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 
 document.querySelector("#serviceName").addEventListener("change", e => {
     let selected = e.target.value;
@@ -22,7 +22,7 @@ handleFormSubmited((e) => {
     }
     APIPost(ServiceURL.Service.getAll, data).then(response => {
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
-        setTimeout(function() { goTo('./service.html') }, Event.timeout);
+        setTimeout(function() { goTo(PAGE.SERVICE) }, Event.timeout);
     }).catch(err => {
         Toast(Constant.httpStatus.ERROR, err?.message);
     });
@@ -43,7 +43,7 @@ APIGet(ServiceURL.Service.getAll).then(res => {
     });
 
     let services = res.data.data;
-
+    console.log(services);
     let count1 = 0;
     let count2 = 0;
     let count3 = 0;

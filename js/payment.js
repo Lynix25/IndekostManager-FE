@@ -1,10 +1,10 @@
 import { APIGet, APIPost, APIPut } from "./api.js";
-import { PAGE, ServiceURL } from "./config.js";
+import { Toast } from "./component/toast.js";
+import { Constant, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 import { UNIXtimeConverter, createElementFromString, filter, forEach, getFormValueV2, goBack, goTo, handleFormSubmited, numberWithThousandsSeparators } from "./utils.js";
 
 APIGet(ServiceURL.Transaction.unpaid(getCookie("id"))).then(res => {
-    console.log(res);
     let data = res.data;
     let rentItems = data.rentItem;
     let taskItems = data.taskItem;
@@ -84,15 +84,20 @@ handleFormSubmited(e => {
         })
     })
 
-    APIPost(ServiceURL.Transaction.pay, data).then(res => {
-        window.snap.pay(res.data.token, {
-            onSuccess: function (result) { alert('success'); console.log(result); goTo(PAGE.HOME)},
-            onPending: function (result) { alert('pending'); console.log(result); goTo(PAGE.HOME)},
-            onError: function (result) { alert('error'); console.log(result); goTo(PAGE.HOME)},
-            onClose: function () { alert('customer closed the popup without finishing the payment'); goTo(PAGE.HOME)}
-        });
-
+    if(data.taskItemIds.length || data.rentItemIds.length)
+    APIPost(ServiceURL.Transaction.create, data).then(res => {
+        // console.log(res);
+        goTo(PAGE.PAYMENTMETHOD(res.data.id));
+    //     window.snap.pay(res.data.token, {
+    //         onSuccess: function (result) { alert('success'); console.log(result); goTo(PAGE.HOME)},
+    //         onPending: function (result) { alert('pending'); console.log(result); goTo(PAGE.HOME)},
+    //         onError: function (result) { alert('error'); console.log(result); goTo(PAGE.HOME)},
+    //         onClose: function () { alert('customer closed the popup without finishing the payment'); goTo(PAGE.HOME)}
+    //     });
     })
+    else{
+        Toast(Constant.httpStatus.UNKNOWN, "Tidak ada item terpilih");
+    }
 });
 
 document.querySelector("#back").addEventListener("click", e => {

@@ -52,7 +52,6 @@ function login(e) {
     let data = getFormValue(e.target);
     APIPost(ServiceURL.User.login, data).then(response => {
         if (response.status == 200) {
-
             let cachedItem = response.data.data.cached;
             if(getCookie('id') === cachedItem.id) {
                 Toast(Constant.httpStatus.WARNING, "User sudah login");

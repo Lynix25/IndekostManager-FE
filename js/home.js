@@ -2,7 +2,8 @@ import { APIGet } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, ServiceURL } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
-import { UNIXtimeConverter, addCustomEventListener, createElementFromString, forEach, goTo, isOwner, isOwnerOrAdmin, isUnderOneWeek, numberWithThousandsSeparators, statusToString } from "./utils.js";
+import { logout } from "./main.js";
+import { UNIXtimeConverter, addCustomEventListener, createElementFromString, forEach, getUserID, goTo, isOwner, isOwnerOrAdmin, isUnderOneWeek, numberWithThousandsSeparators, statusToString } from "./utils.js";
 
 if (isOwnerOrAdmin()) {
     document.querySelector(".summary").setAttribute("hidden", "");
@@ -55,8 +56,9 @@ if (isOwnerOrAdmin()) {
         }
     });
 
-    APIGet(ServiceURL.Task.getAll("", "")).then(res => {
+    APIGet(ServiceURL.Task.getAll("", "all")).then(res => {
         let data = res.data.data;
+        console.log(res);
 
         if (isOwner()) {
             document.querySelector("#announcement-content").setAttribute("hidden", "");
@@ -129,11 +131,11 @@ APIGet(ServiceURL.User.getById(getCookie("id"))).then(res => {
         document.querySelector(".greetings2").innerHTML = `<b class="text-muted fs-5">Halo, ${data.user.role.name.toLowerCase()} ${data.user.name.split(" ")[0]}!</b> Yuk kelola kosanmu`;
     } else {
         document.querySelector(".greetings1").innerHTML = `Halo, ${data.user.name}!`;
-        document.querySelector(".room-name").innerHTML = data.room.name;
+        document.querySelector(".room-name").innerHTML = data.room?.name;
     }
 }).catch(err => {
     Toast(Constant.httpStatus.ERROR, "Data login tidak valid");
-    setTimeout(() => goTo(PAGE.LOGIN), Event.timeout);
+    setTimeout(() => logout(), Event.timeout);
 });
 
 APIGet(ServiceURL.MasterData.getIndekos).then(res => {
@@ -228,7 +230,10 @@ APIGet(ServiceURL.Announcement.getAll).then(res => {
     }
 });
 
-APIGet(ServiceURL.Task.getAll("", "")).then(res => {
+let paramGetTask = "";
+if (!isOwnerOrAdmin()) paramGetTask = getUserID();
+
+APIGet(ServiceURL.Task.getAll(paramGetTask, "")).then(res => {
     let taskList = res.data.data;
 
     if (taskList.length > 0) {

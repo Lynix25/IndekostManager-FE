@@ -1,6 +1,6 @@
 import { APIGet } from "./api.js";
-import { ServiceURL } from "./config.js";
-import { createElementFromString, paymentStatusToString } from "./utils.js";
+import { PAGE, ServiceURL } from "./config.js";
+import { createElementFromString, goTo, paymentStatusToString } from "./utils.js";
 import { UNIXtimeConverter, addCustomEventListener, getInvoiceNumber, getParamOnURL, map, map2, numberWithThousandsSeparators } from "./utils.js";
 
 APIGet(ServiceURL.Transaction.get(getParamOnURL("id"))).then(res => {
@@ -25,8 +25,7 @@ APIGet(ServiceURL.Transaction.get(getParamOnURL("id"))).then(res => {
         <div>
             <div>Detail Pembayaran</div>
             ${map(transaction.taskItems, task =>
-            `<div class="d-flex border rounded justify-content-between mb-3">
-                <i class="fa-solid fa-house"></i>
+            `<div data-id="${task.id}" type="task-detail" class="d-flex border rounded justify-content-between mb-3 p-2">
                 <div>
                     <div>${task.service.serviceName}</div>
                     <div>${task.service.variant}</div>
@@ -38,7 +37,6 @@ APIGet(ServiceURL.Transaction.get(getParamOnURL("id"))).then(res => {
             </div>`)}
             ${map(transaction.rentItems, rent =>
             `<div class="d-flex border rounded justify-content-between mb-3 p-2">
-                <i class="fa-solid fa-house"></i>
                 <div>
                     <div>Nama Service</div>
                     <div>Keterangan</div>
@@ -83,5 +81,10 @@ APIGet(ServiceURL.Transaction.get(getParamOnURL("id"))).then(res => {
             onError: function (result) { alert('error'); console.log(result); },
             onClose: function () { alert('customer closed the popup without finishing the payment'); }
         });
+    })
+
+    addCustomEventListener("task-detail", e => {
+        let taskId = e.detail.target.getAttribute("data-id");
+        goTo(PAGE.TASKDETAIL(taskId));
     })
 })

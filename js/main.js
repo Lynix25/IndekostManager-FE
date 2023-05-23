@@ -1,8 +1,8 @@
-import { APIPut } from "./api.js";
+import { APIPut, pendingRequest } from "./api.js";
 import { Toast } from "./component/toast.js";
 import { Constant, Event, PAGE, SERVICE_WORKER, ServiceURL } from "./config.js";
 import { deleteCookie, getCookie } from "./cookiemanagement.js";
-import { goTo } from "./utils.js";
+import { convertImage64ToFile, goTo } from "./utils.js";
 
 const activePage = window.location.pathname;
 const navLinks = document.querySelectorAll('.nav-link').forEach(link => {
@@ -11,6 +11,26 @@ const navLinks = document.querySelectorAll('.nav-link').forEach(link => {
     }
 })
 
+checkPendingTask();
+
+function checkPendingTask() {
+    if (navigator.onLine) {
+        let index = 0;
+        let key = localStorage.key(index);
+        while (key != null) {
+            let config = JSON.parse(localStorage.getItem(key));
+            if (config.data.identityCardImage) config.data.identityCardImage = convertImage64ToFile(config.data.identityCardImage);
+            pendingRequest(config).then(res => {
+                console.log("SUCCESS ", res);
+            }).catch(err => {
+                console.log("ERROR", err);
+            })
+            localStorage.removeItem(key);
+            index++;
+            key = localStorage.key(index);
+        };
+    }
+}
 
 export function logout() {
     APIPut(ServiceURL.User.logout(getCookie('id'))).then(res => {

@@ -1,7 +1,7 @@
 {
   "name": "In D Kost",
   "short_name": "In D Kost",
-  "theme_color": "#f32160",
+  "theme_color": "#d8eefe",
   "background_color": "#2196f3",
   "display": "standalone",
   "orientation": "portrait",

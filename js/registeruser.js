@@ -8,7 +8,7 @@ handleFormSubmited(e => {
     let data = getFormValueV2(e.target);
     
     APIPost(ServiceURL.User.register, data, { "Requester-ID": getCookie("id"), "Content-Type": "multipart/form-data" }).then(res => {
-        Toast(Constant.httpStatus.SUCCESS, res.data.message)
+        Toast(Constant.httpStatus.SUCCESS, res.data.message);
         goTo(PAGE.USERLIST);
     }).catch(err => {
         console.log(err);
@@ -22,11 +22,10 @@ APIGet(ServiceURL.Room.getAll).then(res => {
 
 function addOptions(selector, arrayOfObjectOptions, innerHTMLKey, valueKey = "id") {
     let selection = document.querySelector(selector);
-
-    arrayOfObjectOptions.forEach(object => {
+    arrayOfObjectOptions.forEach(roomDTO => {
         let option = document.createElement("option");
-        option.innerHTML = object.room.name;
-        option.setAttribute('value', object[valueKey]);
+        option.innerHTML = roomDTO.room.name;
+        option.setAttribute('value', roomDTO.room.id);
         selection.appendChild(option);
     });
 }

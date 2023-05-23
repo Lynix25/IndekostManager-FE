@@ -1,6 +1,7 @@
 export const END_POINT = "http://localhost:8123";
 export const SECRET = "indekossecret";
 export const SERVICE_WORKER = "/serviceworker.js"
+export const WEB_CACHE = ["indkost-cache-data", "indkost-cache-v1"];
 
 // ====================================== CONSTANT =======================================
 export const Event = {
@@ -87,6 +88,7 @@ export const PAGE = {
     EDITANNOUNCEMENT: "/editannouncement.html?id=",
     EDITCONTACTABLE: "/editcontactable.html?id=",
     
+    SERVICE: "/service.html",
     SERVICEREQUEST: "/servicerequest.html",
     REQUESTHISTORY: "/requesthistory.html",
     TASKDETAIL: (taskId) => `/taskdetail.html?id=${taskId}`,
@@ -96,7 +98,8 @@ export const PAGE = {
     EDITROOM: '/editroom.html?id=',
 
     PAYMENT: "/payment.html",
-    PAYMENTDETAIL: (paymentId) => `/paymentdetails.html?id=${paymentId}`
+    PAYMENTDETAIL: (paymentId) => `/paymentdetails.html?id=${paymentId}`,
+    PAYMENTMETHOD: (transactionId) => `/paymentmethod.html?id=${transactionId}`
 };
 
 export const CONTENT_TYPE = {
@@ -189,7 +192,7 @@ export const ServiceURL = {
     },
     Transaction: {
         unpaid: (id) => `/transaction/unpaid/${id}`,
-        pay: "/transaction",    
+        create: "/transaction",    
         getAll: (id) => `/transaction?requestor=${id}`,
         get: (id) => `/transaction/${id}`
     },

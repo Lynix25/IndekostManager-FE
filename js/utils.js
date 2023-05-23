@@ -346,6 +346,16 @@ export function convertImage64ToSrc(imageInBase64, imageExt = "png") {
     return `data:image/${imageExt};base64,` + imageInBase64;
 }
 
+export function convertImage64ToFile(imageInBase64){
+    var base64 = imageInBase64;
+    var base64Parts = base64.split(",");
+    var fileFormat = base64Parts[0].split(";")[1];
+    var fileContent = base64Parts[1];
+    console.log(base64, fileFormat);
+    var file = new File([fileContent], "KTP", {type: fileFormat});
+    return file;
+}
+
 export function urlB64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)

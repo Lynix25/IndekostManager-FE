@@ -10,6 +10,7 @@ if(!isOwnerOrAdmin())
 
 APIGet(ServiceURL.Room.getAll).then(res => {
     let roomList = res.data.data;
+    console.log(roomList);
     roomList.forEach(room => {
 
         let data = room.room;
@@ -82,7 +83,7 @@ APIGet(ServiceURL.Room.getAll).then(res => {
         //     document.querySelector("#room-name").innerHTML = data.name;
         //     setAttributes(document.querySelector("[type='confirm-delete']"), { "data": data.id, "data-room-name": data.name });
         // }, roomElement, ...Array(3), true);
-        // document.querySelector("#room-list").appendChild(roomItem);
+        document.querySelector("#room-list").appendChild(roomItem);
     });
 }).catch(e => {
     console.log(e);

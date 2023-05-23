@@ -20,7 +20,7 @@
         }
     </style>
     <script src="js/library.js"></script>
-    <script defer type="module" src="js/payment.js"></script>
+    <script defer type="module" src="js/paymentmethod.js"></script>
 </head>
 
 <body>
@@ -38,31 +38,7 @@
             <div class="input-group-text mb-1">
                 <h5 class="mt-2">Daftar Tagihan</h5>
             </div>
-            <div id="no-payment" class="border rounded py-4">
-                <div class="d-flex justify-content-center align-items-center">
-                    <img src="./asset/no_data.png" alt="Tidak ada data" height="100px" style="opacity: 50%;">
-                </div>
-                <h6 class="text-muted text-center fw-normal h-auto">Belum ada tagihan</h6>
-            </div>
             <ul class="border rounded p-3 cart" hidden>
-                <!-- <li class="border-bottom mb-1">
-                    <div class="d-flex align-items-center mb-3">
-                        <input class="form-check-input m-2 fs-4" type="checkbox" name="asd" id="">
-                        <div>
-                            <div>Biaya Bulanan Kos Januari</div>
-                            <div>Batas bayar: 31/1/2022 19:00</div>
-                        </div>
-                    </div>
-                    <div class="text-end ">Rp 2.000.000</div>
-                </li> -->
-                <!-- <li class="border-bottom mb-1 d-flex align-items-center">
-                    <input class="form-check-input m-2 fs-4" type="checkbox" name="asdas" id="">
-                    <div style="width: 100%;">
-                        <div>Laundry Bulan January Minggu 1</div>
-                        <div>Batas bayar: 17/1/2022 19:00</div>
-                        <div class="text-end">Rp 50.000</div>
-                    </div>
-                </li> -->
             </ul>
         </div>
         <div class="col-md-6">
@@ -74,10 +50,10 @@
                     <div>Jumlah layanan yang dibayar</div>
                     <div class="total-item" data-selected="0">0</div>
                 </div>
-                <!-- <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between">
                     <div>Total Denda</div>
-                    <div>Rp0</div>
-                </div> -->
+                    <div class="penalty-fee">Rp0</div>
+                </div>
                 <hr>
                 <div>
                     <div class="d-flex justify-content-between mt-4">
@@ -85,7 +61,7 @@
                         <div data-total-price="0" class="total-price">-</div>
                     </div>
                     <div class="d-flex justify-content-end align-items-center mt-4">
-                        <button type="pay" class="btn btn-primary border">Bayar</button>
+                        <button type="pay" class="btn btn-primary border">Pilih Metode Pembayaran</button>
                     </div>
                 </div>
             </div>

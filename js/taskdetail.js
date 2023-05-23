@@ -30,7 +30,7 @@ function reloadData(task, room) {
     let serviceName = task.service.serviceName;
     if (serviceName === Constant.serviceCategory.LAUNDRY) {
         // document.querySelector("#quantity-container").removeAttribute("hidden");
-        document.querySelector(".quantity").outerHTML = task.requestedQuantity;
+        document.querySelector(".quantity").value = task.requestedQuantity;
     }
 
     document.querySelector(".service").innerHTML = serviceName;
@@ -55,7 +55,7 @@ function reloadData(task, room) {
             document.querySelector("[type='process']").removeAttribute("hidden", "");
             document.querySelector("[type='finish']").setAttribute("hidden", "");
 
-            document.querySelector(".quantity").removeAttribute("readonly");
+            document.querySelector(".quantity").removeAttribute("disabled");
             document.querySelector("#notes").removeAttribute("disabled");
         }
         else if (task.status === Constant.serviceRequestStatus.ACCEPTED) {
@@ -86,10 +86,10 @@ document.querySelector(".quantity").addEventListener("change", e => {
 addCustomEventListener("reject", e => {
     APIPut(ServiceURL.Task.update(getParamOnURL('id')), {
         "status": Constant.serviceRequestStatus.REJECTED,
-        "notes": notes.value,
+        "notes": document.querySelector("#notes").value,
     }).then(response => {
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
-        reloadData(response.data.data);
+        reloadData(response.data.data.task, response.data.data.room);
     }).catch(err => {
         Toast(Constant.httpStatus.ERROR, err?.message);
     });
@@ -98,11 +98,12 @@ addCustomEventListener("reject", e => {
 addCustomEventListener("process", e => {
     APIPut(ServiceURL.Task.update(getParamOnURL('id')), {
         "status": Constant.serviceRequestStatus.ACCEPTED,
-        "notes": notes.value,
+        "notes": document.querySelector("#notes").value,
     }).then(response => {
-        reloadData(response.data.data);
+        reloadData(response.data.data.task, response.data.data.room);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
     }).catch(err => {
+        console.log(err);
         if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
         else Toast(Constant.httpStatus.ERROR, err.data.message);
     });
@@ -111,9 +112,9 @@ addCustomEventListener("process", e => {
 addCustomEventListener("update", e => {
     APIPut(ServiceURL.Task.update(getParamOnURL('id')), {
         "status": Constant.serviceRequestStatus.ACCEPTED,
-        "notes": notes.value,
+        "notes": document.querySelector("#notes").value,
     }).then(response => {
-        reloadData(response.data.data);
+        reloadData(response.data.data.task, response.data.data.room);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
     }).catch(err => {
         if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
@@ -124,11 +125,13 @@ addCustomEventListener("update", e => {
 addCustomEventListener("finish", e => {
     APIPut(ServiceURL.Task.update(getParamOnURL('id')), {
         "status": Constant.serviceRequestStatus.COMPLETED,
-        "notes": notes.value,
+        "notes": document.querySelector("#notes").value,
     }).then(response => {
-        reloadData(response.data.data);
+        console.log(response);
+        reloadData(response.data.data.task, response.data.data.room);
         Toast(Constant.httpStatus.SUCCESS, response.data.message);
     }).catch(err => {
+        console.log(err);
         if (err.data == undefined) Toast(Constant.httpStatus.UNKNOWN, err?.message);
         else Toast(Constant.httpStatus.ERROR, err.data.message);
     });

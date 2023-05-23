@@ -2,9 +2,12 @@ import { APIGet } from "./api.js";
 import { PAGE, ServiceURL } from "./config.js";
 import { UNIXtimeConverter, getUserID, goBack, goTo, isOwnerOrAdmin, statusToString } from "./utils.js";
 
-APIGet(ServiceURL.Task.getAll(getUserID(), "all")).then(res => {
-    let data = res.data.data;
+let paramGetTask = "";
+if (!isOwnerOrAdmin()) paramGetTask = getUserID();
 
+APIGet(ServiceURL.Task.getAll(paramGetTask, "all")).then(res => {
+    let data = res.data.data;
+    console.log(data);
     if (data.length > 0) {
         document.querySelector(".no-data").setAttribute("hidden", "");
         data.forEach(taskDTO => {
@@ -12,6 +15,7 @@ APIGet(ServiceURL.Task.getAll(getUserID(), "all")).then(res => {
         });
     }
 });
+
 
 function addRequest(task, room) {
     let requestList = document.querySelector("#request-list");

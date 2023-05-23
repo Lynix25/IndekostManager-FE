@@ -1,6 +1,6 @@
 import { APIDelete, APIGet, APIPost, APIPut } from "./api.js";
 import { Toast } from "./component/toast.js";
-import { Constant, ServiceURL } from "./config.js";
+import { Constant, ServiceURL, WEB_CACHE } from "./config.js";
 import { getCookie } from "./cookiemanagement.js";
 import { addCustomEventListener, getFormValueV2, isOwnerOrAdmin, urlB64ToUint8Array } from "./utils.js";
 
@@ -36,13 +36,14 @@ APIGet(ServiceURL.User.getUserSetting(getCookie("id"))).then(res => {
         }
     })
 
-    if(isOwnerOrAdmin()){
+    if (isOwnerOrAdmin()) {
         document.querySelector("#room-settings").setAttribute("hidden", "");
     }
 })
 
 addCustomEventListener("remove-serviceworker", e => {
     unregisterServiceWorker();
+    cleanCache();
 })
 
 function unregisterServiceWorker() {
@@ -54,9 +55,15 @@ function unregisterServiceWorker() {
                 }
             });
     }
-    
+
     unsubscribe();
     location.reload();
+}
+
+function cleanCache() {
+    WEB_CACHE.forEach(cacheName => {
+        caches.delete(cacheName);
+    })
 }
 
 document.querySelector("form").addEventListener("change", e => {

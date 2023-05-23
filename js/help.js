@@ -1,4 +1,4 @@
-import { forEach, isOwnerOrAdmin } from "./utils.js";
+import { forEach, goBack, isOwnerOrAdmin } from "./utils.js";
 
 let helper = document.querySelector("#helper")
 
@@ -143,3 +143,8 @@ if (isOwnerOrAdmin()) {
     </div>
     `;
 }
+
+document.querySelector("#back").addEventListener("click", e => {
+    goBack();
+});
+
